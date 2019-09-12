@@ -5,6 +5,7 @@ require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('model/Database.php');
+require_once('model/LoginModel.php');
 require_once('Config.php');
 
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
@@ -18,10 +19,6 @@ $lv = new LayoutView();
 $db = new Database();
 $loginModel = new LoginModel($db);
 
-try {
-    $db->connect();
-} catch (\Exeption $e) {
-    echo $e;
-}
+
 $lv->render(false, $v, $dtv);
 

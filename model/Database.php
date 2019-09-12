@@ -10,9 +10,9 @@ class Database {
     }
 
     // Check if user exists in database
-    public function getUser(string $username, string $password) {
+    public function getUser(string $username) {
         $query_user = "SELECT * FROM users WHERE username=$username";
-        $result = query($query_user);
+        $result = $this->connect()->query($query_user);
         $numRows = $result->num_rows;
 
         if ($numRows > 0) {
