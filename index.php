@@ -16,6 +16,7 @@ $v = new LoginView();
 $dtv = new DateTimeView();
 $lv = new LayoutView();
 $db = new Database();
+$loginModel = new LoginModel($db);
 
 try {
     $db->connect();
