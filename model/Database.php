@@ -14,13 +14,13 @@ class Database {
     $database = ltrim($dbparts['path'],'/');
     
     // Create connection
-    $conn = new mysqli($hostname, $username, $password, $database);
+    $this->connection = new mysqli($servername, $dbName, $dbPassword, $database);
 
     // Check connection
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
-      echo "Connection was successfully established!";
+     return $this->connection;
   }
 
     // Check if user exists in database
