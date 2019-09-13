@@ -1,29 +1,12 @@
 <?php
 
-class Database {
+class Database extends DatabaseConfig {
     private $connection;
 
-    // Connect to database with secure config data.
+  // Connect to database with secure config data.
   public function connect() {
     
-    // Create connection
-    $serverAdress = $_SERVER['SERVER_NAME'];
-    if ($serverAdress == 'localhost') {
-      $servername = "localhost";
-      $dbName = "root";
-      $dbPassword = "";
-      $database = "users";
-    } else {
-      $url = getenv('JAWSDB_URL');
-      $dbparts = parse_url($url);
-
-      $servername = $dbparts['host'];
-      $dbName = $dbparts['user'];
-      $dbPassword = $dbparts['pass'];
-      $database = ltrim($dbparts['path'],'/');
-    }
-
-    $this->connection = new mysqli($servername, $dbName, $dbPassword, $database);
+    $this->connection = new mysqli($this->server_name, $this->db_name, $this->db_password, $this->database);
 
     // Check connection
     if ($this->connection->connect_error) {
