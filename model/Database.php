@@ -25,7 +25,7 @@ class Database {
 
     // Check if user exists in database
     public function getUser() {
-        $query_user = "SELECT * FROM Loginsystem";
+        $query_user = "SELECT * FROM loginsystem";
         $result = $this->connect()->query($query_user);
         $numRows = $result->num_rows;
 
