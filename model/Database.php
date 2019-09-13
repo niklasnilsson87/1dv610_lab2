@@ -17,8 +17,8 @@ class Database {
     $this->connection = new mysqli($servername, $dbName, $dbPassword, $database);
 
     // Check connection
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
+    if ($this->connection->connect_error) {
+      die("Connection failed: " . $this->connection->connect_error);
     }
      return $this->connection;
   }
