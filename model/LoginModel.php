@@ -7,6 +7,5 @@ class LoginModel {
 
     public function __construct(\Login\Model\Database $db) {
         $this->db = $db;
-
     }
 }
