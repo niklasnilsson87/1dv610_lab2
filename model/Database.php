@@ -5,15 +5,24 @@ class Database {
 
     // Connect to database with secure config data.
   public function connect() {
-    $url = getenv('JAWSDB_URL');
-    $dbparts = parse_url($url);
-
-    $servername = $dbparts['host'];
-    $dbName = $dbparts['user'];
-    $dbPassword = $dbparts['pass'];
-    $database = ltrim($dbparts['path'],'/');
     
     // Create connection
+    $serverAdress = $_SERVER['SERVER_NAME'];
+    if ($serverAdress == 'localhost') {
+      $servername = "localhost";
+      $dbName = "root";
+      $dbPassword = "";
+      $database = "users";
+    } else {
+      $url = getenv('JAWSDB_URL');
+      $dbparts = parse_url($url);
+
+      $servername = $dbparts['host'];
+      $dbName = $dbparts['user'];
+      $dbPassword = $dbparts['pass'];
+      $database = ltrim($dbparts['path'],'/');
+    }
+
     $this->connection = new mysqli($servername, $dbName, $dbPassword, $database);
 
     // Check connection
@@ -25,7 +34,7 @@ class Database {
 
     // Check if user exists in database
     public function getUser() {
-        $query_user = "SELECT * FROM loginsystem";
+        $query_user = "SELECT * FROM users";
         $result = $this->connect()->query($query_user);
         $numRows = $result->num_rows;
 
