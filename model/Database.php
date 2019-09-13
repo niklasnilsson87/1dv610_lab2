@@ -1,5 +1,7 @@
 <?php
 
+namespace Login\Model;
+
 class Database extends DatabaseConfig {
     private $connection;
 

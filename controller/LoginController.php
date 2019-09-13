@@ -1,10 +1,12 @@
 <?php
 
+namespace Login\Controller;
+
 class LoginController {
   private $model;
   private $view;
 
-  public function __construct(LoginModel $loginModel, LoginView $loginView) {
+  public function __construct(\Login\Model\LoginModel $loginModel, \Login\View\LoginView $loginView) {
     $this->model = $loginModel;
     $this->view = $loginView;
 
@@ -18,5 +20,5 @@ class LoginController {
           // show loginView
   }
   
-  
+
 }
