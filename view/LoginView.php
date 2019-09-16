@@ -13,7 +13,6 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 	private static $msg = '';
 
-	
 
 	/**
 	 * Create HTTP response
@@ -60,7 +59,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getPostUser() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -81,6 +80,13 @@ class LoginView {
 		$pwd = $_POST[self::$password];
 		// return isset($name) && !empty($name) ? $name : '' ;
 		return new \Login\Model\UserModel($name, $pwd);
+	}
+
+	private function getPostUser() {
+		if($this->userWantsToLogin()) {
+			return htmlspecialchars($_POST[self::$name]);
+		}
+		return '';
 	}
 
 	// private function getInputValueFiltered() : string {

@@ -23,7 +23,7 @@ class Application {
     $this->db = new \Login\Model\Database();
     $this->date = new \Login\View\DateTimeView();
     $this->loginView = new \Login\View\LoginView();
-    // $this->user = new \Login\Model\UserModel("hej");
+    // $this->user = new \Login\Model\UserModel();
     // $this->loginModel = new \Login\Model\LoginModel($this->db, $this->loginView);
     $this->layoutView = new \Login\View\LayoutView();
     $this->loginController = new \Login\Controller\LoginController($this->db, $this->loginView);
