@@ -1,5 +1,5 @@
 <?php
 
-class TooShortNameException extends \Exception {}
+class UsernameEmpty extends \Exception {}
 
-class TooShortPasswordException extends \Exception {}
+class PasswordEmpty extends \Exception {}

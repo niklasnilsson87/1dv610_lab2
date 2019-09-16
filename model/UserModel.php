@@ -5,7 +5,7 @@ namespace Login\Model;
 include_once("Exceptions.php");
 
 class UserModel {
-  private static $MIN_LENGHT = 2;
+  // private static $MIN_LENGHT = 2;
   private $username;
   private $password;
 
@@ -13,12 +13,12 @@ class UserModel {
     $this->username = $this->filtered($username);
     $this->password = $this->filtered($password);
     
-    if (strlen($this->username) < self::$MIN_LENGHT) {
-			throw new \TooShortNameException('<p>The name was to short</p>');
+    if (empty($this->username)) {
+			throw new \UsernameEmpty('Username is missing');
     }
     
-    if (strlen($this->password) < self::$MIN_LENGHT) {
-			throw new \TooShortPasswordException('The password was to short');
+    if (empty($this->password)) {
+			throw new \PasswordEmpty('Password is missing');
 		}
   }
 
