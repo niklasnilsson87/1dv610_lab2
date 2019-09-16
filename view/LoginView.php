@@ -10,7 +10,8 @@ class LoginView {
 	private static $cookieName = 'LoginView::CookieName';
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
-	private static $messageId = '';
+	private static $messageId = 'LoginView::Message';
+	private static $msg = '';
 
 	
 
@@ -23,13 +24,13 @@ class LoginView {
 	 */
 	public function response() {
 		
-		$response = $this->generateLoginFormHTML(self::$messageId);
+		$response = $this->generateLoginFormHTML(self::$msg);
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
 	}
 
 	public function setMessage($msg) {
-		self::$messageId = $msg;
+		self::$msg = $msg;
 	}
 
 	/**
