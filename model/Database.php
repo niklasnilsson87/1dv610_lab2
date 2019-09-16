@@ -8,8 +8,7 @@ class Database extends DatabaseConfig {
   // Connect to database with secure config data.
   public function connect() {
     
-    $this->connection = new mysqli($this->server_name, $this->db_name, $this->db_password, $this->database);
-
+    $this->connection = new \mysqli($this->server_name, $this->db_name, $this->db_password, $this->database);
     // Check connection
     if ($this->connection->connect_error) {
       die("Connection failed: " . $this->connection->connect_error);
@@ -27,7 +26,7 @@ class Database extends DatabaseConfig {
             while($row = $result->fetch_assoc()) {
                 $data[] = $row;
             }
-            return $data;
+            return $data[0]['username'];
         }
     }
 }

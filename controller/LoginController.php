@@ -3,22 +3,24 @@
 namespace Login\Controller;
 
 class LoginController {
-  private $model;
-  private $view;
+  private $db;
+  public $loginView;
 
-  public function __construct(\Login\Model\LoginModel $loginModel, \Login\View\LoginView $loginView) {
-    $this->model = $loginModel;
-    $this->view = $loginView;
-
+  public function __construct(\Login\Model\Database $db, \Login\View\LoginView $lv) {
+    $this->db = $db;
+    $this->loginView = $lv;
   }
 
-  public function determandView() {
-  // Check if user is logged in
-      //login = true
-          //show logged in view
-      //login = false
-          // show loginView
+  public function tryToLogin() {
+    if ($this->loginView->userWantsToLogin()) {
+      try {
+      $username = $this->loginView->getRequestUser()->getName();
+      $pwd = $this->loginView->getRequestUser()->getPassword();
+      } catch (\Exception $e) {
+        $this->loginView->setMessage($e->getMessage());
+      }
+    }
+    // return $this->loginView->userWantsToLogin();
   }
-  
 
 }

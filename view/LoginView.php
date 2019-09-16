@@ -10,7 +10,7 @@ class LoginView {
 	private static $cookieName = 'LoginView::CookieName';
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
-	private static $messageId = 'LoginView::Message';
+	private static $messageId = '';
 
 	
 
@@ -22,11 +22,14 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
-		$message = '';
 		
-		$response = $this->generateLoginFormHTML($message);
+		$response = $this->generateLoginFormHTML(self::$messageId);
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
+	}
+
+	public function setMessage($msg) {
+		self::$messageId = $msg;
 	}
 
 	/**
@@ -71,15 +74,22 @@ class LoginView {
 	}
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	private function getRequestUserName() {
+	public function getRequestUser() : \Login\Model\UserModel {
 		//RETURN REQUEST VARIABLE: USERNAME
-		$this->name = $_POST[self::$name];
-		return $this->name;
+		$name = $_POST[self::$name];
+		$pwd = $_POST[self::$password];
+		// return isset($name) && !empty($name) ? $name : '' ;
+		return new \Login\Model\UserModel($name, $pwd);
 	}
 
-	private function getRequestPassword() {
-		$this->password = $_POST[self::$password];
-		return $this->password;
-	}
+	// private function getInputValueFiltered() : string {
+	// 		$inputValue = $_POST[self::$name];
+	// 		return \Login\Model\UserModel::filtered($inputValue);
+	// }
+
+	public function userWantsToLogin() : bool {
+		return $_SERVER['REQUEST_METHOD'] === 'POST' &&
+		 isset($_POST[self::$login]) ? true : false;
 	
+		}
 }
