@@ -13,8 +13,8 @@ $app = new Application();
 
 try {
   $app->run();
-} catch (\Throwable $th) {
-  echo ErrorPage::echoError($th);
+} catch (\Exception $e) {
+  ErrorPage::echoError($e->getMessage());
 }
 
 

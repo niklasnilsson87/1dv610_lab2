@@ -16,6 +16,8 @@ class LoginController {
       try {
       $username = $this->loginView->getRequestUser()->getName();
       $pwd = $this->loginView->getRequestUser()->getPassword();
+      return $this->db->getUser($username, $pwd);
+
       } catch (\Exception $e) {
         $this->loginView->setMessage($e->getMessage());
       }

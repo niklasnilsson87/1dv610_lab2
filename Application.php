@@ -42,8 +42,8 @@ class Application {
   //   echo $user . "<br>";
   //   echo $pwd;
   //  }
-    $this->loginController->tryToLogin();
-    return $this->layoutView->render(false, $this->loginView, $this->date);
+    $isLoggedIn = $this->loginController->tryToLogin();
+    return $this->layoutView->render($isLoggedIn, $this->loginView, $this->date);
       //login = true
           //show logged in view
       //login = false

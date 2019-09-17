@@ -21,10 +21,13 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response() {
+	public function response($isLoggedIn) {
 		
-		$response = $this->generateLoginFormHTML(self::$msg);
-		//$response .= $this->generateLogoutButtonHTML($message);
+		if ($isLoggedIn) {
+			$response = $this->generateLogoutButtonHTML(self::$msg);
+		} else {
+			$response = $this->generateLoginFormHTML(self::$msg);
+		}
 		return $response;
 	}
 
@@ -78,7 +81,6 @@ class LoginView {
 		//RETURN REQUEST VARIABLE: USERNAME
 		$name = $_POST[self::$name];
 		$pwd = $_POST[self::$password];
-		// return isset($name) && !empty($name) ? $name : '' ;
 		return new \Login\Model\UserModel($name, $pwd);
 	}
 
