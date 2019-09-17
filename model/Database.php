@@ -20,7 +20,7 @@ class Database extends DatabaseConfig {
   // }
 
     // Check if user exists in database
-    public function getUser(string $user, string $password) {
+    public function isAValidUser(string $user, string $password) {
 
       $this->connection = new \mysqli($this->server_name, $this->db_name, $this->db_password, $this->database);
       // Check connection
@@ -28,7 +28,6 @@ class Database extends DatabaseConfig {
         printf("Connect failed: %s\n", $this->connection->connect_error);
         exit();
       }
-        
       
         $sql = "SELECT * FROM users WHERE username=?;";
         $stmt = $this->connection->prepare($sql);
@@ -41,46 +40,9 @@ class Database extends DatabaseConfig {
         $pwdCheck = $password === $row['password'];
 
         if ($pwdCheck == false || $userCheck == false) {
-          throw new \WrongPassword('Wrong name or password');
+          throw new \WrongPasswordOrUsername('Wrong name or password');
         } else {
           return true;
         }
-
-        // $stmt = mysqli_stmt_init($this->connection);
-        // if(!mysqli_stmt_prepare($stmt, $sql)) {
-        //   throw new \Exception('Not a valid sql');
-        //   exit();
-        // } else {
-        //   mysqli_stmt_bind_param($stmt, 's', $user);
-        //   mysqli_stmt_execute($stmt);
-        //   $result = mysqli_stmt_get_result($stmt);
-        //   if ($row = mysqli_fetch_assoc($result)) {
-
-        //     $userCheck = $row['username'] === $user;
-        //     $pwdCheck = $password === $row['password'];
-
-        //     if ($pwdCheck == false || $userCheck == false) {
-        //       throw new \WrongPassword('Wrong name or password');
-        //       return false;
-        //     }
-        //     else if ($pwdCheck == true) {
-        //       return true;
-        //     } else {
-        //       return false;
-        //     }
-        //   }
-        //   return false;
-        // }
-
-
-        // $result = $this->connection->query($sql);
-        // $numRows = $result->num_rows;
-        // // return $result;
-        // if ($numRows > 0) {
-        //     while($row = $result->fetch_assoc()) {
-        //         $data[] = $row;
-        //     }
-        //     return $data[0]['username'];
-        // }
     }
 }

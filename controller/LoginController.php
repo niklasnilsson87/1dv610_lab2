@@ -14,18 +14,13 @@ class LoginController {
   public function tryToLogin() {
     if ($this->loginView->userWantsToLogin()) {
       try {
-      $username = $this->loginView->getRequestUser()->getName();
-      var_dump($username);
-      $pwd = $this->loginView->getRequestUser()->getPassword();
-      var_dump($pwd);
-      $dbCheck = $this->db->getUser($username, $pwd);
-      var_dump($dbCheck);
-      return $dbCheck;
-    } catch (\Exception $e) {
-      $this->loginView->setMessage($e->getMessage());
+        $username = $this->loginView->getRequestUser()->getName();
+        $pwd = $this->loginView->getRequestUser()->getPassword();
+        $dbCheck = $this->db->isAValidUser($username, $pwd);
+        return $dbCheck;
+      } catch (\Exception $e) {
+        $this->loginView->setMessage($e->getMessage());
+      }
     }
-    }
-    // return $this->loginView->userWantsToLogin();
   }
-
 }
