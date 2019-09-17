@@ -15,12 +15,15 @@ class LoginController {
     if ($this->loginView->userWantsToLogin()) {
       try {
       $username = $this->loginView->getRequestUser()->getName();
+      var_dump($username);
       $pwd = $this->loginView->getRequestUser()->getPassword();
-      return $this->db->getUser($username, $pwd);
-
-      } catch (\Exception $e) {
-        $this->loginView->setMessage($e->getMessage());
-      }
+      var_dump($pwd);
+      $dbCheck = $this->db->getUser($username, $pwd);
+      var_dump($dbCheck);
+      return $dbCheck;
+    } catch (\Exception $e) {
+      $this->loginView->setMessage($e->getMessage());
+    }
     }
     // return $this->loginView->userWantsToLogin();
   }

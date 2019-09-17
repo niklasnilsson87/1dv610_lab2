@@ -35,20 +35,7 @@ class Application {
 
   public function run() {
   // Check if user is logged in
-   // load Session
-  //  if ($this->loginView->userWantsToLogin()) {
-  //   $user = $this->loginView->getRequestUser()->getName();
-  //   $pwd = $this->loginView->getRequestUser()->getPassword();
-  //   echo $user . "<br>";
-  //   echo $pwd;
-  //  }
-    $isLoggedIn = $this->loginController->tryToLogin();
-    return $this->layoutView->render($isLoggedIn, $this->loginView, $this->date);
-      //login = true
-          //show logged in view
-      //login = false
-          // show loginView
+  $isLoggedIn = $this->loginController->tryToLogin();
+  return $this->layoutView->render($isLoggedIn, $this->loginView, $this->date);
   }
-  
-
 }

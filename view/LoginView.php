@@ -21,7 +21,7 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($isLoggedIn) {
+	public function response($isLoggedIn = false) {
 		
 		if ($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML(self::$msg);
@@ -86,7 +86,7 @@ class LoginView {
 
 	private function getPostUser() {
 		if($this->userWantsToLogin()) {
-			return htmlspecialchars($_POST[self::$name]);
+			return $_POST[self::$name];
 		}
 		return '';
 	}
