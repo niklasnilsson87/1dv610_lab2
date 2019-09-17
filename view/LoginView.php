@@ -23,12 +23,18 @@ class LoginView {
 	 */
 	public function response($isLoggedIn = false) {
 		
+		if ($this->userWantsToLogOut()) {
+			$this->setMessage('Bye bye!');
+		}
+		
 		if ($isLoggedIn) {
 			$this->setMessage('Welcome');
 			$response = $this->generateLogoutButtonHTML(self::$msg);
 		} else {
 			$response = $this->generateLoginFormHTML(self::$msg);
 		}
+
+
 		return $response;
 	}
 
@@ -92,14 +98,12 @@ class LoginView {
 		return '';
 	}
 
-	// private function getInputValueFiltered() : string {
-	// 		$inputValue = $_POST[self::$name];
-	// 		return \Login\Model\UserModel::filtered($inputValue);
-	// }
-
 	public function userWantsToLogin() : bool {
 		return $_SERVER['REQUEST_METHOD'] === 'POST' &&
 		 isset($_POST[self::$login]) ? true : false;
-	
 		}
+	
+	private function userWantsToLogOut() {
+		return isset($_POST[self::$logout]);
+	}
 }
