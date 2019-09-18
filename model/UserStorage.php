@@ -2,22 +2,27 @@
 
 namespace Login\Model;
 
-session_start();
-
 class UserStorage {
 
-  private static $SESSION_USER =  __CLASS__ .  "::Username";
-  private static $SESSION_KEY =  __CLASS__ .  "::Password";
-  
-	public function loadUser() {
+  private static $SESSION_KEY =  __CLASS__ .  "::Username";
+	
+	public function hasStoredUser() {
 		if (isset($_SESSION[self::$SESSION_KEY])) {
-			return $_SESSION[self::$SESSION_KEY];
+			return true;
 		} else {
-			return new UserModel("default", "default");
+			false;
 		}
 	}
-	public function saveUser(UserName $user) {
-		$_SESSION[self::$SESSION_USER] = $user;
-		$_SESSION[self::$SESSION_KEY] = $toBeSaved;
+
+	public function loadUser() {
+		if ($this->hasStoredUser()) {
+			return $_SESSION[self::$SESSION_KEY];
+		} else {
+			return new \Exception('No user exist');
+		}
+	}
+
+	public function saveUser(UserModel $toBeSaved) {
+		$_SESSION[self::$SESSION_KEY] = $toBeSaved->getName();
 	}
 }

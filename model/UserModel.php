@@ -5,7 +5,6 @@ namespace Login\Model;
 include_once("Exceptions.php");
 
 class UserModel {
-  // private static $MIN_LENGHT = 2;
   private $username;
   private $password;
 

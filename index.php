@@ -1,7 +1,7 @@
 <?php
 
 //INCLUDE THE FILES NEEDED...
-
+session_start();
 require_once('Application.php');
 require_once('view/ErrorPage.php');
 
@@ -10,6 +10,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 $app = new Application();
+
+
 
 try {
   $app->run();

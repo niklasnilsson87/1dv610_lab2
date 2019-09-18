@@ -5,22 +5,23 @@ namespace Login\Controller;
 class LoginController {
   private $db;
   public $loginView;
+  private $storage;
 
-  public function __construct(\Login\Model\Database $db, \Login\View\LoginView $lv) {
+  public function __construct(\Login\Model\UserStorage $storage, \Login\Model\Database $db, \Login\View\LoginView $lv) {
+    $this->storage = $storage;
     $this->db = $db;
     $this->loginView = $lv;
   }
 
   public function tryToLogin() {
     if ($this->loginView->userWantsToLogin()) {
-      try {
-        $username = $this->loginView->getRequestUser()->getName();
-        $pwd = $this->loginView->getRequestUser()->getPassword();
-        $dbCheck = $this->db->isAValidUser($username, $pwd);
-        return $dbCheck;
-      } catch (\Exception $e) {
-        $this->loginView->setMessage($e->getMessage());
-      }
-    }
+        $credentials = $this->loginView->getRequestUser();
+        $dbCheckIfUserExist = $this->db->isAValidUser($credentials);
+        return $dbCheckIfUserExist;
+  }
+}
+
+  public function setUserStorage() {
+    $this->storage->saveUser();
   }
 }

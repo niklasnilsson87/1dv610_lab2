@@ -13,7 +13,9 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 	private static $msg = '';
 
-
+	public function __construct() {
+	
+	}
 	/**
 	 * Create HTTP response
 	 *
@@ -22,9 +24,11 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response($isLoggedIn = false) {
-		
+
 		if ($this->userWantsToLogOut()) {
+			session_destroy();
 			$this->setMessage('Bye bye!');
+			$isLoggedIn = false;
 		}
 		
 		if ($isLoggedIn) {
@@ -33,7 +37,6 @@ class LoginView {
 		} else {
 			$response = $this->generateLoginFormHTML(self::$msg);
 		}
-
 
 		return $response;
 	}
