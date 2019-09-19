@@ -29,7 +29,9 @@ class LoginView {
 
 		
 		if ($isLoggedIn) {
-			$this->setMessage('Welcome');
+			if ($this->userWantsToLogin()) {
+				$this->setMessage('Welcome');
+			}
 			$response = $this->generateLogoutButtonHTML(self::$msg);
 		} else {
 			$response = $this->generateLoginFormHTML(self::$msg);
