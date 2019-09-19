@@ -27,13 +27,6 @@ class LoginView {
 	 */
 	public function response($isLoggedIn) {
 
-		if ($this->userWantsToLogOut()) {
-			$this->setMessage('Bye bye!');
-			$this->storage->setIsLoggedIn(false);
-			$isLoggedIn = false;
-			session_destroy();
-		}
-
 		
 		if ($isLoggedIn) {
 			$this->setMessage('Welcome');
@@ -110,7 +103,7 @@ class LoginView {
 		 isset($_POST[self::$login]) ? true : false;
 		}
 	
-	private function userWantsToLogOut() : bool {
+	public function userWantsToLogOut() : bool {
 		return isset($_POST[self::$logout]);
 	}
 }

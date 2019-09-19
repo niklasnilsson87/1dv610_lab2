@@ -40,6 +40,13 @@ class Application {
     $this->storage->setIsLoggedIn(true);
   }
 
+  if ($this->loginView->userWantsToLogout()) {
+      $this->loginView->setMessage('Bye bye!');
+			$this->storage->setIsLoggedIn(false);
+			$_SESSION = array();
+			session_destroy();
+  }
+
   if ($this->loginView->userWantsToLogin()) {
     try {
       $this->loginController->tryToLogin();
