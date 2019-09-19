@@ -4,7 +4,7 @@ namespace Login\View;
 
 class LayoutView {
   
-  public function render($isLoggedIn = false, LoginView $v, DateTimeView $dtv) {
+  public function render($isLoggedIn, LoginView $v, DateTimeView $dtv) {
     echo '<!DOCTYPE html>
       <html>
         <head>

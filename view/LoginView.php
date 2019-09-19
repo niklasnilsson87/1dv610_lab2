@@ -25,14 +25,15 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($isLoggedIn = false) {
+	public function response($isLoggedIn) {
 
 		if ($this->userWantsToLogOut()) {
-			session_unset();
-			session_destroy();
 			$this->setMessage('Bye bye!');
 			$this->storage->setIsLoggedIn(false);
+			$isLoggedIn = false;
+			session_destroy();
 		}
+
 		
 		if ($isLoggedIn) {
 			$this->setMessage('Welcome');
@@ -109,7 +110,7 @@ class LoginView {
 		 isset($_POST[self::$login]) ? true : false;
 		}
 	
-	private function userWantsToLogOut() {
+	private function userWantsToLogOut() : bool {
 		return isset($_POST[self::$logout]);
 	}
 }

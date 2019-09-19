@@ -34,13 +34,6 @@ class Database {
     public function isAValidUser(UserModel $credentials) {
       $username = $credentials->getName();
       $password = $credentials->getPassword();
-
-      // $this->connection = new \mysqli($this->server_name, $this->db_name, $this->db_password, $this->database);
-      // // Check connection
-      // if ($this->connection->connect_errno) {
-      //   printf("Connect failed: %s\n", $this->connection->connect_error);
-      //   exit();
-      // }
       
         $sql = "SELECT * FROM users WHERE username=?;";
         $stmt = $this->connection->prepare($sql);
@@ -53,7 +46,7 @@ class Database {
         $this->pwdCheck = $password === $row['password'];
 
         if ($this->pwdCheck == false || $this->userCheck == false) {
-          throw new \WrongPasswordOrUsername("Wrong name or password");
+          return false;
         } else {
           return true;
         }

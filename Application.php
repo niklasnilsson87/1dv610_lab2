@@ -1,10 +1,10 @@
 <?php
 
 require_once('view/LoginView.php');
-require_once('model/DatabaseConfig.php');
 require_once('model/Database.php');
 require_once('model/UserStorage.php');
 require_once('model/UserModel.php');
+require_once('model/Authentication.php');
 require_once('controller/LoginController.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
@@ -28,32 +28,27 @@ class Application {
     $this->date = new \Login\View\DateTimeView();
     $this->loginView = new \Login\View\LoginView($this->storage);
     $this->layoutView = new \Login\View\LayoutView();
-    $this->loginController = new \Login\Controller\LoginController($this->storage, $this->db, $this->loginView);
+    $this->auth = new \Login\Model\Authentication($this->storage, $this->db, $this->loginView);
+    $this->loginController = new \Login\Controller\LoginController($this->storage, $this->auth, $this->loginView);
 
   }
 
   public function run() {
   // Check if user is logged in
-  $isLoggedIn = false;
   if ($this->storage->hasStoredUser()) {
     $this->user = $this->storage->loadUser();
-    $isLoggedIn = true;
+    $this->storage->setIsLoggedIn(true);
   }
 
   if ($this->loginView->userWantsToLogin()) {
     try {
-      $isLoggedIn = $this->loginController->tryToLogin();
+      $this->loginController->tryToLogin();
       $this->storage->saveUser($this->loginView->getRequestUser());
     } catch (\Exception $e) {
       $this->loginView->setMessage($e->getMessage());
     }
   }
-
   
-  
-  
-  
-  
-  return $this->layoutView->render($isLoggedIn, $this->loginView, $this->date);
+  return $this->layoutView->render($this->storage->getIsLoggedIn(), $this->loginView, $this->date);
   }
 }

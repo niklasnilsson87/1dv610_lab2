@@ -33,6 +33,6 @@ class UserStorage {
 	}
 
 	public function getIsLoggedIn() {
-		return $_SESSION[self::$SESSION_LOGGED_IN];
+		return isset($_SESSION[self::$SESSION_LOGGED_IN]);
 	}
 }
