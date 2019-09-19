@@ -13,8 +13,10 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 	private static $msg = '';
 
-	public function __construct() {
-	
+	private $storage;
+
+	public function __construct(\Login\Model\UserStorage $storage) {
+		$this->storage = $storage;
 	}
 	/**
 	 * Create HTTP response
@@ -26,9 +28,10 @@ class LoginView {
 	public function response($isLoggedIn = false) {
 
 		if ($this->userWantsToLogOut()) {
+			session_unset();
 			session_destroy();
 			$this->setMessage('Bye bye!');
-			$isLoggedIn = false;
+			$this->storage->setIsLoggedIn(false);
 		}
 		
 		if ($isLoggedIn) {

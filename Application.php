@@ -26,10 +26,9 @@ class Application {
     
     $this->db = new \Login\Model\Database();
     $this->date = new \Login\View\DateTimeView();
-    $this->loginView = new \Login\View\LoginView();
+    $this->loginView = new \Login\View\LoginView($this->storage);
     $this->layoutView = new \Login\View\LayoutView();
     $this->loginController = new \Login\Controller\LoginController($this->storage, $this->db, $this->loginView);
-
 
   }
 
