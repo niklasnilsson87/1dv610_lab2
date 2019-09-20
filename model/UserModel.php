@@ -49,4 +49,9 @@ class UserModel
   {
     return trim(htmlentities($rawString));
   }
+
+  public function getKeepLoggedIn()
+  {
+    return $this->keep;
+  }
 }

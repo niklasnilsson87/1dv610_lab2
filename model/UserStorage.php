@@ -6,6 +6,7 @@ class UserStorage
 {
 
 	private static $SESSION_KEY =  __CLASS__ .  "::Username";
+	private static $SESSION_KEEP =  __CLASS__ .  "::KeepMeLoggedIn";
 	private static $SESSION_LOGGED_IN =  __CLASS__ .  "::IsLoggedIn";
 
 
@@ -30,6 +31,7 @@ class UserStorage
 	public function saveUser(UserModel $toBeSaved)
 	{
 		$_SESSION[self::$SESSION_KEY] = $toBeSaved->getName();
+		$_SESSION[self::$SESSION_KEEP] = $toBeSaved->getKeepLoggedIn();
 	}
 
 	public function setIsLoggedIn(bool $toBeSaved)
@@ -40,5 +42,10 @@ class UserStorage
 	public function getIsLoggedIn()
 	{
 		return isset($_SESSION[self::$SESSION_LOGGED_IN]);
+	}
+
+	public function getKeep()
+	{
+		return self::$SESSION_LOGGED_KEEP;
 	}
 }

@@ -37,8 +37,9 @@ class Application
   public function run()
   {
 
-    if ($this->auth->hasCookie()) {
+    if ($this->auth->hasCookie() && !$this->storage->getIsLoggedIn()) {
       $this->loginController->loginByCookie();
+      $this->loginView->setMessage('Welcome back with cookie');
     }
     // Check if user is logged in by session
     if ($this->storage->hasStoredUser()) {
@@ -60,7 +61,11 @@ class Application
 
         $this->loginController->tryToLogin();
         $this->storage->saveUser($this->loginView->getRequestUser());
-        $this->loginView->setMessage('Welcome');
+        if ($this->loginView->getKeepLoggedIn()) {
+          $this->loginView->setMessage('Welcome and you will be remembered');
+        } else {
+          $this->loginView->setMessage('Welcome');
+        }
       } catch (\Exception $e) {
 
         $this->loginView->setMessage($e->getMessage());

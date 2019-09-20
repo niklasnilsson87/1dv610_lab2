@@ -34,17 +34,14 @@ class Authentication
 
   private function saveCookie($credentials)
   {
-    // $option = array(
-    //   'samesite'
-    //   'HttpOnly' => true
-    // );
+    if ($credentials->getKeepLoggedIn()) {
+      $name = $credentials->getName();
+      $password = $credentials->getPassword();
 
-    $name = $credentials->getName();
-    $password = $credentials->getPassword();
+      setcookie('username', $name, time() + 2000, "", "", false, true);
 
-    setcookie('username', $name, time() + 2000, "", "", false, true);
-
-    setcookie('password', $password, time() + 2000, "", "", false, true);
+      setcookie('password', $password, time() + 2000, "", "", false, true);
+    }
   }
 
   public function removeCookie()
