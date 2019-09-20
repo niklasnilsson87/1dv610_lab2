@@ -48,12 +48,19 @@ class Application {
   }
 
   if ($this->loginView->userWantsToLogin()) {
+
     try {
+
       $this->loginController->tryToLogin();
       $this->storage->saveUser($this->loginView->getRequestUser());
+      $this->loginView->setMessage('Welcome');
+
     } catch (\Exception $e) {
+
       $this->loginView->setMessage($e->getMessage());
+
     }
+
   }
   
   return $this->layoutView->render($this->storage->getIsLoggedIn(), $this->loginView, $this->date);

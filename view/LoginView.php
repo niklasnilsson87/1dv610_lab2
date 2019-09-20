@@ -27,11 +27,7 @@ class LoginView {
 	 */
 	public function response($isLoggedIn) {
 
-		
 		if ($isLoggedIn) {
-			if ($this->userWantsToLogin()) {
-				$this->setMessage('Welcome');
-			}
 			$response = $this->generateLogoutButtonHTML(self::$msg);
 		} else {
 			$response = $this->generateLoginFormHTML(self::$msg);
@@ -102,7 +98,7 @@ class LoginView {
 
 	public function userWantsToLogin() : bool {
 		return $_SERVER['REQUEST_METHOD'] === 'POST' &&
-		 isset($_POST[self::$login]) ? true : false;
+		 isset($_POST[self::$login]) && empty($this->storage->hasStoredUser()) ? true : false;
 		}
 	
 	public function userWantsToLogOut() : bool {
