@@ -2,7 +2,8 @@
 
 namespace Login\View;
 
-class LoginView {
+class LoginView
+{
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
 	private static $name = 'LoginView::UserName';
@@ -15,7 +16,8 @@ class LoginView {
 
 	private $storage;
 
-	public function __construct(\Login\Model\UserStorage $storage) {
+	public function __construct(\Login\Model\UserStorage $storage)
+	{
 		$this->storage = $storage;
 	}
 	/**
@@ -25,7 +27,8 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($isLoggedIn) {
+	public function response($isLoggedIn)
+	{
 
 		if ($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML(self::$msg);
@@ -36,30 +39,33 @@ class LoginView {
 		return $response;
 	}
 
-	public function setMessage($msg) {
+	public function setMessage($msg)
+	{
 		self::$msg = $msg;
 	}
 
 	/**
-	* Generate HTML code on the output buffer for the logout button
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
-	private function generateLogoutButtonHTML($message) {
+	 * Generate HTML code on the output buffer for the logout button
+	 * @param $message, String output message
+	 * @return  void, BUT writes to standard output!
+	 */
+	private function generateLogoutButtonHTML($message)
+	{
 		return '
 			<form  method="post" >
-				<p id="' . self::$messageId . '">' . $message .'</p>
+				<p id="' . self::$messageId . '">' . $message . '</p>
 				<input type="submit" name="' . self::$logout . '" value="logout"/>
 			</form>
 		';
 	}
-	
+
 	/**
-	* Generate HTML code on the output buffer for the logout button
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
-	private function generateLoginFormHTML($message) {
+	 * Generate HTML code on the output buffer for the logout button
+	 * @param $message, String output message
+	 * @return  void, BUT writes to standard output!
+	 */
+	private function generateLoginFormHTML($message)
+	{
 		return '
 			<form method="post" > 
 				<fieldset>
@@ -80,29 +86,37 @@ class LoginView {
 			</form>
 		';
 	}
-	
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	public function getRequestUser() : \Login\Model\UserModel {
-		//RETURN REQUEST VARIABLE: USERNAME
+
+	public function getRequestUser(): \Login\Model\UserModel
+	{
 		$name = $_POST[self::$name];
 		$pwd = $_POST[self::$password];
-		return new \Login\Model\UserModel($name, $pwd);
+		$keep = $this->getKeepLoggedIn();
+		return new \Login\Model\UserModel($name, $pwd, $keep);
 	}
 
-	private function getPostUser() {
-		if($this->userWantsToLogin()) {
+	public function getKeepLoggedIn(): bool
+	{
+		return isset($_POST[self::$keep]);
+	}
+
+	private function getPostUser(): string
+	{
+		if ($this->userWantsToLogin()) {
 			return $_POST[self::$name];
 		}
 		return '';
 	}
 
-	public function userWantsToLogin() : bool {
+	public function userWantsToLogin(): bool
+	{
 		return isset($_POST[self::$login]) &&
-		!$this->storage->hasStoredUser();
-		}
-	
-	public function userWantsToLogOut() : bool {
+			!$this->storage->hasStoredUser();
+	}
+
+	public function userWantsToLogOut(): bool
+	{
 		return isset($_POST[self::$logout]) &&
-		$this->storage->hasStoredUser();
+			$this->storage->hasStoredUser();
 	}
 }
