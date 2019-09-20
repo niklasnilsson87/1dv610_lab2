@@ -1,6 +1,7 @@
 <?php
 
 //INCLUDE THE FILES NEEDED...
+ini_set('session.cookie_samesite', 'Lax');
 session_start();
 require_once('Application.php');
 require_once('view/ErrorPage.php');

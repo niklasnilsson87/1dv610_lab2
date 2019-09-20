@@ -1,9 +1,10 @@
 <?php
 
-class UsernameEmpty extends \Exception {}
+class UsernameEmpty extends \Exception
+{ }
 
-class PasswordEmpty extends \Exception {}
+class PasswordEmpty extends \Exception
+{ }
 
-class WrongPasswordOrUsername extends \Exception {}
-
-class Success extends \Exception {}
+class WrongPasswordOrUsername extends \Exception
+{ }
