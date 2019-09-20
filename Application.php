@@ -1,5 +1,7 @@
 <?php
 
+use Login\Controller\LoginController;
+
 require_once('view/LoginView.php');
 require_once('model/Database.php');
 require_once('model/UserStorage.php');
@@ -20,7 +22,7 @@ class Application
   private $loginController;
 
   private $storage;
-  private $user;
+  // private $user;
 
   public function __construct()
   {
@@ -35,46 +37,13 @@ class Application
 
   public function run()
   {
-    try {
-      if ($this->auth->hasCookie() && !$this->storage->getIsLoggedIn()) {
-        $this->loginController->loginByCookie();
-        $this->loginView->setMessage('Welcome back with cookie');
-      }
-    } catch (\Exception $e) {
-      $this->loginView->setMessage('Wrong information in cookies');
-      $this->auth->removeCookie();
-      $this->storage->destroySession();
-    }
-    // Check if user is logged in by session
-    if ($this->storage->hasStoredUser()) {
-      $this->user = $this->storage->loadUser();
-      $this->storage->setIsLoggedIn(true);
-    }
+    $this->loginController->tryToLoginByCookie();
+    $this->loginController->checkStorageForUser();
+    $this->loginController->checkIfUserWantsToLogout();
+    $this->loginController->checkIfUserWantsToLogin();
 
-    if ($this->loginView->userWantsToLogout()) {
-      $this->loginView->setMessage('Bye bye!');
-      $this->storage->setIsLoggedIn(false);
-      $this->auth->removeCookie();
-      $this->storage->destroySession();
-    }
+    $isLoggedIn = $this->storage->getIsLoggedIn();
 
-    if ($this->loginView->userWantsToLogin()) {
-
-      try {
-
-        $this->loginController->tryToLogin();
-        $this->storage->saveUser($this->loginView->getRequestUser());
-        if ($this->loginView->getKeepLoggedIn()) {
-          $this->loginView->setMessage('Welcome and you will be remembered');
-        } else {
-          $this->loginView->setMessage('Welcome');
-        }
-      } catch (\Exception $e) {
-
-        $this->loginView->setMessage($e->getMessage());
-      }
-    }
-
-    return $this->layoutView->render($this->storage->getIsLoggedIn(), $this->loginView, $this->date);
+    return $this->layoutView->render($isLoggedIn, $this->loginView, $this->date);
   }
 }

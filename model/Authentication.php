@@ -23,14 +23,12 @@ class Authentication
       $this->storage->saveUser($credentials);
       $this->saveCookie($credentials);
       $this->storage->setIsLoggedIn(true);
-      // return true;
     } else {
       throw new \WrongPasswordOrUsername("Wrong name or password");
-      // return false;
     }
   }
 
-  private function saveCookie($credentials)
+  private function saveCookie($credentials): void
   {
     if ($credentials->getKeepLoggedIn()) {
       $name = $credentials->getName();
@@ -42,20 +40,20 @@ class Authentication
     }
   }
 
-  public function removeCookie()
+  public function removeCookie(): void
   {
     setcookie('username', '', time() - 3000);
     setcookie('password', '', time() - 3000);
   }
 
-  public function getUserByCookie()
+  public function getUserByCookie(): \Login\Model\UserModel
   {
     $name = $_COOKIE['username'];
     $password = $_COOKIE['password'];
     return new \Login\Model\UserModel($name, $password, true);
   }
 
-  public function hasCookie()
+  public function hasCookie(): bool
   {
     return isset($_COOKIE['username']) && isset($_COOKIE['password']);
   }

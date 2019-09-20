@@ -27,7 +27,7 @@ class LoginView
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($isLoggedIn)
+	public function response($isLoggedIn): string
 	{
 
 		if ($isLoggedIn) {
@@ -39,7 +39,7 @@ class LoginView
 		return $response;
 	}
 
-	public function setMessage($msg)
+	public function setMessage($msg): void
 	{
 		self::$msg = $msg;
 	}
@@ -49,7 +49,7 @@ class LoginView
 	 * @param $message, String output message
 	 * @return  void, BUT writes to standard output!
 	 */
-	private function generateLogoutButtonHTML($message)
+	private function generateLogoutButtonHTML($message): string
 	{
 		return '
 			<form  method="post" >
@@ -64,7 +64,7 @@ class LoginView
 	 * @param $message, String output message
 	 * @return  void, BUT writes to standard output!
 	 */
-	private function generateLoginFormHTML($message)
+	private function generateLoginFormHTML($message): string
 	{
 		return '
 			<form method="post" > 
@@ -73,7 +73,7 @@ class LoginView
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getPostUser() . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getPostUsername() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -100,7 +100,7 @@ class LoginView
 		return isset($_POST[self::$keep]);
 	}
 
-	private function getPostUser(): string
+	private function getPostUsername(): string
 	{
 		if ($this->userWantsToLogin()) {
 			return $_POST[self::$name];
