@@ -48,4 +48,10 @@ class UserStorage
 	{
 		return self::$SESSION_LOGGED_KEEP;
 	}
+
+	public function destroySession()
+	{
+		$_SESSION = array();
+		session_destroy();
+	}
 }

@@ -15,7 +15,7 @@ class Application
 {
   private $db;
   private $date;
-  private $loginView;
+  public $loginView;
   private $layoutView;
   private $loginController;
 
@@ -36,10 +36,15 @@ class Application
 
   public function run()
   {
-
-    if ($this->auth->hasCookie() && !$this->storage->getIsLoggedIn()) {
-      $this->loginController->loginByCookie();
-      $this->loginView->setMessage('Welcome back with cookie');
+    try {
+      if ($this->auth->hasCookie() && !$this->storage->getIsLoggedIn()) {
+        $this->loginController->loginByCookie();
+        $this->loginView->setMessage('Welcome back with cookie');
+      }
+    } catch (\Exception $e) {
+      $this->loginView->setMessage('Wrong information in cookies');
+      $this->auth->removeCookie();
+      $this->storage->destroySession();
     }
     // Check if user is logged in by session
     if ($this->storage->hasStoredUser()) {
@@ -51,8 +56,7 @@ class Application
       $this->loginView->setMessage('Bye bye!');
       $this->storage->setIsLoggedIn(false);
       $this->auth->removeCookie();
-      $_SESSION = array();
-      session_destroy();
+      $this->storage->destroySession();
     }
 
     if ($this->loginView->userWantsToLogin()) {
