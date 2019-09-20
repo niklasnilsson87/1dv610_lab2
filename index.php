@@ -1,7 +1,8 @@
 <?php
 
 //INCLUDE THE FILES NEEDED...
-ini_set('session.cookie_samesite', 'Lax');
+ini_set('session.use_only_cookies', true);
+ini_set('session.use_trans_sid', false);
 session_start();
 require_once('Application.php');
 require_once('view/ErrorPage.php');
@@ -12,7 +13,7 @@ ini_set('display_errors', 'On');
 
 $app = new Application();
 
-
+// echo $_SERVER['HTTP_USER_AGENT'];
 
 try {
   $app->run();
