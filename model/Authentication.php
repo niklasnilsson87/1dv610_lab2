@@ -8,16 +8,14 @@ class Authentication
 {
   private $storage;
   private $db;
-  private $lv;
 
-  public function __construct(\Login\Model\UserStorage $storage, \Login\Model\Database $db, \Login\View\LoginView $lv)
+  public function __construct(\Login\Model\UserStorage $storage)
   {
     $this->storage = $storage;
-    $this->db = $db;
-    $this->lv = $lv;
+    $this->db =  new \Login\Model\Database();
   }
 
-  public function checkCorrectCredentials($credentials): bool
+  public function tryToSaveUser($credentials): void
   {
     $userCheck = $this->db->isAValidUser($credentials);
 
@@ -25,10 +23,10 @@ class Authentication
       $this->storage->saveUser($credentials);
       $this->saveCookie($credentials);
       $this->storage->setIsLoggedIn(true);
-      return true;
+      // return true;
     } else {
       throw new \WrongPasswordOrUsername("Wrong name or password");
-      return false;
+      // return false;
     }
   }
 

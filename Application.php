@@ -26,11 +26,10 @@ class Application
   {
     $this->storage = new \Login\Model\UserStorage();
 
-    $this->db = new \Login\Model\Database();
     $this->date = new \Login\View\DateTimeView();
     $this->loginView = new \Login\View\LoginView($this->storage);
     $this->layoutView = new \Login\View\LayoutView();
-    $this->auth = new \Login\Model\Authentication($this->storage, $this->db, $this->loginView);
+    $this->auth = new \Login\Model\Authentication($this->storage);
     $this->loginController = new \Login\Controller\LoginController($this->storage, $this->auth, $this->loginView);
   }
 

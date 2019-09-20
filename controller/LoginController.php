@@ -15,15 +15,15 @@ class LoginController
     $this->loginView = $lv;
   }
 
-  public function tryToLogin()
+  public function tryToLogin(): void
   {
     if ($this->loginView->userWantsToLogin()) {
       $credentials = $this->loginView->getRequestUser();
-      $this->auth->checkCorrectCredentials($credentials);
+      $this->auth->tryToSaveUser($credentials);
     }
   }
 
-  public function loginByCookie()
+  public function loginByCookie(): void
   {
     $credentialsByCookie = $this->auth->getUserByCookie();
     $this->auth->checkCorrectCredentials($credentialsByCookie);
