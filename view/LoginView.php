@@ -97,11 +97,12 @@ class LoginView {
 	}
 
 	public function userWantsToLogin() : bool {
-		return $_SERVER['REQUEST_METHOD'] === 'POST' &&
-		 isset($_POST[self::$login]) && empty($this->storage->hasStoredUser()) ? true : false;
+		return isset($_POST[self::$login]) &&
+		!$this->storage->hasStoredUser();
 		}
 	
 	public function userWantsToLogOut() : bool {
-		return isset($_POST[self::$logout]);
+		return isset($_POST[self::$logout]) &&
+		$this->storage->hasStoredUser();
 	}
 }
