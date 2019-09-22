@@ -30,8 +30,6 @@ class LoginController
 
     $credentialsByCookie = $this->cookie->getUserByCookie($user, $pwd);
     $this->auth->tryToSaveUser($credentialsByCookie);
-    // $name = $this->loginView->getCookieName();
-    // $password = $this->loginView->getCookiePassword();
   }
 
   public function tryToLoginByCookie($user, $pwd): void

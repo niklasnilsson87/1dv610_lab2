@@ -15,9 +15,9 @@ class Cookie
 
   public function getUserByCookie($user, $pwd): \Login\Model\UserModel
   {
-    // $name = $_COOKIE['username'];
-    // $password = $_COOKIE['password'];
-    return new \Login\Model\UserModel($user, $pwd, true);
+    $name = $_COOKIE[$user];
+    $password = $_COOKIE[$pwd];
+    return new \Login\Model\UserModel($name, $password, true);
   }
 
   public function removeCookie(): void
