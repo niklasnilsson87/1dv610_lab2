@@ -24,7 +24,8 @@ class Application
   private $loginController;
 
   private $storage;
-  // private $user;
+  private $cookieUser;
+  private $cookiePassword;
 
   public function __construct()
   {
@@ -37,11 +38,14 @@ class Application
     $this->registerView = new \Login\View\RegisterView();
     $this->auth = new \Login\Model\Authentication($this->storage, $this->cookie);
     $this->loginController = new \Login\Controller\LoginController($this->storage, $this->auth, $this->loginView, $this->cookie);
+
+    $this->cookieUser = $this->loginView->getCookieName();
+    $this->cookiePassword = $this->loginView->getCookiePassword();
   }
 
   public function run()
   {
-    $this->loginController->tryToLoginByCookie();
+    $this->loginController->tryToLoginByCookie($this->cookieUser, $this->cookiePassword);
     $this->loginController->checkStorageForUser();
     $this->loginController->checkIfUserWantsToLogout();
     $this->loginController->checkIfUserWantsToLogin();

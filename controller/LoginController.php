@@ -25,17 +25,20 @@ class LoginController
     }
   }
 
-  public function loginByCookie(): void
+  public function loginByCookie($user, $pwd): void
   {
-    $credentialsByCookie = $this->cookie->getUserByCookie();
+
+    $credentialsByCookie = $this->cookie->getUserByCookie($user, $pwd);
     $this->auth->tryToSaveUser($credentialsByCookie);
+    // $name = $this->loginView->getCookieName();
+    // $password = $this->loginView->getCookiePassword();
   }
 
-  public function tryToLoginByCookie(): void
+  public function tryToLoginByCookie($user, $pwd): void
   {
     try {
-      if ($this->cookie->hasCookie() && !$this->storage->getIsLoggedIn()) {
-        $this->loginByCookie();
+      if ($this->cookie->hasCookie($user, $pwd) && !$this->storage->getIsLoggedIn()) {
+        $this->loginByCookie($user, $pwd);
         $this->loginView->setMessage('Welcome back with cookie');
       }
     } catch (\Exception $e) {

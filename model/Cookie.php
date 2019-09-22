@@ -5,22 +5,25 @@ namespace Login\Model;
 class Cookie
 {
 
-  public function hasCookie(): bool
+  private static $COOKIE_USER = 'LoginView::CookieName';
+  private static $COOKIE_PASSWORD = 'LoginView::CookiePassword';
+
+  public function hasCookie($user, $pwd): bool
   {
-    return isset($_COOKIE['username']) && isset($_COOKIE['password']);
+    return isset($_COOKIE[$user]) && isset($_COOKIE[$pwd]);
   }
 
-  public function getUserByCookie(): \Login\Model\UserModel
+  public function getUserByCookie($user, $pwd): \Login\Model\UserModel
   {
-    $name = $_COOKIE['username'];
-    $password = $_COOKIE['password'];
-    return new \Login\Model\UserModel($name, $password, true);
+    // $name = $_COOKIE['username'];
+    // $password = $_COOKIE['password'];
+    return new \Login\Model\UserModel($user, $pwd, true);
   }
 
   public function removeCookie(): void
   {
-    setcookie('username', '', time() - 3000);
-    setcookie('password', '', time() - 3000);
+    setcookie(self::$COOKIE_USER, '', time() - 3000);
+    setcookie(self::$COOKIE_PASSWORD, '', time() - 3000);
   }
 
   public function saveCookie($credentials): void
@@ -29,9 +32,9 @@ class Cookie
       $name = $credentials->getName();
       $password = $credentials->getPassword();
 
-      setcookie('username', $name, time() + 2000, "", "", false, true);
+      setcookie(self::$COOKIE_USER, $name, time() + 2000, "", "", false, true);
 
-      setcookie('password', $password, time() + 2000, "", "", false, true);
+      setcookie(self::$COOKIE_PASSWORD, $password, time() + 2000, "", "", false, true);
     }
   }
 }
