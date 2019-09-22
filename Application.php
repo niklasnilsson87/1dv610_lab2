@@ -6,6 +6,7 @@ require_once('view/LoginView.php');
 require_once('view/RegisterView.php');
 require_once('model/Database.php');
 require_once('model/UserStorage.php');
+require_once('model/Cookie.php');
 require_once('model/UserModel.php');
 require_once('model/Authentication.php');
 require_once('controller/LoginController.php');
@@ -28,13 +29,14 @@ class Application
   public function __construct()
   {
     $this->storage = new \Login\Model\UserStorage();
+    $this->cookie = new \Login\Model\Cookie();
 
     $this->date = new \Login\View\DateTimeView();
     $this->loginView = new \Login\View\LoginView($this->storage);
     $this->layoutView = new \Login\View\LayoutView();
     $this->registerView = new \Login\View\RegisterView();
-    $this->auth = new \Login\Model\Authentication($this->storage);
-    $this->loginController = new \Login\Controller\LoginController($this->storage, $this->auth, $this->loginView);
+    $this->auth = new \Login\Model\Authentication($this->storage, $this->cookie);
+    $this->loginController = new \Login\Controller\LoginController($this->storage, $this->auth, $this->loginView, $this->cookie);
   }
 
   public function run()

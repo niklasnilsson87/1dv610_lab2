@@ -13,8 +13,6 @@ ini_set('display_errors', 'On');
 
 $app = new Application();
 
-// echo $_SERVER['HTTP_USER_AGENT'];
-
 try {
   $app->run();
 } catch (\Exception $e) {

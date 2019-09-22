@@ -21,7 +21,7 @@ class RegisterView
   public function generateRegisterFormHTML()
   {
     return '<h2>Register new user</h2>
-    <form action="?register" method="post" enctype="multipart/form-data">
+    <form action="register" method="post" enctype="multipart/form-data">
       <fieldset>
       <legend>Register a new user - Write username and password</legend>
         <p id="' . self::$message . '"> ' . self::$msg . ' </p>

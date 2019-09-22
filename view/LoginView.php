@@ -100,6 +100,16 @@ class LoginView
 		return isset($_POST[self::$keep]);
 	}
 
+	public function getCookieName()
+	{
+		return self::$cookieName;
+	}
+
+	public function getCookiePassword()
+	{
+		return self::$cookiePassword;
+	}
+
 	private function getPostUsername(): string
 	{
 		if ($this->userWantsToLogin()) {

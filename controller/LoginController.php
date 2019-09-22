@@ -7,12 +7,14 @@ class LoginController
   private $auth;
   public $loginView;
   private $storage;
+  private $cookie;
 
-  public function __construct(\Login\Model\UserStorage $storage, \Login\Model\Authentication $auth, \Login\View\LoginView $lv)
+  public function __construct(\Login\Model\UserStorage $storage, \Login\Model\Authentication $auth, \Login\View\LoginView $lv, \Login\Model\Cookie $cookie)
   {
     $this->storage = $storage;
     $this->auth = $auth;
     $this->loginView = $lv;
+    $this->cookie = $cookie;
   }
 
   public function tryToLogin(): void
@@ -25,20 +27,22 @@ class LoginController
 
   public function loginByCookie(): void
   {
-    $credentialsByCookie = $this->auth->getUserByCookie();
+    var_dump($this->loginView->getCookieName());
+    var_dump($this->loginView->getCookiePassword());
+    $credentialsByCookie = $this->cookie->getUserByCookie();
     $this->auth->tryToSaveUser($credentialsByCookie);
   }
 
   public function tryToLoginByCookie(): void
   {
     try {
-      if ($this->auth->hasCookie() && !$this->storage->getIsLoggedIn()) {
+      if ($this->cookie->hasCookie() && !$this->storage->getIsLoggedIn()) {
         $this->loginByCookie();
         $this->loginView->setMessage('Welcome back with cookie');
       }
     } catch (\Exception $e) {
       $this->loginView->setMessage('Wrong information in cookies');
-      $this->auth->removeCookie();
+      $this->cookie->removeCookie();
       $this->storage->destroySession();
     }
   }
@@ -55,7 +59,7 @@ class LoginController
     if ($this->loginView->userWantsToLogout()) {
       $this->loginView->setMessage('Bye bye!');
       $this->storage->setIsLoggedIn(false);
-      $this->auth->removeCookie();
+      $this->cookie->removeCookie();
       $this->storage->destroySession();
     }
   }
