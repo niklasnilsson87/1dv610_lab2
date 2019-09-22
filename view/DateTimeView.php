@@ -2,18 +2,20 @@
 
 namespace Login\View;
 
-class DateTimeView {
+class DateTimeView
+{
 
-  /**
-   * TODO: Move "date" variables to fields?
-   */
-	public function show() {
+	/**
+	 * TODO: Move "date" variables to fields?
+	 */
+	public function show()
+	{
 		$day = date('l');
-		$date = date('d');
+		$date = date('dS');
 		$month = date('F');
 		$year = date('Y');
 		$time = date('H:i:s', time());
-		$timeString = "$day, the $date" . "th of $month $year, The time is $time";
+		$timeString = "$day, the $date of $month $year, The time is $time";
 
 		return '<p>' . $timeString . '</p>';
 	}
