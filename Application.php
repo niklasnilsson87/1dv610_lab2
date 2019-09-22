@@ -3,6 +3,7 @@
 use Login\Controller\LoginController;
 
 require_once('view/LoginView.php');
+require_once('view/RegisterView.php');
 require_once('model/Database.php');
 require_once('model/UserStorage.php');
 require_once('model/UserModel.php');
@@ -15,9 +16,9 @@ require_once('model/Exceptions.php');
 
 class Application
 {
-  private $db;
   private $date;
   public $loginView;
+  public $registerView;
   private $layoutView;
   private $loginController;
 
@@ -31,6 +32,7 @@ class Application
     $this->date = new \Login\View\DateTimeView();
     $this->loginView = new \Login\View\LoginView($this->storage);
     $this->layoutView = new \Login\View\LayoutView();
+    $this->registerView = new \Login\View\RegisterView();
     $this->auth = new \Login\Model\Authentication($this->storage);
     $this->loginController = new \Login\Controller\LoginController($this->storage, $this->auth, $this->loginView);
   }
@@ -43,6 +45,7 @@ class Application
     $this->loginController->checkIfUserWantsToLogin();
 
     $isLoggedIn = $this->storage->getIsLoggedIn();
+    // echo $this->registerView->response($isLoggedIn);
 
     return $this->layoutView->render($isLoggedIn, $this->loginView, $this->date);
   }

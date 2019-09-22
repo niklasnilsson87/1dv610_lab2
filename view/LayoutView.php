@@ -15,6 +15,7 @@ class LayoutView
         </head>
         <body>
           <h1>Assignment 2</h1>
+          ' . $this->renderLink($isLoggedIn) . '
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
           
           <div class="container">
@@ -33,6 +34,13 @@ class LayoutView
       return '<h2>Logged in</h2>';
     } else {
       return '<h2>Not logged in</h2>';
+    }
+  }
+
+  private function renderLink($isLoggedIn)
+  {
+    if (!$isLoggedIn) {
+      return '<a href=?register>Register a new user</a>';
     }
   }
 }
