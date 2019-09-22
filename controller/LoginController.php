@@ -27,8 +27,6 @@ class LoginController
 
   public function loginByCookie(): void
   {
-    var_dump($this->loginView->getCookieName());
-    var_dump($this->loginView->getCookiePassword());
     $credentialsByCookie = $this->cookie->getUserByCookie();
     $this->auth->tryToSaveUser($credentialsByCookie);
   }
