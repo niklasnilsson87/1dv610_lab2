@@ -12,37 +12,29 @@ class UserModel
 
   public function __construct(string $username, string $password, bool $keep)
   {
-    $this->username = $this->filtered($username);
-    $this->password = $this->filtered($password);
+    $this->username = new \Login\Model\FilterUsername($this->filtered($username));
+    $this->password = new \Login\Model\FilterPassword($this->filtered($password));
     $this->keep = $keep;
-
-    if (empty($this->username)) {
-      throw new \UsernameEmpty('Username is missing');
-    }
-
-    if (empty($this->password)) {
-      throw new \PasswordEmpty('Password is missing');
-    }
   }
 
   public function setName(UserModel $newName)
   {
-    $this->username = $newName->getName();
+    $this->username = $newName;
   }
 
   public function getName()
   {
-    return $this->username;
+    return $this->username->getName();
   }
 
   public function setPassword(UserModel $password)
   {
-    $this->password = $password->getPassword();
+    $this->password = $password;
   }
 
   public function getPassword()
   {
-    return $this->password;
+    return $this->password->getPassword();
   }
 
   public function filtered(string $rawString): string

@@ -55,10 +55,10 @@ class Database
     }
   }
 
-  public function checkExceptions(UserModel $credentials)
-  {
-    if ($this->pwdCheck == false || $this->userCheck == false) {
-      throw new WrongPasswordOrUsername("Wrong name or password");
-    }
-  }
+  // public function checkExceptions(UserModel $credentials)
+  // {
+  //   if ($this->pwdCheck == false || $this->userCheck == false) {
+  //     throw new WrongPasswordOrUsername("Wrong name or password");
+  //   }
+  // }
 }

@@ -6,14 +6,16 @@ class LoginController
 {
   private $auth;
   public $loginView;
+  public $registerView;
   private $storage;
   private $cookie;
 
-  public function __construct(\Login\Model\UserStorage $storage, \Login\Model\Authentication $auth, \Login\View\LoginView $lv, \Login\Model\Cookie $cookie)
+  public function __construct(\Login\Model\UserStorage $storage, \Login\Model\Authentication $auth, \Login\View\LoginView $lv, \Login\View\RegisterView $rv, \Login\Model\Cookie $cookie)
   {
     $this->storage = $storage;
     $this->auth = $auth;
     $this->loginView = $lv;
+    $this->registerView = $rv;
     $this->cookie = $cookie;
   }
 
@@ -68,27 +70,39 @@ class LoginController
     if ($this->loginView->userWantsToLogin()) {
 
       try {
-
         $this->tryToLogin();
         $this->storage->saveUser($this->loginView->getRequestUser());
-        if ($this->loginView->getKeepLoggedIn()) {
-          $this->loginView->setMessage('Welcome and you will be remembered');
-        } else {
-          $this->loginView->setMessage('Welcome');
-        }
-      } catch (\Exception $e) {
-
-        $this->loginView->setMessage($e->getMessage());
+        $this->checkIfKeepLogin();
+      } catch (\UsernameEmpty $e) {
+        $this->loginView->setMessage('Username is missing');
+      } catch (\PasswordEmpty $e) {
+        $this->loginView->setMessage('Password is missing');
+      } catch (\WrongPasswordOrUsername $e) {
+        $this->loginView->setMessage('Wrong name or password');
       }
     }
   }
 
-  public function checkIfKeepLogin(): void
+  private function checkIfKeepLogin(): void
   {
     if ($this->loginView->getKeepLoggedIn()) {
       $this->loginView->setMessage('Welcome and you will be remembered');
     } else {
       $this->loginView->setMessage('Welcome');
+    }
+  }
+
+  public function tryToRegister()
+  {
+    if ($this->registerView->userClicksRegister()) {
+      try {
+        $regCredentials = $this->registerView->checkUser();
+        $this->auth->tryToRegisterUser($regCredentials);
+      } catch (\UsernameEmpty $e) {
+        $this->registerView->setMessage('Username has too few characters, at least 3 characters. <br> Password has too few characters, at least 6 characters.');
+      } catch (\PasswordEmpty $e) {
+        $this->registerView->setMessage('Password has too few characters, at least 6 characters.');
+      }
     }
   }
 }

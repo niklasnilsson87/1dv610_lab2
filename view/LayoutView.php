@@ -48,10 +48,6 @@ class LayoutView
 
   public function userWantsToRegister()
   {
-    if (isset($_GET['register'])) {
-      return true;
-    } else {
-      return false;
-    }
+    return isset($_GET['register']);
   }
 }

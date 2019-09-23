@@ -26,7 +26,16 @@ class Authentication
       $this->cookie->saveCookie($credentials);
       $this->storage->setIsLoggedIn(true);
     } else {
-      throw new \WrongPasswordOrUsername("Wrong name or password");
+      throw new \WrongPasswordOrUsername;
     }
+  }
+
+  public function tryToRegisterUser($credentials)
+  {
+    $name = $credentials->getUser()->getName();
+    $password = $credentials->getUserPassword()->getPassword();
+
+    echo $name . '<br>';
+    echo $password;
   }
 }
