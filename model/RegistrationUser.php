@@ -2,6 +2,8 @@
 
 namespace Login\Model;
 
+include_once('Exceptions.php');
+
 class RegistrationUser
 {
   private $username;

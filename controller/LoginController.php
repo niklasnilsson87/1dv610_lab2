@@ -2,6 +2,8 @@
 
 namespace Login\Controller;
 
+include_once("model/Exceptions.php");
+
 class LoginController
 {
   private $auth;
@@ -99,7 +101,7 @@ class LoginController
         $regCredentials = $this->registerView->checkUser();
         $this->auth->tryToRegisterUser($regCredentials);
       } catch (\UsernameEmpty $e) {
-        $this->registerView->setMessage('Username has too few characters, at least 3 characters. <br> Password has too few characters, at least 6 characters.');
+        $this->registerView->setMessage('Username has too few characters, at least 3 characters.');
       } catch (\PasswordEmpty $e) {
         $this->registerView->setMessage('Password has too few characters, at least 6 characters.');
       }

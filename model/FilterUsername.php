@@ -7,14 +7,14 @@ include_once('Exceptions.php');
 
 class FilterUsername
 {
-  private static $MIN_LENGTH = 2;
+  private static $MIN_LENGTH = 3;
 
   private $username;
 
   public function __construct($toBeFiltered)
   {
     if (empty($toBeFiltered) || strlen($toBeFiltered) < self::$MIN_LENGTH) {
-      throw new \UsernameEmpty();
+      throw new \UsernameEmpty;
     } else {
       $this->username = $toBeFiltered;
     }
