@@ -38,12 +38,7 @@ class Database
     $username = $credentials->getName();
     $password = $credentials->getPassword();
 
-    $sql = "SELECT * FROM users WHERE username=?;";
-    $stmt = $this->connection->prepare($sql);
-    $stmt->bind_param('s', $username);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $row = $res->fetch_assoc();
+    $row = $this->sqlCheck($username);
 
     $this->userCheck = $row['username'] === $username;
     $this->pwdCheck = $password === $row['password'];
@@ -55,10 +50,22 @@ class Database
     }
   }
 
-  // public function checkExceptions(UserModel $credentials)
-  // {
-  //   if ($this->pwdCheck == false || $this->userCheck == false) {
-  //     throw new WrongPasswordOrUsername("Wrong name or password");
-  //   }
-  // }
+  public function userExist(string $name)
+  {
+    $result = $this->sqlCheck($name);
+    if ($result['username'] === $name) {
+      return true;
+    }
+    return false;
+  }
+
+  public function sqlCheck($username)
+  {
+    $sql = "SELECT * FROM users WHERE username=?;";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    return $res->fetch_assoc();
+  }
 }

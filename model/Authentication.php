@@ -30,12 +30,11 @@ class Authentication
     }
   }
 
-  public function tryToRegisterUser($credentials)
+  public function doesUserExist($credentials)
   {
     $name = $credentials->getUser()->getName();
-    $password = $credentials->getUserPassword()->getPassword();
-
-    echo $name . '<br>';
-    echo $password;
+    if ($this->db->userExist($name)) {
+      throw new \UserAlreadyExist;
+    }
   }
 }

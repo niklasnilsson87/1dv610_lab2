@@ -12,9 +12,16 @@ class RegistrationUser
 
   public function __construct($username, $password, $passwordCheck)
   {
-    $this->username = new FilterUsername($username);
-    $this->password = new FilterPassword($password);
-    $this->passwordCheck = new FilterPassword($passwordCheck);
+    if (empty($username) && empty($password)) {
+      throw new \UsernameAndPasswordEmpty;
+    }
+
+    if ($password != $passwordCheck) {
+      throw new \PasswordDoesNotMatch;
+    }
+
+    $this->username = new \Login\Model\FilterUsername($username);
+    $this->password = new \Login\Model\FilterPassword($password);
   }
 
   public function getUser()

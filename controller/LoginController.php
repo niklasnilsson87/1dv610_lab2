@@ -99,11 +99,17 @@ class LoginController
     if ($this->registerView->userClicksRegister()) {
       try {
         $regCredentials = $this->registerView->checkUser();
-        $this->auth->tryToRegisterUser($regCredentials);
+        $this->auth->doesUserExist($regCredentials);
       } catch (\UsernameEmpty $e) {
         $this->registerView->setMessage('Username has too few characters, at least 3 characters.');
       } catch (\PasswordEmpty $e) {
         $this->registerView->setMessage('Password has too few characters, at least 6 characters.');
+      } catch (\UsernameAndPasswordEmpty $e) {
+        $this->registerView->setMessage('Username has too few characters, at least 3 characters. <br> Password has too few characters, at least 6 characters.');
+      } catch (\PasswordDoesNotMatch $e) {
+        $this->registerView->setMessage('Passwords do not match.');
+      } catch (\UserAlreadyExist $e) {
+        $this->registerView->setMessage('User exists, pick another username.');
       }
     }
   }
