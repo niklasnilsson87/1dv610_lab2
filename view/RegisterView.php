@@ -43,7 +43,7 @@ class RegisterView
   public function isPostUsername()
   {
     if ($this->userClicksRegister()) {
-      return $_POST[self::$username];
+      return strip_tags($_POST[self::$username]);
     }
     return '';
   }

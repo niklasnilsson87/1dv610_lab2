@@ -110,6 +110,8 @@ class LoginController
         $this->registerView->setMessage('Passwords do not match.');
       } catch (\UserAlreadyExist $e) {
         $this->registerView->setMessage('User exists, pick another username.');
+      } catch (\ContainsHTML $e) {
+        $this->registerView->setMessage('Username contains invalid characters.');
       }
     }
   }

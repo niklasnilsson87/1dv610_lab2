@@ -20,6 +20,10 @@ class RegistrationUser
       throw new \PasswordDoesNotMatch;
     }
 
+    if ($username != strip_tags($username)) {
+      throw new \ContainsHTML;
+    }
+
     $this->username = new \Login\Model\FilterUsername($username);
     $this->password = new \Login\Model\FilterPassword($password);
   }

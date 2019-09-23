@@ -17,3 +17,6 @@ class PasswordDoesNotMatch extends \Exception
 
 class UserAlreadyExist extends \Exception
 { }
+
+class ContainsHTML extends \Exception
+{ }
