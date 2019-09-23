@@ -40,7 +40,7 @@ class LayoutView
   private function renderLink($isLoggedIn)
   {
     if (!$isLoggedIn && !$this->userWantsToRegister()) {
-      return '<a href=?register>Register a new user</a>';
+      return '<a href=?register=1>Register a new user</a>';
     } else if ($this->userWantsToRegister()) {
       return '<a href=?>Back to login</a>';
     }
@@ -48,7 +48,7 @@ class LayoutView
 
   public function userWantsToRegister()
   {
-    if ($_SERVER["REQUEST_URI"] == '/?register') {
+    if ($_SERVER["REQUEST_URI"] == '/?register=1') {
       return true;
     } else {
       return false;
