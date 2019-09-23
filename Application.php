@@ -51,7 +51,11 @@ class Application
     $this->loginController->checkIfUserWantsToLogin();
 
     $isLoggedIn = $this->storage->getIsLoggedIn();
-    // echo $this->registerView->response($isLoggedIn);
+
+    if ($this->layoutView->userWantsToRegister()) {
+
+      return $this->layoutView->render($isLoggedIn, $this->registerView, $this->date);
+    }
 
     return $this->layoutView->render($isLoggedIn, $this->loginView, $this->date);
   }
