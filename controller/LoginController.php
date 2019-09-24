@@ -99,7 +99,7 @@ class LoginController
     if ($this->registerView->userClicksRegister()) {
       try {
         $regCredentials = $this->registerView->checkUser();
-        $this->auth->doesUserExist($regCredentials);
+        $this->registerUser($regCredentials);
       } catch (\UsernameEmpty $e) {
         $this->registerView->setMessage('Username has too few characters, at least 3 characters.');
       } catch (\PasswordEmpty $e) {
@@ -113,6 +113,15 @@ class LoginController
       } catch (\ContainsHTML $e) {
         $this->registerView->setMessage('Username contains invalid characters.');
       }
+    }
+  }
+
+  public function registerUser($credentials)
+  {
+    if (!$this->auth->doesUserExist($credentials)) {
+      $this->auth->register($credentials);
+      $this->loginView->setMessage('Registered new user.');
+      $this->registerView->returnToIndex();
     }
   }
 }

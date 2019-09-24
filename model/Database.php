@@ -68,4 +68,15 @@ class Database
     $res = $stmt->get_result();
     return $res->fetch_assoc();
   }
+
+  public function registerUser($credentials)
+  {
+    $name = $credentials->getUser()->getName();
+    $password = $credentials->getUserPassword()->getPassword();
+
+    $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param('ss', $name, $password);
+    $stmt->execute();
+  }
 }

@@ -68,4 +68,9 @@ class RegisterView
       return new \Login\Model\RegistrationUser($name, $password, $passwordCheck);
     }
   }
+
+  public function returnToIndex()
+  {
+    echo '<meta http-equiv="refresh" content="0; url=localhost:8080/">';
+  }
 }

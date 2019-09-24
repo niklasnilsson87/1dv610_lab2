@@ -35,6 +35,15 @@ class Authentication
     $name = $credentials->getUser()->getName();
     if ($this->db->userExist($name)) {
       throw new \UserAlreadyExist;
+    } else {
+      return false;
     }
+  }
+
+  public function register($credentials)
+  {
+    $this->db->registerUser($credentials);
+    // $name = $credentials->getUser()->getName();
+    // $password = $credentials->getUserPassword()->getPassword();
   }
 }
