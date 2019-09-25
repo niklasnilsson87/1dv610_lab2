@@ -5,7 +5,7 @@ namespace Login\Model;
 class UserStorage
 {
 
-	private static $SESSION_KEY =  __CLASS__ .  "::Username";
+	private static $SESSION_KEY =  __CLASS__ .  "::UserName";
 	private static $SESSION_LOGGED_IN =  __CLASS__ .  "::IsLoggedIn";
 	private static $SESSION_REGISTER_USER_MESSAGE = __CLASS__ . "::RegisterUser";
 
@@ -24,9 +24,14 @@ class UserStorage
 		}
 	}
 
-	public function saveUser(UserModel $toBeSaved)
+	public function saveUser($toBeSaved)
 	{
 		$_SESSION[self::$SESSION_KEY] = $toBeSaved->getName();
+	}
+
+	public function loadRegisterUser()
+	{
+		return $_SESSION[self::$SESSION_KEY];
 	}
 
 	public function saveRegisterMessage(string $toBeSaved)

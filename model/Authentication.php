@@ -32,7 +32,7 @@ class Authentication
 
   public function doesUserExist($credentials)
   {
-    $name = $credentials->getUser()->getName();
+    $name = $credentials->getName();
     if ($this->db->userExist($name)) {
       throw new \UserAlreadyExist;
     } else {
@@ -43,7 +43,6 @@ class Authentication
   public function register($credentials)
   {
     $this->db->registerUser($credentials);
-    // $name = $credentials->getUser()->getName();
-    // $password = $credentials->getUserPassword()->getPassword();
+    $this->storage->saveUser($credentials);
   }
 }

@@ -13,6 +13,7 @@ class LoginView
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 	private static $msg = '';
+	private $valueToInput = '';
 
 	private $storage;
 
@@ -29,7 +30,7 @@ class LoginView
 	 */
 	public function response($isLoggedIn): string
 	{
-
+		$this->getPostUsername();
 		if ($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML(self::$msg);
 		} else {
@@ -66,14 +67,17 @@ class LoginView
 	 */
 	private function generateLoginFormHTML($message): string
 	{
+		if ($this->storage->isSavedMessage()) {
+			$this->valueToInput = $this->storage->loadRegisterUser();
+		}
 		return '
-			<form method="post" > 
+			<form method="post">
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getPostUsername() . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->valueToInput . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -110,12 +114,13 @@ class LoginView
 		return self::$cookiePassword;
 	}
 
-	private function getPostUsername(): string
+	public function getPostUsername($user = ''): void
 	{
 		if ($this->userWantsToLogin()) {
-			return $_POST[self::$name];
+			$this->valueToInput = $_POST[self::$name];
+		} else if (isset($user)) {
+			$this->valueToInput = $user;
 		}
-		return '';
 	}
 
 	public function userWantsToLogin(): bool

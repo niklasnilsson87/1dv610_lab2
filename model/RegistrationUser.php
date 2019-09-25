@@ -28,9 +28,9 @@ class RegistrationUser
     $this->password = new \Login\Model\FilterPassword($password);
   }
 
-  public function getUser()
+  public function getName()
   {
-    return $this->username;
+    return $this->username->getName();
   }
 
   public function getUserPassword()

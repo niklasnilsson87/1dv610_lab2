@@ -71,7 +71,7 @@ class Database
 
   public function registerUser($credentials)
   {
-    $name = $credentials->getUser()->getName();
+    $name = $credentials->getName();
     $password = $credentials->getUserPassword()->getPassword();
 
     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
