@@ -7,6 +7,7 @@ class UserStorage
 
 	private static $SESSION_KEY =  __CLASS__ .  "::Username";
 	private static $SESSION_LOGGED_IN =  __CLASS__ .  "::IsLoggedIn";
+	private static $SESSION_REGISTER_USER_MESSAGE = __CLASS__ . "::RegisterUser";
 
 
 	public function hasStoredUser(): bool
@@ -26,6 +27,21 @@ class UserStorage
 	public function saveUser(UserModel $toBeSaved)
 	{
 		$_SESSION[self::$SESSION_KEY] = $toBeSaved->getName();
+	}
+
+	public function saveRegisterMessage(string $toBeSaved)
+	{
+		$_SESSION[self::$SESSION_REGISTER_USER_MESSAGE] = $toBeSaved;
+	}
+
+	public function isSavedMessage()
+	{
+		return isset($_SESSION[self::$SESSION_REGISTER_USER_MESSAGE]);
+	}
+
+	public function getRegisterMessage()
+	{
+		return $_SESSION[self::$SESSION_REGISTER_USER_MESSAGE];
 	}
 
 	public function setIsLoggedIn(bool $toBeSaved)

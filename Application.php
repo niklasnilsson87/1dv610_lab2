@@ -50,6 +50,12 @@ class Application
   {
     $this->loginController->tryToLoginByCookie($this->cookieUser, $this->cookiePassword);
     $this->loginController->checkStorageForUser();
+
+    if ($this->storage->isSavedMessage()) {
+      $this->loginView->setMessage($this->storage->getRegisterMessage());
+      $this->storage->destroySession();
+    }
+
     $this->loginController->checkIfUserWantsToLogout();
     $this->loginController->checkIfUserWantsToLogin();
 

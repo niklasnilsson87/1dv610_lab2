@@ -120,8 +120,8 @@ class LoginController
   {
     if (!$this->auth->doesUserExist($credentials)) {
       $this->auth->register($credentials);
-      $this->loginView->setMessage('Registered new user.');
-      $this->registerView->returnToIndex();
+      $this->storage->saveRegisterMessage('Registered new user.');
+      header("Location: ?");
     }
   }
 }
