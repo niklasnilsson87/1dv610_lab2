@@ -8,7 +8,6 @@ class RegistrationUser
 {
   private $username;
   private $password;
-  private $passwordCheck;
 
   public function __construct($username, $password, $passwordCheck)
   {

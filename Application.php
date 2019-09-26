@@ -53,7 +53,7 @@ class Application
 
     if ($this->storage->isSavedMessage()) {
       $this->loginView->setMessage($this->storage->getRegisterMessage());
-      $this->loginView->getPostUsername($this->storage->loadRegisterUser());
+      $this->loginView->setPostUser($this->storage->loadRegisterUser());
       $this->storage->destroySession();
     }
 

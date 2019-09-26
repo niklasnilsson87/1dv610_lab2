@@ -114,13 +114,18 @@ class LoginView
 		return self::$cookiePassword;
 	}
 
-	public function getPostUsername($user = ''): void
+	public function getPostUsername(): void
 	{
 		if ($this->userWantsToLogin()) {
 			$this->valueToInput = $_POST[self::$name];
-		} else if (isset($user)) {
-			$this->valueToInput = $user;
+		} else if (isset($this->valueToInput)) {
+			$this->valueToInput;
 		}
+	}
+
+	public function setPostUser($user)
+	{
+		$this->valueToInput = $user;
 	}
 
 	public function userWantsToLogin(): bool
