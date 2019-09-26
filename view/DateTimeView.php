@@ -4,12 +4,10 @@ namespace Login\View;
 
 class DateTimeView
 {
-
-	/**
-	 * TODO: Move "date" variables to fields?
-	 */
 	public function show()
 	{
+		date_default_timezone_set('Europe/Stockholm');
+
 		$day = date('l');
 		$date = date('dS');
 		$month = date('F');
