@@ -31,10 +31,21 @@ class Cookie
     if ($credentials->getKeepLoggedIn()) {
       $name = $credentials->getName();
       $password = $credentials->getPassword();
+      $secret = $this->encodePassword($password);
 
       setcookie(self::$COOKIE_USER, $name, time() + 2000, "", "", false, true);
 
-      setcookie(self::$COOKIE_PASSWORD, $password, time() + 2000, "", "", false, true);
+      setcookie(self::$COOKIE_PASSWORD, $secret, time() + 2000, "", "", false, true);
     }
+  }
+
+  public function encodePassword($password)
+  {
+    return base64_encode($password);
+  }
+
+  public function decodePassword($password)
+  {
+    return base64_decode($password);
   }
 }

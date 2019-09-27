@@ -41,7 +41,9 @@ class Database
     $row = $this->sqlCheck($username);
 
     $this->userCheck = $row['username'] === $username;
-    $this->pwdCheck = $password === $row['password'];
+    $this->pwdCheck = password_verify($password, $row['password']);
+
+
 
     if ($this->pwdCheck == false || $this->userCheck == false) {
       return false;
@@ -74,9 +76,15 @@ class Database
     $name = $credentials->getName();
     $password = $credentials->getUserPassword()->getPassword();
 
+    $options = [
+      'cost' => 12
+    ];
+
+    $hash = password_hash($password, PASSWORD_BCRYPT, $options);
+
     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     $stmt = $this->connection->prepare($sql);
-    $stmt->bind_param('ss', $name, $password);
+    $stmt->bind_param('ss', $name, $hash);
     $stmt->execute();
   }
 }

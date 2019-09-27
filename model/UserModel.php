@@ -27,7 +27,7 @@ class UserModel
     return $this->username->getName();
   }
 
-  public function setPassword(UserModel $password)
+  public function setPassword($password)
   {
     $this->password = $password;
   }
