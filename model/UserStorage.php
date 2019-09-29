@@ -61,7 +61,8 @@ class UserStorage
 
 	public function destroySession()
 	{
-		$_SESSION = array();
-		session_destroy();
+		unset($_SESSION[self::$SESSION_KEY]);
+		unset($_SESSION[self::$SESSION_LOGGED_IN]);
+		unset($_SESSION[self::$SESSION_REGISTER_USER_MESSAGE]);
 	}
 }

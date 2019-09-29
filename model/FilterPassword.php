@@ -7,7 +7,7 @@ include_once('Exceptions.php');
 
 class FilterPassword
 {
-  private static $MIN_LENGTH = 5;
+  private static $MIN_LENGTH = 6;
 
   private $password;
 

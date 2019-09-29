@@ -21,14 +21,15 @@ require_once('model/Exceptions.php');
 class Application
 {
   private $date;
-  public $loginView;
-  public $registerView;
+  private $loginView;
+  private $registerView;
   private $layoutView;
   private $loginController;
 
   private $storage;
   private $cookieUser;
   private $cookiePassword;
+  private $cookie;
 
   public function __construct()
   {
@@ -46,7 +47,7 @@ class Application
     $this->cookiePassword = $this->loginView->getCookiePassword();
   }
 
-  public function run()
+  public function startApp()
   {
     $this->loginController->tryToLoginByCookie($this->cookieUser, $this->cookiePassword);
     $this->loginController->checkStorageForUser();
