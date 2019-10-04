@@ -13,13 +13,13 @@ require_once('model/FilterUsername.php');
 require_once('model/FilterPassword.php');
 require_once('model/RegistrationUser.php');
 require_once('controller/LoginController.php');
-require_once('view/DateTimeView.php');
-require_once('view/LayoutView.php');
+require_once('Application/view/DateTimeView.php');
+require_once('Application/view/LayoutView.php');
 require_once('model/Exceptions.php');
 require_once('view/Message.php');
 
 
-class Application
+class MainController
 {
   private $date;
   private $loginView;
@@ -48,7 +48,7 @@ class Application
     $this->cookiePassword = $this->loginView->getCookiePassword();
   }
 
-  public function startApp()
+  public function startLogin()
   {
     $this->loginController->tryToLoginByCookie($this->cookieUser, $this->cookiePassword);
     $this->loginController->checkStorageForUser();

@@ -4,7 +4,7 @@ namespace Login\Controller;
 
 use Login\Model\FilterPassword;
 
-include_once("model/Exceptions.php");
+include_once("Authentication/model/Exceptions.php");
 
 class LoginController
 {
