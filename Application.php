@@ -16,6 +16,7 @@ require_once('controller/LoginController.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('model/Exceptions.php');
+require_once('view/Message.php');
 
 
 class Application
