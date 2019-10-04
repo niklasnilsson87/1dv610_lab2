@@ -9,7 +9,7 @@ class DateTimeView
 		date_default_timezone_set('Europe/Stockholm');
 
 		$day = date('l');
-		$date = date('dS');
+		$date = date('jS');
 		$month = date('F');
 		$year = date('Y');
 		$time = date('H:i:s', time());
