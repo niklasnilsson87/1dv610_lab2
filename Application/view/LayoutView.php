@@ -1,11 +1,11 @@
 <?php
 
-namespace Login\View;
+namespace Application\View;
 
 class LayoutView
 {
 
-  public function render($isLoggedIn, $v, DateTimeView $dtv)
+  public function render($isLoggedIn, $v, $rv = null, DateTimeView $dtv)
   {
     echo '<!DOCTYPE html>
       <html>
@@ -20,12 +20,22 @@ class LayoutView
           
           <div class="container">
               ' . $v->response($isLoggedIn) . '
-              
+              ' . $this->renderRunningPage($rv, $isLoggedIn) . '
+         
               ' . $dtv->show() . '
           </div>
          </body>
       </html>
     ';
+  }
+
+  private function renderRunningPage($rv, $isLoggedIn)
+  {
+    if ($isLoggedIn) {
+      return ($rv != null)
+        ? "<br>" . $rv->response()
+        : '';
+    }
   }
 
   private function renderIsLoggedIn($isLoggedIn)

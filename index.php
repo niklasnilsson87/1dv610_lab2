@@ -1,6 +1,8 @@
 <?php
-require_once('Authentication/index.php');
+include_once('Authentication/index.php');
+include_once('Application/controller/AppController.php');
 
 $auth = new Authentication();
 
-$auth->getLogin();
+$app = new AppController($auth);
+$app->startApp();

@@ -20,10 +20,10 @@ class Authentication
     $this->login = new MainController();
   }
 
-  public function getLogin()
+  public function getMainController()
   {
     try {
-      return $this->login->startLogin();
+      return $this->login;
     } catch (\Exception $e) {
       ErrorPage::echoError($e->getMessage());
     }

@@ -68,4 +68,9 @@ class RegisterView
       return new \Login\Model\RegistrationUser($name, $password, $passwordCheck);
     }
   }
+
+  public function userWantsToRegister()
+  {
+    return isset($_GET['register']);
+  }
 }

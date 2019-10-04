@@ -1,7 +1,5 @@
 <?php
 
-use Login\Controller\LoginController;
-
 require_once('view/LoginView.php');
 require_once('view/RegisterView.php');
 require_once('model/Database.php');
@@ -13,18 +11,15 @@ require_once('model/FilterUsername.php');
 require_once('model/FilterPassword.php');
 require_once('model/RegistrationUser.php');
 require_once('controller/LoginController.php');
-require_once('Application/view/DateTimeView.php');
-require_once('Application/view/LayoutView.php');
 require_once('model/Exceptions.php');
 require_once('view/Message.php');
 
 
 class MainController
 {
-  private $date;
   private $loginView;
   private $registerView;
-  private $layoutView;
+
   private $loginController;
 
   private $storage;
@@ -37,9 +32,7 @@ class MainController
     $this->storage = new \Login\Model\UserStorage();
     $this->cookie = new \Login\Model\Cookie();
 
-    $this->date = new \Login\View\DateTimeView();
     $this->loginView = new \Login\View\LoginView($this->storage);
-    $this->layoutView = new \Login\View\LayoutView();
     $this->registerView = new \Login\View\RegisterView();
     $this->auth = new \Login\Model\Authentication($this->storage, $this->cookie);
     $this->loginController = new \Login\Controller\LoginController($this->storage, $this->auth, $this->loginView, $this->registerView, $this->cookie);
@@ -62,12 +55,15 @@ class MainController
     $this->loginController->checkIfUserWantsToLogout();
     $this->loginController->checkIfUserWantsToLogin();
 
-    $isLoggedIn = $this->storage->getIsLoggedIn();
-
-    if ($this->layoutView->userWantsToRegister()) {
+    if ($this->registerView->userWantsToRegister()) {
       $this->loginController->tryToRegister();
-      return $this->layoutView->render($isLoggedIn, $this->registerView, $this->date);
+      return $this->registerView;
     }
-    return $this->layoutView->render($isLoggedIn, $this->loginView, $this->date);
+    return $this->loginView;
+  }
+
+  public function isAuthenticated()
+  {
+    return $this->storage->getIsLoggedIn();
   }
 }
