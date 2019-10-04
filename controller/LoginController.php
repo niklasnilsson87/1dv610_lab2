@@ -45,10 +45,10 @@ class LoginController
     try {
       if ($this->cookie->hasCookie($user, $pwd) && !$this->storage->getIsLoggedIn()) {
         $this->loginByCookie($user, $pwd);
-        $this->loginView->setMessage(\Message::WELCOME_COOKIE);
+        $this->loginView->setMessage(\Login\View\Message::WELCOME_COOKIE);
       }
     } catch (\Exception $e) {
-      $this->loginView->setMessage(\Message::WRONG_COOKIE);
+      $this->loginView->setMessage(\Login\View\Message::WRONG_COOKIE);
       $this->cookie->removeCookie();
       $this->storage->destroySession();
     }
@@ -64,7 +64,7 @@ class LoginController
   public function checkIfUserWantsToLogout(): void
   {
     if ($this->loginView->userWantsToLogout()) {
-      $this->loginView->setMessage(\Message::BYE);
+      $this->loginView->setMessage(\Login\View\Message::BYE);
       $this->storage->setIsLoggedIn(false);
       $this->cookie->removeCookie();
       $this->storage->destroySession();
@@ -80,11 +80,11 @@ class LoginController
         $this->storage->saveUser($this->loginView->getRequestUser());
         $this->checkIfKeepLogin();
       } catch (\UsernameEmpty $e) {
-        $this->loginView->setMessage(\Message::USERNAME_EMPTY);
+        $this->loginView->setMessage(\Login\View\Message::USERNAME_EMPTY);
       } catch (\PasswordEmpty $e) {
-        $this->loginView->setMessage(\Message::PASSWORD_EMPTY);
+        $this->loginView->setMessage(\Login\View\Message::PASSWORD_EMPTY);
       } catch (\WrongPasswordOrUsername $e) {
-        $this->loginView->setMessage(\Message::WRONG_PWD_OR_NAME);
+        $this->loginView->setMessage(\Login\View\Message::WRONG_PWD_OR_NAME);
       }
     }
   }
@@ -92,9 +92,9 @@ class LoginController
   private function checkIfKeepLogin(): void
   {
     if ($this->loginView->getKeepLoggedIn()) {
-      $this->loginView->setMessage(\Message::REMEMBER_WELCOME);
+      $this->loginView->setMessage(\Login\View\Message::REMEMBER_WELCOME);
     } else {
-      $this->loginView->setMessage(\Message::WELCOME);
+      $this->loginView->setMessage(\Login\View\Message::WELCOME);
     }
   }
 
@@ -105,17 +105,17 @@ class LoginController
         $regCredentials = $this->registerView->checkUser();
         $this->registerUser($regCredentials);
       } catch (\UsernameEmpty $e) {
-        $this->registerView->setMessage(\Message::USER_FEW_CHAR);
+        $this->registerView->setMessage(\Login\View\Message::USER_FEW_CHAR);
       } catch (\PasswordEmpty $e) {
-        $this->registerView->setMessage(\Message::PWD_FEW_CHAR);
+        $this->registerView->setMessage(\Login\View\Message::PWD_FEW_CHAR);
       } catch (\UsernameAndPasswordEmpty $e) {
-        $this->registerView->setMessage(\Message::EMPTY_REG_FIELDS);
+        $this->registerView->setMessage(\Login\View\Message::EMPTY_REG_FIELDS);
       } catch (\PasswordDoesNotMatch $e) {
-        $this->registerView->setMessage(\Message::PASSWORD_DONT_MATCH);
+        $this->registerView->setMessage(\Login\View\Message::PASSWORD_DONT_MATCH);
       } catch (\UserAlreadyExist $e) {
-        $this->registerView->setMessage(\Message::USER_EXIST);
+        $this->registerView->setMessage(\Login\View\Message::USER_EXIST);
       } catch (\ContainsHTML $e) {
-        $this->registerView->setMessage(\Message::CONTAINS_HTML);
+        $this->registerView->setMessage(\Login\View\Message::CONTAINS_HTML);
       }
     }
   }
@@ -124,7 +124,7 @@ class LoginController
   {
     if (!$this->auth->doesUserExist($credentials)) {
       $this->auth->register($credentials);
-      $this->storage->saveRegisterMessage(\Message::REGISTER_SUCCESS);
+      $this->storage->saveRegisterMessage(\Login\View\Message::REGISTER_SUCCESS);
       header("Location: ?");
     }
   }
