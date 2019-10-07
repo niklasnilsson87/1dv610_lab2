@@ -3,6 +3,7 @@
 namespace Application\Model;
 
 include_once("Authentication/model/LocalSettings.php");
+include_once("Authentication/model/ProductionSettings.php");
 
 class Database
 {
@@ -16,10 +17,9 @@ class Database
     $serverAdress = $_SERVER['SERVER_NAME'];
     if ($serverAdress == 'localhost') {
       $this->settings = new \Login\Model\LocalSettings();
+    } else {
+      $this->settings = new \Login\Model\ProductionSettings();
     }
-    // else {
-    //   $this->settings = new \Login\Model\ProductionSettings();
-    // }
 
     $this->connection = new \mysqli($this->settings->server_name, $this->settings->db_name, $this->settings->db_password, $this->settings->database);
     // Check connection
