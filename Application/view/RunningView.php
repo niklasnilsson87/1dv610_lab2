@@ -15,6 +15,12 @@ class RunningView
 
   private $runs = array();
 
+  public function __construct(\Application\Model\RunStorage $storage)
+  {
+    $this->updateRun($storage);
+    // $this->runs = $storage->getRuns();
+  }
+
   public function response()
   {
     $response = $this->appHeader();
@@ -36,14 +42,14 @@ class RunningView
       <fieldset>
         <legend>Keep track of your runs - Enter a compleated run</legend>
           <p id="' . self::$message . '">' . self::$msg . '</p>
-          <label for="' . self::$distance . '" >Distance :</label>
-          <input type="text" size="20" name="' . self::$distance . '" id="' . self::$distance . '" value="" />
+          <label for="' . self::$distance . '" >Distance in km :</label>
+          <input type="number" name="' . self::$distance . '" id="' . self::$distance . '" value="" />
         
           <label for="' . self::$time . '" >Time  :</label>
-          <input type="number" size="20" name="' . self::$time . '" id="' . self::$time . '" value="" />
+          <input type="time" size="10" name="' . self::$time . '" id="' . self::$time . '" value="00:00" />
       
           <label for="' . self::$pace . '" >Pace  :</label>
-          <input type="text" size="20" name="' . self::$pace . '" id="' . self::$pace . '" value="" />
+          <input type="time" size="10" name="' . self::$pace . '" id="' . self::$pace . '" value="00:00" />
       
           <label for="' . self::$description . '" >Description  :</label>
           <input type="text" size="20" name="' . self::$description . '" id="' . self::$description . '" value="" />
@@ -54,6 +60,11 @@ class RunningView
       </fieldset>
       </form>
     ';
+  }
+
+  public function updateRun($storage)
+  {
+    $this->runs = $storage->getRuns();
   }
 
   public function userWantsToSubmitRun()
@@ -72,41 +83,54 @@ class RunningView
     }
   }
 
-  public function setRun(\Application\Model\Run $run)
+  public function setMessage($message)
   {
-
-    $this->runs[] = $run;
+    self::$msg = $message;
   }
+
+  // public function setRun(\Application\Model\Run $run)
+  // {
+
+  //   $this->runs[] = [
+  //     $run->getDistance(),
+  //     $run->getTime(),
+  //     $run->getPace(),
+  //     $run->getDescription(),
+  //   ];
+  // }
 
   public function printRuns()
   {
     $output = "";
 
     if (!empty($this->runs)) {
+
       foreach ($this->runs as $run) {
-        $output .= "<td> " . $run->getDistance() . "</td>";
-        $output .= "<td> " . $run->getTime() . "</td>";
-        $output .= "<td> " . $run->getPace() . "</td>";
-        $output .= "<td> " . $run->getDescription() . "</td>";
+        $output .= "<tr>";
+        $output .= "<td> " . $run["distance"] . "</td>";
+        $output .= "<td> " . $run["time"] . "</td>";
+        $output .= "<td> " . $run["pace"] . "</td>";
+        $output .= "<td> " . $run["description"] . "</td>";
+        $output .= "</tr>";
       }
     } else {
       return $output .= '</table> <p> No runs so far.. </p>';
     }
 
-    return "<tr>" . $output . "</tr>" . "</table>";
+    return $output . "</table>";
   }
 
   public function generateTableHeader()
   {
     return '
-  <br>
-  <table>
-    <tr>
-      <th>Distance</th>
-      <th>Time</th>
-      <th>Pace</th>
-      <th>Description</th>
-    </tr>
-  ';
+    <br>
+    <table>
+      <tr>
+        <th>Distance</th>
+        <th>Time</th>
+        <th>Pace</th>
+        <th>Description</th>
+      </tr>
+    ';
   }
 }

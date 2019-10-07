@@ -66,4 +66,9 @@ class MainController
   {
     return $this->storage->getIsLoggedIn();
   }
+
+  public function getUsername()
+  {
+    return $this->storage->loadUser();
+  }
 }
