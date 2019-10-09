@@ -4,12 +4,15 @@ namespace Application\View;
 
 class RunView
 {
+  private static $deleteRun =  __CLASS__ . '::deleteRun';
+  private static $editRun =  __CLASS__ . '::editRun';
+  private static $IDRun = __CLASS__ . '::IDRun';
 
   private $runs;
 
-  public function __construct(\Application\Model\RunStorage $storage)
+  public function __construct(array $runsToSave)
   {
-    $this->runs = $storage->getRuns();
+    $this->runs = $runsToSave;
   }
 
   public function response()
@@ -30,6 +33,7 @@ class RunView
           <th>Time</th>
           <th>Pace</th>
           <th>Description</th>
+          <th>Actions</th>
         </tr>
       ';
   }
@@ -41,17 +45,54 @@ class RunView
     if (!empty($this->runs)) {
 
       foreach ($this->runs as $run) {
+        $output .= $this->generateFormStart();
         $output .= "<tr>";
         $output .= "<td>" . $run->getDistance() . "</td>";
         $output .= "<td>" . $run->getTime() . "</td>";
         $output .= "<td>" . $run->getPace() . "</td>";
         $output .= "<td>" . $run->getDescription() . "</td>";
+        $output .= "<td>" . $this->generateActionButton($run->getID()) . '</td>';
         $output .= "</tr>";
+        $output .= $this->generateFormEnd();
       }
     } else {
       return $output .= '</table> <p> No runs so far.. </p>';
     }
 
     return $output . "</table>";
+  }
+
+  private function generateActionButton($id): string
+  {
+    return '
+    <input name="' . self::$IDRun . '" id="' . $id . '" type="hidden" value="' . $id . '" />
+    <input name="' . self::$deleteRun . '" id="' . $id . '" type="submit" value="Delete" />
+    <input name="' . self::$editRun . '" id="' . $id . '" type="submit" value="Edit" />
+    ';
+  }
+
+  private function generateFormStart()
+  {
+    return '<form action="" method="post" enctype="multipart/form-data">';
+  }
+
+  private function generateFormEnd()
+  {
+    return '</form>';
+  }
+
+  public function userWantsToEditRun()
+  {
+    return isset($_POST[self::$editRun]);
+  }
+
+  public function userWantsToDeleteRun()
+  {
+    return isset($_POST[self::$deleteRun]);
+  }
+
+  public function getIdToDelete()
+  {
+    return $_POST[self::$IDRun];
   }
 }

@@ -74,4 +74,9 @@ class Run
   {
     return $this->description;
   }
+
+  public function getID()
+  {
+    return $this->id;
+  }
 }

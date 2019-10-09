@@ -5,7 +5,7 @@ namespace Application\Model;
 class RunStorage
 {
   private $db;
-  private $runs = array();
+  private $runs;
 
   public function __construct($username)
   {
@@ -16,8 +16,6 @@ class RunStorage
   public function saveRun(\Application\Model\Run $runToSave, string $name)
   {
     $this->db->saveRun($runToSave, $name);
-    $this->runs[] = $runToSave;
-    var_dump($this->runs);
   }
 
   public function getRuns()
@@ -28,5 +26,10 @@ class RunStorage
   public function updateRuns($name)
   {
     $this->runs = $this->db->loadRuns($name);
+  }
+
+  public function deleteRun($id)
+  {
+    $this->db->deleteRun($id);
   }
 }

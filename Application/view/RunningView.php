@@ -13,20 +13,11 @@ class RunningView
   private static $submitRun = __CLASS__ . '::SubmitRun';
   private static $msg = '';
 
-  private $runView;
-
-  public function __construct(\Application\Model\RunStorage $storage)
-  {
-    echo "created";
-    $this->runView = new RunView($storage);
-  }
 
   public function response()
   {
     $response = $this->appHeader();
     $response .= $this->generateRunningForm();
-
-    $response .= $this->runView->response();
     return $response;
   }
 

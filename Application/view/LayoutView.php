@@ -5,7 +5,7 @@ namespace Application\View;
 class LayoutView
 {
 
-  public function render($isLoggedIn, $v, $rv = null, DateTimeView $dtv)
+  public function render($isLoggedIn, $v, DateTimeView $dtv, $rv = null, $runView = null)
   {
     echo '<!DOCTYPE html>
       <html>
@@ -21,6 +21,7 @@ class LayoutView
           <div class="container">
               ' . $v->response($isLoggedIn) . '
               ' . $this->renderRunningPage($rv, $isLoggedIn) . '
+              ' . $this->renderRunningPage($runView, $isLoggedIn) . '
          
               ' . $dtv->show() . '
           </div>
@@ -29,11 +30,11 @@ class LayoutView
     ';
   }
 
-  private function renderRunningPage($rv, $isLoggedIn)
+  private function renderRunningPage($view, $isLoggedIn)
   {
     if ($isLoggedIn) {
-      return ($rv != null)
-        ? "<br>" . $rv->response()
+      return ($view != null)
+        ? "<br>" . $view->response()
         : '';
     }
   }

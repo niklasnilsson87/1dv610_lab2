@@ -40,12 +40,6 @@ class Database
     $stmt = $this->connection->prepare($sql);
     $stmt->bind_param('sssss', $name, $dist, $time, $pace, $desc);
     $stmt->execute();
-
-    if ($sql) {
-      echo "success";
-    } else {
-      echo "fail";
-    }
   }
 
   public function loadRuns($username)
@@ -70,5 +64,13 @@ class Database
     }
 
     return $rows;
+  }
+
+  public function deleteRun($id)
+  {
+    $sql = "DELETE FROM runs WHERE id=?;";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
   }
 }
