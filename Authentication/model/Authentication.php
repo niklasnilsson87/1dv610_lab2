@@ -8,12 +8,10 @@ class Authentication
 {
   private $storage;
   private $db;
-  private $cookie;
 
-  public function __construct(\Login\Model\UserStorage $storage, \Login\Model\Cookie $cookie)
+  public function __construct(\Login\Model\UserStorage $storage)
   {
     $this->storage = $storage;
-    $this->cookie = $cookie;
     $this->db =  new \Login\Model\Database();
   }
 
@@ -23,7 +21,6 @@ class Authentication
 
     if ($userCheck) {
       $this->storage->saveUser($credentials);
-      $this->cookie->saveCookie($credentials);
       $this->storage->setIsLoggedIn(true);
     } else {
       throw new \WrongPasswordOrUsername;

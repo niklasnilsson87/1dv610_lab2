@@ -59,7 +59,7 @@ class UserStorage
 		return isset($_SESSION[self::$SESSION_LOGGED_IN]);
 	}
 
-	public function destroySession()
+	public function unsetSession()
 	{
 		unset($_SESSION[self::$SESSION_KEY]);
 		unset($_SESSION[self::$SESSION_LOGGED_IN]);

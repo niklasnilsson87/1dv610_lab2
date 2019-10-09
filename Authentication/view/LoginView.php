@@ -104,16 +104,6 @@ class LoginView
 		return isset($_POST[self::$keep]);
 	}
 
-	public function getCookieName()
-	{
-		return self::$cookieName;
-	}
-
-	public function getCookiePassword()
-	{
-		return self::$cookiePassword;
-	}
-
 	public function getPostUsername(): void
 	{
 		if ($this->userWantsToLogin()) {
@@ -138,5 +128,46 @@ class LoginView
 	{
 		return isset($_POST[self::$logout]) &&
 			$this->storage->hasStoredUser();
+	}
+
+	public function hasCookie(): bool
+	{
+		return isset($_COOKIE[self::$cookieName]) && isset($_COOKIE[self::$cookiePassword]);
+	}
+
+	public function getUserByCookie(): \Login\Model\UserModel
+	{
+		$name = $_COOKIE[self::$cookieName];
+		$password = $_COOKIE[self::$cookiePassword];
+		return new \Login\Model\UserModel($name, $password, true);
+	}
+
+	public function removeCookie(): void
+	{
+		setcookie(self::$cookieName, '', time() - 3000);
+		setcookie(self::$cookiePassword, '', time() - 3000);
+	}
+
+	public function saveCookie($credentials): void
+	{
+		if ($credentials->getKeepLoggedIn()) {
+			$name = $credentials->getName();
+			$password = $credentials->getPassword();
+			$secret = $this->encodePassword($password);
+
+			setcookie(self::$cookieName, $name, time() + 2000, "", "", false, true);
+
+			setcookie(self::$cookiePassword, $secret, time() + 2000, "", "", false, true);
+		}
+	}
+
+	public function encodePassword($password)
+	{
+		return base64_encode($password);
+	}
+
+	public function decodePassword($password)
+	{
+		return base64_decode($password);
 	}
 }
