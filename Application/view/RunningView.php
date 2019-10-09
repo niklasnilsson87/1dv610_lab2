@@ -13,20 +13,20 @@ class RunningView
   private static $submitRun = __CLASS__ . '::SubmitRun';
   private static $msg = '';
 
-  private $runs = array();
+  private $runView;
 
   public function __construct(\Application\Model\RunStorage $storage)
   {
-    $this->updateRun($storage);
-    // $this->runs = $storage->getRuns();
+    echo "created";
+    $this->runView = new RunView($storage);
   }
 
   public function response()
   {
     $response = $this->appHeader();
     $response .= $this->generateRunningForm();
-    $response .= $this->generateTableHeader();
-    $response .= $this->printRuns();
+
+    $response .= $this->runView->response();
     return $response;
   }
 
@@ -62,75 +62,24 @@ class RunningView
     ';
   }
 
-  public function updateRun($storage)
-  {
-    $this->runs = $storage->getRuns();
-  }
-
   public function userWantsToSubmitRun()
   {
     return isset($_POST[self::$submitRun]);
   }
 
-  public function getNewRun()
+  public function getNewRun($username)
   {
     if ($this->userWantsToSubmitRun()) {
       $distance = $_POST[self::$distance];
       $time = $_POST[self::$time];
       $pace = $_POST[self::$pace];
       $description = $_POST[self::$description];
-      return new \Application\Model\Run($distance, $time, $pace, $description);
+      return new \Application\Model\Run($username, $distance, $time, $pace, $description);
     }
   }
 
   public function setMessage($message)
   {
     self::$msg = $message;
-  }
-
-  // public function setRun(\Application\Model\Run $run)
-  // {
-
-  //   $this->runs[] = [
-  //     $run->getDistance(),
-  //     $run->getTime(),
-  //     $run->getPace(),
-  //     $run->getDescription(),
-  //   ];
-  // }
-
-  public function printRuns()
-  {
-    $output = "";
-
-    if (!empty($this->runs)) {
-
-      foreach ($this->runs as $run) {
-        $output .= "<tr>";
-        $output .= "<td> " . $run["distance"] . "</td>";
-        $output .= "<td> " . $run["time"] . "</td>";
-        $output .= "<td> " . $run["pace"] . "</td>";
-        $output .= "<td> " . $run["description"] . "</td>";
-        $output .= "</tr>";
-      }
-    } else {
-      return $output .= '</table> <p> No runs so far.. </p>';
-    }
-
-    return $output . "</table>";
-  }
-
-  public function generateTableHeader()
-  {
-    return '
-    <br>
-    <table>
-      <tr>
-        <th>Distance</th>
-        <th>Time</th>
-        <th>Pace</th>
-        <th>Description</th>
-      </tr>
-    ';
   }
 }

@@ -3,6 +3,7 @@
 include_once('Application/view/LayoutView.php');
 include_once('Application/view/DateTimeView.php');
 include_once('Application/view/RunningView.php');
+include_once('Application/view/RunView.php');
 include_once('Application/controller/RunController.php');
 include_once('Application/model/Run.php');
 include_once('Application/model/RunStorage.php');
@@ -36,6 +37,7 @@ class AppController
   {
     $view = $this->login->getMainController()->startLogin();
     $isLoggedIn = $this->login->getMainController()->isAuthenticated();
+    var_dump($isLoggedIn);
     $this->runController->TryToSubmitRun($this->loggedInUser);
     // $this->runStorage->updateRuns($this->loggedInUser);
     return $this->layoutView->render($isLoggedIn, $view, $this->runningView, $this->dateView);

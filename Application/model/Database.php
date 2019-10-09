@@ -58,9 +58,16 @@ class Database
 
     $rows = array();
     while ($row = $res->fetch_assoc()) {
-      $rows[] = $row;
+      $rows[] =
+        new \Application\Model\Run(
+          $row["username"],
+          $row["distance"],
+          $row["time"],
+          $row["pace"],
+          $row["description"],
+          $row["id"]
+        );
     }
-
 
     return $rows;
   }

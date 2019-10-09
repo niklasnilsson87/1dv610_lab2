@@ -4,19 +4,23 @@ namespace Application\Model;
 
 class Run
 {
+
+  private $username;
   private $distance;
   private $time;
   private $pace;
   private $description;
+  private $id;
 
-  public function __construct($distance, $time, $pace, $description)
+  public function __construct($username, $distance, $time, $pace, $description, $id = null)
   {
     $this->validate($distance, $time, $description);
-
+    $this->username = $username;
     $this->distance = $distance;
     $this->time = $time;
     $this->pace = $pace;
     $this->description = $description;
+    $this->id = $id;
   }
 
   public function filtered(string $rawString): string
@@ -41,6 +45,11 @@ class Run
     if (empty($this->filtered($description))) {
       throw new \DescriptionEmpty;
     }
+  }
+
+  public function getUsername()
+  {
+    return $this->username;
   }
 
   public function getDistance()

@@ -16,9 +16,8 @@ class RunController
   public function TryToSubmitRun($username)
   {
     if ($this->runningView->userWantsToSubmitRun()) {
-      $newRun = $this->runningView->getNewRun();
+      $newRun = $this->runningView->getNewRun($username);
       $this->runStorage->saveRun($newRun, $username);
-      $this->runningView->updateRun($this->runStorage);
       $this->runningView->setMessage("Successfully added a run");
     }
   }

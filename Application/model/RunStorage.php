@@ -16,7 +16,8 @@ class RunStorage
   public function saveRun(\Application\Model\Run $runToSave, string $name)
   {
     $this->db->saveRun($runToSave, $name);
-    // $this->runs[] = $toSave;
+    $this->runs[] = $runToSave;
+    var_dump($this->runs);
   }
 
   public function getRuns()
@@ -24,8 +25,8 @@ class RunStorage
     return $this->runs;
   }
 
-  // public function updateRuns($name)
-  // {
-  //   $this->runs = $this->db->loadRuns($name);
-  // }
+  public function updateRuns($name)
+  {
+    $this->runs = $this->db->loadRuns($name);
+  }
 }
