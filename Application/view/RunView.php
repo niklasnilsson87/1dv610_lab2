@@ -66,14 +66,14 @@ class RunView
   {
     return '
     <input name="' . self::$IDRun . '" id="' . $id . '" type="hidden" value="' . $id . '" />
-    <input name="' . self::$deleteRun . '" id="' . $id . '" type="submit" value="Delete" />
-    <input name="' . self::$editRun . '" id="' . $id . '" type="submit" value="Edit" />
+    <input name="' . self::$deleteRun . '" type="submit" value="Delete" />
+    <input name="' . self::$editRun . '" type="submit" value="Edit" />
     ';
   }
 
   private function generateFormStart()
   {
-    return '<form action="" method="post" enctype="multipart/form-data">';
+    return '<form method="post" enctype="multipart/form-data">';
   }
 
   private function generateFormEnd()
