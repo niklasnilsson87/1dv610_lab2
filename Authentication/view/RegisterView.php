@@ -58,7 +58,7 @@ class RegisterView
     return isset($_POST[self::$register]);
   }
 
-  public function checkUser()
+  public function getRegisterUser()
   {
     if ($this->userClicksRegister()) {
 

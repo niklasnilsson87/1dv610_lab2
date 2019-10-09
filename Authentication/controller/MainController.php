@@ -43,7 +43,7 @@ class MainController
   {
     $this->loginController->tryToLoginByCookie();
     $this->loginController->checkStorageForUser();
-    $this->checkSavedMessage($this->storage, $this->loginView);
+    $this->checkSavedMessage();
 
 
     $this->loginController->checkIfUserWantsToLogout();
@@ -56,12 +56,12 @@ class MainController
     return $this->loginView;
   }
 
-  private function checkSavedMessage($storage, $view)
+  private function checkSavedMessage()
   {
-    if ($storage->isSavedMessage()) {
-      $view->setMessage($this->storage->getRegisterMessage());
-      $view->setPostUser($this->storage->loadRegisterUser());
-      $storage->unsetSession();
+    if ($this->storage->isSavedMessage()) {
+      $this->loginView->setMessage($this->storage->getRegisterMessage());
+      $this->loginView->setPostUser($this->storage->loadRegisterUser());
+      $this->storage->unsetSession();
     }
   }
 

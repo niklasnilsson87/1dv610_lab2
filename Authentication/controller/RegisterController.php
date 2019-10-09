@@ -18,7 +18,7 @@ class RegisterController
   {
     if ($this->registerView->userClicksRegister()) {
       try {
-        $regCredentials = $this->registerView->checkUser();
+        $regCredentials = $this->registerView->getRegisterUser();
         $this->registerUser($regCredentials);
       } catch (\UsernameEmpty $e) {
         $this->registerView->setMessage(\Login\View\Message::USER_FEW_CHAR);

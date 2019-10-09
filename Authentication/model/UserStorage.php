@@ -4,11 +4,9 @@ namespace Login\Model;
 
 class UserStorage
 {
-
 	private static $SESSION_KEY =  __CLASS__ .  "::UserName";
 	private static $SESSION_LOGGED_IN =  __CLASS__ .  "::IsLoggedIn";
 	private static $SESSION_REGISTER_USER_MESSAGE = __CLASS__ . "::RegisterUser";
-
 
 	public function hasStoredUser(): bool
 	{
