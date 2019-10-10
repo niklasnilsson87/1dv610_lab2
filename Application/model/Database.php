@@ -57,8 +57,8 @@ class Database
           $row["username"],
           $row["distance"],
           $row["time"],
-          $row["pace"],
           $row["description"],
+          $row["pace"],
           $row["id"]
         );
     }

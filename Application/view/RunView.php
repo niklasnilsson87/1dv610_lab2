@@ -47,9 +47,9 @@ class RunView
       foreach ($this->runs as $run) {
         $output .= $this->generateFormStart();
         $output .= "<tr>";
-        $output .= "<td>" . $run->getDistance() . "</td>";
+        $output .= "<td>" . $run->getDistance() . " km" . "</td>";
         $output .= "<td>" . $run->getTime() . "</td>";
-        $output .= "<td>" . $run->getPace() . "</td>";
+        $output .= "<td>" . $run->getPace() . " min/km" . "</td>";
         $output .= "<td>" . $run->getDescription() . "</td>";
         $output .= "<td>" . $this->generateActionButton($run->getID()) . '</td>';
         $output .= "</tr>";
