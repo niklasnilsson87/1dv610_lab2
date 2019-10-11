@@ -32,4 +32,13 @@ class RunStorage
   {
     $this->db->deleteRun($id);
   }
+
+  public function getRunById($id)
+  {
+    foreach ($this->runs as $key) {
+      if ($key->getId() == $id) {
+        return $key;
+      }
+    }
+  }
 }

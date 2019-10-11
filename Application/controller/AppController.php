@@ -43,13 +43,16 @@ class AppController
 
       $newRunAdded = $this->runController->TryToAddRun($loggedInUser);
       if ($newRunAdded) {
-        $runView = $this->createNewView($rs, $loggedInUser);
+        $runView = $this->createNewRunView($rs, $loggedInUser);
       }
 
       $runDeleted = $this->runController->tryToDeleteRun($runView);
       if ($runDeleted) {
-        $runView = $this->createNewView($rs, $loggedInUser);
+        $runView = $this->createNewRunView($rs, $loggedInUser);
       }
+
+      $this->runController->userWantsToEditRun($runView);
+
 
       return $this->layoutView->render($isLoggedIn, $view, $this->dateView, $this->runningView, $runView);
     }
@@ -57,7 +60,7 @@ class AppController
     return $this->layoutView->render($isLoggedIn, $view, $this->dateView);
   }
 
-  private function createNewView($rs, $user)
+  private function createNewRunView($rs, $user)
   {
     $rs->updateRuns($user);
     return new \Application\View\RunView($rs->getRuns());

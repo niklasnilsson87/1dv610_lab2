@@ -86,12 +86,17 @@ class RunView
     return isset($_POST[self::$editRun]);
   }
 
+  public function getEditRun()
+  {
+    return self::$editRun;
+  }
+
   public function userWantsToDeleteRun()
   {
     return isset($_POST[self::$deleteRun]);
   }
 
-  public function getIdToDelete()
+  public function getRunId()
   {
     return $_POST[self::$IDRun];
   }

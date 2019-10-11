@@ -1,0 +1,46 @@
+body {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 2em;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.runHeader {
+  text-align: center;
+}
+
+.button {
+  text-align: center;
+  display: block;
+  background-color: #4CAF50;
+  padding: 0.5em;
+  max-width: 130px;
+  margin: 0 auto;
+  border-radius: 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: rgb(76, 23, 145);
+}

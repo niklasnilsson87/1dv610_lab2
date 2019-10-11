@@ -36,10 +36,21 @@ class RunController
   public function tryToDeleteRun($runView)
   {
     if ($runView->userWantsToDeleteRun()) {
-      $id = $runView->getIdToDelete();
+      $id = $runView->getRunId();
       $this->runStorage->deleteRun($id);
       $this->runningView->setMessage("Successfully deleted run");
       return true;
+    }
+  }
+
+  public function userWantsToEditRun($runView)
+  {
+    $this->runningView->setEdit($runView->getEditRun());
+    $edit = $this->runningView->userWantsToEditRun();
+    if ($edit) {
+      $id = $runView->getRunId();
+      $run = $this->runStorage->getRunById($id);
+      $this->runningView->setRun($run);
     }
   }
 }
