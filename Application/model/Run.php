@@ -14,7 +14,7 @@ class Run
   private $description;
   private $id;
 
-  public function __construct($username, $distance, $time, $description, $pace = null, $id = null)
+  public function __construct($username, $distance, $time, $description, $id = null, $pace = null)
   {
     $this->validate($distance, $time, $description);
     $this->username = $username;

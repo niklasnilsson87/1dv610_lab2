@@ -18,6 +18,16 @@ class RunStorage
     $this->db->saveRun($runToSave, $name);
   }
 
+  public function updateRun(\Application\Model\Run $runToSave, string $name)
+  {
+    $this->db->updateRun($runToSave, $name);
+  }
+
+  public function idExist($run)
+  {
+    return $run->getId() != null;
+  }
+
   public function getRuns()
   {
     return $this->runs;

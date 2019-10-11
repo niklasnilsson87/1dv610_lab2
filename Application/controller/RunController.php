@@ -18,8 +18,14 @@ class RunController
     try {
       if ($this->runningView->userWantsToSubmitRun()) {
         $newRun = $this->runningView->getNewRun($username);
-        $this->runStorage->saveRun($newRun, $username);
-        $this->runningView->setMessage("Successfully added a run");
+        $idExist = $this->runStorage->idExist($newRun);
+        if ($idExist) {
+          $this->runStorage->updateRun($newRun, $username);
+          $this->runningView->setMessage("Successfully updated a run");
+        } else {
+          $this->runStorage->saveRun($newRun, $username);
+          $this->runningView->setMessage("Successfully added a run");
+        }
         return true;
       }
     } catch (\RequiredFields $e) {

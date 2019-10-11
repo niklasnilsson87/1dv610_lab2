@@ -42,6 +42,20 @@ class Database
     $stmt->execute();
   }
 
+  public function updateRun(\Application\Model\Run $runToSave, string $name)
+  {
+    $dist = $runToSave->getDistance();
+    $time = $runToSave->getTime();
+    $pace = $runToSave->getPace();
+    $desc = $runToSave->getDescription();
+    $id = $runToSave->getID();
+
+    $sql = "UPDATE runs SET username=?, distance=?, time=?, pace=?, description=? WHERE id=?;";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param('ssssss', $name, $dist, $time, $pace, $desc, $id);
+    $stmt->execute();
+  }
+
   public function loadRuns($username)
   {
     $sql = "SELECT * FROM runs WHERE username=?;";
@@ -58,8 +72,8 @@ class Database
           $row["distance"],
           $row["time"],
           $row["description"],
-          $row["pace"],
-          $row["id"]
+          $row["id"],
+          $row["pace"]
         );
     }
 

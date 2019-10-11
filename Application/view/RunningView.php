@@ -9,7 +9,12 @@ class RunningView
   private static $distance = __CLASS__ . '::Distance';
   private static $time = __CLASS__ . '::Time';
   private static $description = __CLASS__ . '::Description';
+  private static $IDRun = __CLASS__ . '::IDRun';
   private static $submitRun = __CLASS__ . '::SubmitRun';
+  private static $distanceVal;
+  private static $timeVal;
+  private static $descriptionVal;
+  private static $idVal;
   private static $editRun;
   private static $msg = '';
   private static $errorMessage = '';
@@ -38,7 +43,7 @@ class RunningView
   public function appHeader()
   {
     return '
-    <h2 class="runHeader">My Running Tracker</h2>
+    <h2 class="runHeader">Run Tracker</h2>
     <p id="' . self::$message . '">' . self::$msg . '</p>
     ';
   }
@@ -59,7 +64,7 @@ class RunningView
       <fieldset>
         <legend>' . $this->setFieldsetTitle() . '</legend>
         <p id="' . self::$errorMessage . '">' . self::$errorMessage . '</p>
-          <label for="' . self::$distance . '" >Distance in km :</label>
+          <label for="' . self::$distance . '" >Distance in km (k/k.m) :</label>
           <input type="text" name="' . self::$distance . '" id="' . self::$distance . '" value="' . $this->setDistanceValue() . '" />
         
           <label for="' . self::$time . '" >Time format(hh:mm:ss)  :</label>
@@ -68,6 +73,7 @@ class RunningView
           <label for="' . self::$description . '" >Description  :</label>
           <input type="text" size="20" name="' . self::$description . '" id="' . self::$description . '" value="' . $this->setdescriptionValue() . '" />
           <br/>
+          <input name="' . self::$IDRun . '" type="hidden" value="' . self::$idVal . '" />
           <br/>
           <input id="submit" type="submit" name="' . self::$submitRun . '"  value="Submit Run" />
           <br/>
@@ -91,6 +97,11 @@ class RunningView
     return isset($_POST[self::$editRun]);
   }
 
+  private function hasId()
+  {
+    return isset($_POST[self::$IDRun]);
+  }
+
   public function setEdit($edit)
   {
     self::$editRun = $edit;
@@ -102,6 +113,10 @@ class RunningView
       $distance = $_POST[self::$distance];
       $time = $_POST[self::$time];
       $description = $_POST[self::$description];
+      if ($this->hasId()) {
+        $id = $_POST[self::$IDRun];
+        return new \Application\Model\Run($username, $distance, $time, $description, $id);
+      }
       return new \Application\Model\Run($username, $distance, $time, $description);
     }
   }
@@ -127,15 +142,16 @@ class RunningView
 
   public function setRun($run)
   {
-    self::$distance = $run->getDistance();
-    self::$time = $run->getTime();
-    self::$description = $run->getDescription();
+    self::$distanceVal = $run->getDistance();
+    self::$timeVal = $run->getTime();
+    self::$descriptionVal = $run->getDescription();
+    self::$idVal = $run->getID();
   }
 
   public function setTimeValue()
   {
     if ($this->userWantsToEditRun()) {
-      return self::$time;
+      return self::$timeVal;
     } else {
       return '00:00:00';
     }
@@ -144,7 +160,7 @@ class RunningView
   public function setdescriptionValue()
   {
     if ($this->userWantsToEditRun()) {
-      return self::$description;
+      return self::$descriptionVal;
     } else {
       return '';
     }
@@ -153,7 +169,7 @@ class RunningView
   public function setDistanceValue()
   {
     if ($this->userWantsToEditRun()) {
-      return self::$distance;
+      return self::$distanceVal;
     } else {
       return '';
     }
