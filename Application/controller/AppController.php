@@ -1,11 +1,10 @@
 <?php
 
-use Application\View\RunView;
-
 include_once('Application/view/LayoutView.php');
 include_once('Application/view/DateTimeView.php');
 include_once('Application/view/RunningView.php');
 include_once('Application/view/RunView.php');
+include_once('Application/view/Messages.php');
 include_once('Application/controller/RunController.php');
 include_once('Application/model/Run.php');
 include_once('Application/model/RunStorage.php');

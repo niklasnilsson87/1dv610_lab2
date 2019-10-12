@@ -25,7 +25,7 @@ class Run
     $this->id = $id;
   }
 
-  private function splitTime($pace)
+  private function splitTime($pace): string
   {
 
     if ($pace != null) {
@@ -59,7 +59,7 @@ class Run
     return floor($pace) . ":" . $sec;
   }
 
-  private function checkStrLength($value)
+  private function checkStrLength(string $value): string
   {
     if (strlen($value) !== 2) {
       throw new \TimeNotInCorrectFormat;
@@ -67,7 +67,7 @@ class Run
     return $value;
   }
 
-  private function validateTime($time)
+  private function validateTime(string $time): string
   {
     $countColon = substr_count($time, ':');
     if ($countColon !== 2) {
@@ -85,7 +85,7 @@ class Run
     return $value;
   }
 
-  private function validateDistance($distance)
+  private function validateDistance($distance): string
   {
     $distance = $this->checkNumeric($distance);
 
@@ -96,7 +96,7 @@ class Run
     return $distance;
   }
 
-  private function validate($distance, $time, $description)
+  private function validate($distance, $time, $description): void
   {
     if (empty($this->filtered($distance)) && empty($this->filtered($time)) && empty($this->filtered($description))) {
       throw new \RequiredFields;
@@ -119,7 +119,7 @@ class Run
     $this->validateHTML($description);
   }
 
-  private function validateHTML($value)
+  private function validateHTML($value): void
   {
     if ($value != strip_tags($value)) {
       throw new \ContainsHTMLTag;
@@ -131,35 +131,32 @@ class Run
     return trim(htmlentities($rawString));
   }
 
-  public function getUsername()
+  public function getUsername(): string
   {
     return $this->username;
   }
 
-  public function getDistance()
+  public function getDistance(): string
   {
     return $this->distance;
   }
 
-
-  public function getTime()
+  public function getTime(): string
   {
     return $this->time;
   }
 
-
-  public function getPace()
+  public function getPace(): string
   {
     return $this->pace;
   }
 
-
-  public function getDescription()
+  public function getDescription(): string
   {
     return $this->description;
   }
 
-  public function getID()
+  public function getID(): string
   {
     return $this->id;
   }

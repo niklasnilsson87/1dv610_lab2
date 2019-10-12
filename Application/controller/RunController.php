@@ -17,31 +17,34 @@ class RunController
   {
     try {
       if ($this->runningView->userWantsToSubmitRun()) {
+
         $newRun = $this->runningView->getNewRun($username);
         $idExist = $this->runStorage->idExist($newRun);
+
         if ($idExist) {
           $this->runStorage->updateRun($newRun, $username);
-          $this->runningView->setMessage("Successfully updated a run");
+          $this->runningView->setMessage(\Application\View\Messages::UPDATE_RUN);
         } else {
           $this->runStorage->saveRun($newRun, $username);
-          $this->runningView->setMessage("Successfully added a run");
+          $this->runningView->setMessage(\Application\View\Messages::ADD_RUN);
         }
+
         return true;
       }
     } catch (\RequiredFields $e) {
-      $this->runningView->errorMessage("You can not submit an empty run.");
+      $this->runningView->errorMessage(\Application\View\Messages::EMPTY_RUN_FIELDS);
     } catch (\DistanceEmpty $e) {
-      $this->runningView->errorMessage("You must enter a distance in km.");
+      $this->runningView->errorMessage(\Application\View\Messages::DISTANCE_IN_KM);
     } catch (\TimeEmpty $e) {
-      $this->runningView->errorMessage("You must enter a time in correct format");
+      $this->runningView->errorMessage(\Application\View\Messages::TIME_IN_CORRECT_FORMAT);
     } catch (\DescriptionEmpty $e) {
-      $this->runningView->errorMessage("You must enter a description.");
+      $this->runningView->errorMessage(\Application\View\Messages::ENTER_DESCRIPTION);
     } catch (\NotNumeric $e) {
-      $this->runningView->errorMessage("You must enter a numeric value.");
+      $this->runningView->errorMessage(\Application\View\Messages::NUMERIC_VALUE);
     } catch (\TimeNotInCorrectFormat $e) {
-      $this->runningView->errorMessage("Time is not in correct format");
+      $this->runningView->errorMessage(\Application\View\Messages::NOT_CORRECT_FORMAT);
     } catch (\ContainsHTMLTag $e) {
-      $this->runningView->errorMessage("Input contains invalid characters.");
+      $this->runningView->errorMessage(\Application\View\Messages::INVALID_CHARACTERS);
     }
   }
 
@@ -50,7 +53,7 @@ class RunController
     if ($runView->userWantsToDeleteRun()) {
       $id = $runView->getRunId();
       $this->runStorage->deleteRun($id);
-      $this->runningView->setMessage("Successfully deleted run");
+      $this->runningView->setMessage(\Application\View\Messages::DELETE_RUN);
       return true;
     }
   }
@@ -59,6 +62,7 @@ class RunController
   {
     $this->runningView->setEdit($runView->getEditRun());
     $edit = $this->runningView->userWantsToEditRun();
+
     if ($edit) {
       $id = $runView->getRunId();
       $run = $this->runStorage->getRunById($id);
