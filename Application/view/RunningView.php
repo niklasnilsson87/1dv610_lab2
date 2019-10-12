@@ -23,7 +23,7 @@ class RunningView
   {
     $response = $this->appHeader();
     $response .= $this->createNewRun();
-
+    $response .= $this->successMessage();
     if ($this->userWantsToCreateRun()) {
       if ($this->userWantsToSubmitRun() && strlen(self::$errorMessage) > 0) {
         $response .= $this->generateRunningForm();
@@ -40,21 +40,29 @@ class RunningView
     return $response;
   }
 
-  public function appHeader()
+  private function successMessage(): string
+  {
+    return '
+    <div class="message">
+      <p id="' . self::$message . '">' . self::$msg . '</p>
+    </div>
+    ';
+  }
+
+  private function appHeader()
   {
     return '
     <h2 class="runHeader">Run Tracker</h2>
-    <p id="' . self::$message . '">' . self::$msg . '</p>
     ';
   }
 
   private function createNewRun()
   {
     if ($this->userWantsToCreateRun() && strlen(self::$msg) <= 0) {
-      return '<a class="button" href=?>Cancel new run<a>';
+      return '<a class="button" href=?>Cancel new run</a>';
     }
 
-    return '<a class="button" href=?create>Create new run<a>';
+    return '<a class="button" href=?create>Create new run</a>';
   }
 
   public function generateRunningForm()
@@ -64,7 +72,7 @@ class RunningView
       <fieldset>
         <legend>' . $this->setFieldsetTitle() . '</legend>
         <p id="' . self::$errorMessage . '">' . self::$errorMessage . '</p>
-          <label for="' . self::$distance . '" >Distance in km (k/k.m) :</label>
+          <label for="' . self::$distance . '" >Distance (km) :</label>
           <input type="text" name="' . self::$distance . '" id="' . self::$distance . '" value="' . $this->setDistanceValue() . '" />
         
           <label for="' . self::$time . '" >Time format(hh:mm:ss)  :</label>
@@ -107,7 +115,7 @@ class RunningView
     self::$editRun = $edit;
   }
 
-  public function getNewRun($username)
+  public function getNewRun($username): \Application\Model\Run
   {
     if ($this->userWantsToSubmitRun()) {
       $distance = $_POST[self::$distance];
@@ -121,26 +129,24 @@ class RunningView
     }
   }
 
-  public function setMessage($message)
+  public function setMessage(string $message): void
   {
     self::$msg = $message;
   }
 
-  public function errorMessage($message)
+  public function errorMessage(string $message): void
   {
     self::$errorMessage = $message;
   }
 
-  private function setFieldsetTitle()
+  private function setFieldsetTitle(): string
   {
-    if ($this->userWantsToEditRun()) {
-      return 'Edit the current Run';
-    } else {
-      return 'Keep track of your runs - Enter a compleated run';
-    }
+    return $this->userWantsToEditRun()
+      ? 'Edit the current Run'
+      : 'Keep track of your runs - Enter a compleated run';
   }
 
-  public function setRun($run)
+  public function setRun(\Application\Model\Run $run): void
   {
     self::$distanceVal = $run->getDistance();
     self::$timeVal = $run->getTime();
@@ -148,30 +154,24 @@ class RunningView
     self::$idVal = $run->getID();
   }
 
-  public function setTimeValue()
+  public function setTimeValue(): string
   {
-    if ($this->userWantsToEditRun()) {
-      return self::$timeVal;
-    } else {
-      return '00:00:00';
-    }
+    return $this->userWantsToEditRun()
+      ? self::$timeVal
+      : '00:00:00';
   }
 
-  public function setdescriptionValue()
+  public function setdescriptionValue(): string
   {
-    if ($this->userWantsToEditRun()) {
-      return self::$descriptionVal;
-    } else {
-      return '';
-    }
+    return $this->userWantsToEditRun()
+      ? self::$descriptionVal
+      : '';
   }
 
-  public function setDistanceValue()
+  public function setDistanceValue(): string
   {
-    if ($this->userWantsToEditRun()) {
-      return self::$distanceVal;
-    } else {
-      return '';
-    }
+    return $this->userWantsToEditRun()
+      ? self::$distanceVal
+      : '';
   }
 }

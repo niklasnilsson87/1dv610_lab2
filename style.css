@@ -44,3 +44,13 @@ table th {
 .button:hover {
   background-color: rgb(76, 23, 145);
 }
+
+.message {
+  text-align: center;
+  margin-top: 50px;
+  background-color: #4CAF50;
+  padding: 1px;
+  max-width: 25rem;
+  margin: 0 auto;
+  display: block;
+}

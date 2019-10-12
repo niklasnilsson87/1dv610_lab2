@@ -36,6 +36,12 @@ class RunController
       $this->runningView->errorMessage("You must enter a time in correct format");
     } catch (\DescriptionEmpty $e) {
       $this->runningView->errorMessage("You must enter a description.");
+    } catch (\NotNumeric $e) {
+      $this->runningView->errorMessage("You must enter a numeric value.");
+    } catch (\TimeNotInCorrectFormat $e) {
+      $this->runningView->errorMessage("Time is not in correct format");
+    } catch (\ContainsHTMLTag $e) {
+      $this->runningView->errorMessage("Input contains invalid characters.");
     }
   }
 

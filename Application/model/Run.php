@@ -18,8 +18,8 @@ class Run
   {
     $this->validate($distance, $time, $description);
     $this->username = $username;
-    $this->distance = $distance;
-    $this->time = $time;
+    $this->distance = $this->validateDistance($distance);
+    $this->time = $this->validateTime($time);
     $this->pace = $this->splitTime($pace);
     $this->description = $description;
     $this->id = $id;
@@ -33,26 +33,67 @@ class Run
     }
 
     $timeArray = explode(":", $this->time);
-    $hour = $timeArray[0];
-    $min = $timeArray[1];
-    $sek = $timeArray[2];
+
+    $hour = $this->checkNumeric($this->checkStrLength($timeArray[0]));
+    $min = $this->checkNumeric($this->checkStrLength($timeArray[1]));
+    $sek = $this->checkNumeric($this->checkStrLength($timeArray[2]));
 
     $dividedSek = $sek / self::$MIN_PER_HOUR;
     $hourToMin = $hour * self::$MIN_PER_HOUR;
     $totalTimeInMinutes = $min + $hourToMin + $dividedSek;
     $pace = $totalTimeInMinutes / $this->distance;
+
     if (is_float($pace)) {
       $decimal = explode(".", strval($pace));
       $dividedSek = $decimal[1];
     }
 
     $dividedSekToSek = $dividedSek * self::$MIN_PER_HOUR;
+
     $sec = substr($dividedSekToSek, 0, 2);
+
     if ($sec == '0') {
       $sec .= '0';
     }
 
     return floor($pace) . ":" . $sec;
+  }
+
+  private function checkStrLength($value)
+  {
+    if (strlen($value) !== 2) {
+      throw new \TimeNotInCorrectFormat;
+    }
+    return $value;
+  }
+
+  private function validateTime($time)
+  {
+    $countColon = substr_count($time, ':');
+    if ($countColon !== 2) {
+      throw new \TimeNotInCorrectFormat;
+    }
+
+    return $time;
+  }
+
+  private function checkNumeric($value)
+  {
+    if (!is_numeric($value)) {
+      throw new \NotNumeric;
+    }
+    return $value;
+  }
+
+  private function validateDistance($distance)
+  {
+    $distance = $this->checkNumeric($distance);
+
+    if (strpos($distance, ',') !== false) {
+      $distance = str_replace(',', '.', $distance);
+    }
+
+    return $distance;
   }
 
   private function validate($distance, $time, $description)
@@ -72,9 +113,20 @@ class Run
     if (empty($this->filtered($description))) {
       throw new \DescriptionEmpty;
     }
+
+    $this->validateHTML($distance);
+    $this->validateHTML($time);
+    $this->validateHTML($description);
   }
 
-  public function filtered($rawString): string
+  private function validateHTML($value)
+  {
+    if ($value != strip_tags($value)) {
+      throw new \ContainsHTMLTag;
+    }
+  }
+
+  private function filtered($rawString): string
   {
     return trim(htmlentities($rawString));
   }
