@@ -12,7 +12,6 @@ class RunningView
   private static $IDRun = __CLASS__ . '::IDRun';
   private static $submitRun = __CLASS__ . '::SubmitRun';
 
-  private static $idVal;
   private static $editRun;
 
   private static $msg = '';
@@ -29,7 +28,7 @@ class RunningView
   {
     $response = $this->appHeader();
     $response .= $this->renderLink();
-    $response .= $this->successMessage();
+    $response .= $this->renderMessage();
     if ($this->userWantsToCreateRun()) {
       if ($this->userWantsToSubmitRun() && strlen(self::$errorMessage) > 0) {
         $response .= $this->generateRunningForm();
@@ -52,7 +51,7 @@ class RunningView
     return $response;
   }
 
-  private function successMessage(): string
+  private function renderMessage(): string
   {
     return '
     <div class="message">

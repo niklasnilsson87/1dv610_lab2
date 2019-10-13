@@ -17,6 +17,11 @@ class RunView
 
   public function response()
   {
+
+    if ($this->userWantsToCreateRun()) {
+      return '';
+    }
+
     $response = $this->generateTableHeader();
     $response .= $this->printRuns();
 
@@ -99,5 +104,10 @@ class RunView
   public function getRunId()
   {
     return $_POST[self::$IDRun];
+  }
+
+  public function userWantsToCreateRun()
+  {
+    return isset($_GET['create']);
   }
 }
