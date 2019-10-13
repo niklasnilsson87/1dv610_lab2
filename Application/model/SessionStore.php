@@ -9,6 +9,7 @@ class SessionStore
   private static $SESSION_RUN_DISTANCE = __CLASS__ . "RUN_DISTANCE";
   private static $SESSION_RUN_TIME = __CLASS__ . "RUN_TIME";
   private static $SESSION_RUN_DESCRIPTION = __CLASS__ . "RUN_DESCRIPTION";
+  private static $SESSION_SAVED_MESSAGE = __CLASS__ . "SAVED_MESSAGE";
 
   public function hasStoredRun(): bool
   {
@@ -49,6 +50,21 @@ class SessionStore
     return $_SESSION[self::$SESSION_RUN_DESCRIPTION];
   }
 
+  public function saveMessage($message)
+  {
+    $_SESSION[self::$SESSION_SAVED_MESSAGE] = $message;
+  }
+
+  public function hasStoredMessage()
+  {
+    return isset($_SESSION[self::$SESSION_SAVED_MESSAGE]);
+  }
+
+  public function getStoredMessage()
+  {
+    return $_SESSION[self::$SESSION_SAVED_MESSAGE];
+  }
+
   public function unsetSession()
   {
     unset($_SESSION[self::$SESSION_RUN]);
@@ -56,5 +72,10 @@ class SessionStore
     unset($_SESSION[self::$SESSION_RUN_DISTANCE]);
     unset($_SESSION[self::$SESSION_RUN_TIME]);
     unset($_SESSION[self::$SESSION_RUN_DESCRIPTION]);
+  }
+
+  public function unsetMessage()
+  {
+    unset($_SESSION[self::$SESSION_SAVED_MESSAGE]);
   }
 }

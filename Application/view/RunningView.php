@@ -12,9 +12,6 @@ class RunningView
   private static $IDRun = __CLASS__ . '::IDRun';
   private static $submitRun = __CLASS__ . '::SubmitRun';
 
-  private static $distanceVal;
-  private static $timeVal;
-  private static $descriptionVal;
   private static $idVal;
   private static $editRun;
 
@@ -96,7 +93,6 @@ class RunningView
           <label for="' . self::$description . '" >Description  :</label>
           <input type="text" size="20" name="' . self::$description . '" id="' . self::$description . '" value="' . $this->setdescriptionValue() . '" />
           <br/>
-          <input name="' . self::$IDRun . '" type="hidden" value="' . self::$idVal . '" />
           <br/>
           <input id="submit" type="submit" name="' . self::$submitRun . '"  value="Submit Run" />
           <br/>
@@ -161,22 +157,11 @@ class RunningView
       : 'Keep track of your runs - Enter a compleated run';
   }
 
-  public function setRun(\Application\Model\Run $run): void
-  {
-    $this->session->saveSessionRun($run);
-    self::$distanceVal = $run->getDistance();
-    self::$timeVal = $run->getTime();
-    self::$descriptionVal = $run->getDescription();
-    self::$idVal = $run->getID();
-  }
-
   public function setTimeValue()
   {
-    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
-      return $this->session->getTime();
-    } else {
-      return '00:00:00';
-    }
+    return $this->session->hasStoredRun() && !$this->userWantsToCreateRun()
+      ? $this->session->getTime()
+      : '00:00:00';
   }
 
   public function setdescriptionValue()

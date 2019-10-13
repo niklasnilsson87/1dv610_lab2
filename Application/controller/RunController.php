@@ -25,12 +25,14 @@ class RunController
 
         if ($idExist) {
           $this->runStorage->updateRun($newRun, $username);
-          $this->runningView->setMessage(\Application\View\Messages::UPDATE_RUN);
+          $this->session->saveMessage(\Application\View\Messages::UPDATE_RUN);
           $this->session->unsetSession();
+          $this->backToIndex();
         } else {
           $this->runStorage->saveRun($newRun, $username);
-          $this->runningView->setMessage(\Application\View\Messages::ADD_RUN);
+          $this->session->saveMessage(\Application\View\Messages::ADD_RUN);
           $this->session->unsetSession();
+          $this->backToIndex();
         }
 
         return true;
@@ -71,7 +73,12 @@ class RunController
     if ($edit) {
       $id = $runView->getRunId();
       $run = $this->runStorage->getRunById($id);
-      $this->runningView->setRun($run);
+      $this->session->saveSessionRun($run);
     }
+  }
+
+  public function backToIndex()
+  {
+    return header('Location: ?');
   }
 }

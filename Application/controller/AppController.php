@@ -42,6 +42,11 @@ class AppController
       $runView = new \Application\View\RunView($rs->getRuns());
       $this->runController = new \Application\Controller\RunController($this->runningView, $rs, $session);
 
+      if ($session->hasStoredMessage()) {
+        $this->runningView->setMessage($session->getStoredMessage());
+        $session->unsetMessage();
+      }
+
       $newRunAdded = $this->runController->TryToAddRun($loggedInUser);
       if ($newRunAdded) {
         $runView = $this->createNewRunView($rs, $loggedInUser);
