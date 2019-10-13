@@ -11,11 +11,13 @@ class RunningView
   private static $description = __CLASS__ . '::Description';
   private static $IDRun = __CLASS__ . '::IDRun';
   private static $submitRun = __CLASS__ . '::SubmitRun';
+
   private static $distanceVal;
   private static $timeVal;
   private static $descriptionVal;
   private static $idVal;
   private static $editRun;
+
   private static $msg = '';
   private static $errorMessage = '';
 
@@ -30,7 +32,14 @@ class RunningView
         return $response;
       } else if (!$this->userWantsToSubmitRun()) {
         $response .= $this->generateRunningForm();
+        return $response;
       }
+    }
+    var_dump(self::$idVal);
+    echo "<br>";
+    if (strlen(self::$errorMessage) > 0) {
+      $response .= $this->generateRunningForm();
+      return $response;
     }
 
     if ($this->userWantsToEditRun()) {
@@ -58,7 +67,7 @@ class RunningView
 
   private function createNewRun()
   {
-    if ($this->userWantsToCreateRun() && strlen(self::$msg) <= 0) {
+    if ($this->userWantsToCreateRun() && strlen(self::$msg) <= 0 || $this->userWantsToEditRun()) {
       return '<a class="button" href=?>Cancel new run</a>';
     }
 
@@ -141,7 +150,10 @@ class RunningView
 
   private function setFieldsetTitle(): string
   {
-    return $this->userWantsToEditRun()
+    var_dump($this->userWantsToEditRun());
+    echo "<br>";
+    var_dump($this->hasId());
+    return $this->userWantsToEditRun() || $this->hasId()
       ? 'Edit the current Run'
       : 'Keep track of your runs - Enter a compleated run';
   }
@@ -154,23 +166,25 @@ class RunningView
     self::$idVal = $run->getID();
   }
 
-  public function setTimeValue(): string
+  public function setTimeValue()
   {
-    return $this->userWantsToEditRun()
+    // var_dump(self::$idVal);
+    // var_dump($this->hasId());
+    return $this->userWantsToEditRun() || $this->hasId()
       ? self::$timeVal
       : '00:00:00';
   }
 
-  public function setdescriptionValue(): string
+  public function setdescriptionValue()
   {
-    return $this->userWantsToEditRun()
+    return $this->userWantsToEditRun() || $this->hasId()
       ? self::$descriptionVal
       : '';
   }
 
-  public function setDistanceValue(): string
+  public function setDistanceValue()
   {
-    return $this->userWantsToEditRun()
+    return $this->userWantsToEditRun() || $this->hasId()
       ? self::$distanceVal
       : '';
   }

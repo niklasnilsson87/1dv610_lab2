@@ -25,7 +25,7 @@ class Run
     $this->id = $id;
   }
 
-  private function splitTime($pace): string
+  private function splitTime($pace)
   {
 
     if ($pace != null) {
@@ -59,7 +59,7 @@ class Run
     return floor($pace) . ":" . $sec;
   }
 
-  private function checkStrLength(string $value): string
+  private function checkStrLength($value)
   {
     if (strlen($value) !== 2) {
       throw new \TimeNotInCorrectFormat;
@@ -67,7 +67,7 @@ class Run
     return $value;
   }
 
-  private function validateTime(string $time): string
+  private function validateTime($time)
   {
     $countColon = substr_count($time, ':');
     if ($countColon !== 2) {
@@ -85,7 +85,7 @@ class Run
     return $value;
   }
 
-  private function validateDistance($distance): string
+  private function validateDistance($distance)
   {
     $distance = $this->checkNumeric($distance);
 
@@ -96,7 +96,7 @@ class Run
     return $distance;
   }
 
-  private function validate($distance, $time, $description): void
+  private function validate($distance, $time, $description)
   {
     if (empty($this->filtered($distance)) && empty($this->filtered($time)) && empty($this->filtered($description))) {
       throw new \RequiredFields;
@@ -119,44 +119,44 @@ class Run
     $this->validateHTML($description);
   }
 
-  private function validateHTML($value): void
+  private function validateHTML($value)
   {
     if ($value != strip_tags($value)) {
       throw new \ContainsHTMLTag;
     }
   }
 
-  private function filtered($rawString): string
+  private function filtered($rawString)
   {
     return trim(htmlentities($rawString));
   }
 
-  public function getUsername(): string
+  public function getUsername()
   {
     return $this->username;
   }
 
-  public function getDistance(): string
+  public function getDistance()
   {
     return $this->distance;
   }
 
-  public function getTime(): string
+  public function getTime()
   {
     return $this->time;
   }
 
-  public function getPace(): string
+  public function getPace()
   {
     return $this->pace;
   }
 
-  public function getDescription(): string
+  public function getDescription()
   {
     return $this->description;
   }
 
-  public function getID(): string
+  public function getID()
   {
     return $this->id;
   }
