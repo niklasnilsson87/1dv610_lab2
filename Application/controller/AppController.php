@@ -9,6 +9,7 @@ include_once('Application/controller/RunController.php');
 include_once('Application/model/Run.php');
 include_once('Application/model/RunStorage.php');
 include_once('Application/model/Database.php');
+include_once('Application/model/SessionStore.php');
 
 
 class AppController
@@ -35,10 +36,11 @@ class AppController
     $loggedInUser = $this->login->getMainController()->getUsername();
 
     if ($isLoggedIn) {
-      $this->runningView = new \Application\View\RunningView();
+      $session = new \Application\Model\SessionStore();
+      $this->runningView = new \Application\View\RunningView($session);
       $rs = new \Application\Model\RunStorage($loggedInUser);
       $runView = new \Application\View\RunView($rs->getRuns());
-      $this->runController = new \Application\Controller\RunController($this->runningView, $rs);
+      $this->runController = new \Application\Controller\RunController($this->runningView, $rs, $session);
 
       $newRunAdded = $this->runController->TryToAddRun($loggedInUser);
       if ($newRunAdded) {

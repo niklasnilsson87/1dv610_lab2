@@ -21,10 +21,17 @@ class RunningView
   private static $msg = '';
   private static $errorMessage = '';
 
+  private $session;
+
+  public function __construct($sessionStore)
+  {
+    $this->session = $sessionStore;
+  }
+
   public function response()
   {
     $response = $this->appHeader();
-    $response .= $this->createNewRun();
+    $response .= $this->renderLink();
     $response .= $this->successMessage();
     if ($this->userWantsToCreateRun()) {
       if ($this->userWantsToSubmitRun() && strlen(self::$errorMessage) > 0) {
@@ -35,8 +42,7 @@ class RunningView
         return $response;
       }
     }
-    var_dump(self::$idVal);
-    echo "<br>";
+
     if (strlen(self::$errorMessage) > 0) {
       $response .= $this->generateRunningForm();
       return $response;
@@ -65,9 +71,9 @@ class RunningView
     ';
   }
 
-  private function createNewRun()
+  private function renderLink()
   {
-    if ($this->userWantsToCreateRun() && strlen(self::$msg) <= 0 || $this->userWantsToEditRun()) {
+    if ($this->userWantsToCreateRun()) {
       return '<a class="button" href=?>Cancel new run</a>';
     }
 
@@ -130,8 +136,8 @@ class RunningView
       $distance = $_POST[self::$distance];
       $time = $_POST[self::$time];
       $description = $_POST[self::$description];
-      if ($this->hasId()) {
-        $id = $_POST[self::$IDRun];
+      if ($this->session->hasStoredRun()) {
+        $id = $this->session->getID();
         return new \Application\Model\Run($username, $distance, $time, $description, $id);
       }
       return new \Application\Model\Run($username, $distance, $time, $description);
@@ -150,9 +156,6 @@ class RunningView
 
   private function setFieldsetTitle(): string
   {
-    var_dump($this->userWantsToEditRun());
-    echo "<br>";
-    var_dump($this->hasId());
     return $this->userWantsToEditRun() || $this->hasId()
       ? 'Edit the current Run'
       : 'Keep track of your runs - Enter a compleated run';
@@ -160,6 +163,7 @@ class RunningView
 
   public function setRun(\Application\Model\Run $run): void
   {
+    $this->session->saveSessionRun($run);
     self::$distanceVal = $run->getDistance();
     self::$timeVal = $run->getTime();
     self::$descriptionVal = $run->getDescription();
@@ -168,24 +172,24 @@ class RunningView
 
   public function setTimeValue()
   {
-    // var_dump(self::$idVal);
-    // var_dump($this->hasId());
-    return $this->userWantsToEditRun() || $this->hasId()
-      ? self::$timeVal
-      : '00:00:00';
+    if ($this->session->hasStoredRun()) {
+      return $this->session->getTime();
+    } else {
+      return '00:00:00';
+    }
   }
 
   public function setdescriptionValue()
   {
-    return $this->userWantsToEditRun() || $this->hasId()
-      ? self::$descriptionVal
+    return $this->session->hasStoredRun()
+      ? $this->session->getDescription()
       : '';
   }
 
   public function setDistanceValue()
   {
-    return $this->userWantsToEditRun() || $this->hasId()
-      ? self::$distanceVal
+    return $this->session->hasStoredRun()
+      ? $this->session->getDistance()
       : '';
   }
 }

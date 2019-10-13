@@ -6,9 +6,11 @@ class RunController
 {
   private $runningView;
   private $runStorage;
+  private $session;
 
-  public function __construct(\Application\View\RunningView $rv, \Application\Model\RunStorage $runStorage)
+  public function __construct(\Application\View\RunningView $rv, \Application\Model\RunStorage $runStorage, \Application\Model\SessionStore $sessionStore)
   {
+    $this->session = $sessionStore;
     $this->runStorage = $runStorage;
     $this->runningView = $rv;
   }
@@ -24,9 +26,11 @@ class RunController
         if ($idExist) {
           $this->runStorage->updateRun($newRun, $username);
           $this->runningView->setMessage(\Application\View\Messages::UPDATE_RUN);
+          $this->session->unsetSession();
         } else {
           $this->runStorage->saveRun($newRun, $username);
           $this->runningView->setMessage(\Application\View\Messages::ADD_RUN);
+          $this->session->unsetSession();
         }
 
         return true;
@@ -54,6 +58,7 @@ class RunController
       $id = $runView->getRunId();
       $this->runStorage->deleteRun($id);
       $this->runningView->setMessage(\Application\View\Messages::DELETE_RUN);
+      $this->session->unsetSession();
       return true;
     }
   }
