@@ -172,7 +172,7 @@ class RunningView
 
   public function setTimeValue()
   {
-    if ($this->session->hasStoredRun()) {
+    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
       return $this->session->getTime();
     } else {
       return '00:00:00';
@@ -181,14 +181,14 @@ class RunningView
 
   public function setdescriptionValue()
   {
-    return $this->session->hasStoredRun()
+    return $this->session->hasStoredRun() && !$this->userWantsToCreateRun()
       ? $this->session->getDescription()
       : '';
   }
 
   public function setDistanceValue()
   {
-    return $this->session->hasStoredRun()
+    return $this->session->hasStoredRun() && !$this->userWantsToCreateRun()
       ? $this->session->getDistance()
       : '';
   }
