@@ -8,7 +8,7 @@ class RunningView
   private static $message =  __CLASS__ . '::Message';
   private static $distance = __CLASS__ . '::Distance';
   private static $time = __CLASS__ . '::Time';
-  private static $description = __CLASS__ . '::Description';
+  private static $date = __CLASS__ . '::date';
   private static $IDRun = __CLASS__ . '::IDRun';
   private static $submitRun = __CLASS__ . '::SubmitRun';
 
@@ -89,8 +89,8 @@ class RunningView
           <label for="' . self::$time . '" >Time format(hh:mm:ss)  :</label>
           <input type="text" size="10" name="' . self::$time . '" id="' . self::$time . '" value="' . $this->setTimeValue() . '" />
       
-          <label for="' . self::$description . '" >Description  :</label>
-          <input type="text" size="20" name="' . self::$description . '" id="' . self::$description . '" value="' . $this->setdescriptionValue() . '" />
+          <label for="' . self::$date . '" >date  :</label>
+          <input type="date" size="20" name="' . self::$date . '" id="' . self::$date . '" value="' . $this->setdateValue() . '" />
           <br/>
           <br/>
           <input id="submit" type="submit" name="' . self::$submitRun . '"  value="Submit Run" />
@@ -130,12 +130,12 @@ class RunningView
     if ($this->userWantsToSubmitRun()) {
       $distance = $_POST[self::$distance];
       $time = $_POST[self::$time];
-      $description = $_POST[self::$description];
+      $date = $_POST[self::$date];
       if ($this->session->hasStoredRun()) {
         $id = $this->session->getID();
-        return new \Application\Model\Run($username, $distance, $time, $description, $id);
+        return new \Application\Model\Run($username, $distance, $time, $date, $id);
       }
-      return new \Application\Model\Run($username, $distance, $time, $description);
+      return new \Application\Model\Run($username, $distance, $time, $date);
     }
   }
 
@@ -151,7 +151,7 @@ class RunningView
 
   private function setFieldsetTitle(): string
   {
-    return $this->userWantsToEditRun() || $this->hasId()
+    return $this->userWantsToEditRun() || !$this->userWantsToCreateRun()
       ? 'Edit the current Run'
       : 'Keep track of your runs - Enter a compleated run';
   }
@@ -163,10 +163,10 @@ class RunningView
       : '00:00:00';
   }
 
-  public function setdescriptionValue()
+  public function setdateValue()
   {
     return $this->session->hasStoredRun() && !$this->userWantsToCreateRun()
-      ? $this->session->getDescription()
+      ? $this->session->getdate()
       : '';
   }
 

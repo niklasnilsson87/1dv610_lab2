@@ -34,9 +34,9 @@ class Database
     $dist = $runToSave->getDistance();
     $time = $runToSave->getTime();
     $pace = $runToSave->getPace();
-    $desc = $runToSave->getDescription();
+    $desc = $runToSave->getdate();
 
-    $sql = "INSERT INTO runs (username, distance, time, pace, description) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO runs (username, distance, time, pace, date) VALUES (?, ?, ?, ?, ?)";
     $stmt = $this->connection->prepare($sql);
     $stmt->bind_param('sssss', $name, $dist, $time, $pace, $desc);
     $stmt->execute();
@@ -47,10 +47,10 @@ class Database
     $dist = $runToSave->getDistance();
     $time = $runToSave->getTime();
     $pace = $runToSave->getPace();
-    $desc = $runToSave->getDescription();
+    $desc = $runToSave->getdate();
     $id = $runToSave->getID();
 
-    $sql = "UPDATE runs SET username=?, distance=?, time=?, pace=?, description=? WHERE id=?;";
+    $sql = "UPDATE runs SET username=?, distance=?, time=?, pace=?, date=? WHERE id=?;";
     $stmt = $this->connection->prepare($sql);
     $stmt->bind_param('ssssss', $name, $dist, $time, $pace, $desc, $id);
     $stmt->execute();
@@ -71,7 +71,7 @@ class Database
           $row["username"],
           $row["distance"],
           $row["time"],
-          $row["description"],
+          $row["date"],
           $row["id"],
           $row["pace"]
         );

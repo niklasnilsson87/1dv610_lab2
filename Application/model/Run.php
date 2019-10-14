@@ -11,17 +11,17 @@ class Run
   private $distance;
   private $time;
   private $pace;
-  private $description;
+  private $date;
   private $id;
 
-  public function __construct($username, $distance, $time, $description, $id = null, $pace = null)
+  public function __construct($username, $distance, $time, $date, $id = null, $pace = null)
   {
-    $this->validate($distance, $time, $description);
+    $this->validate($distance, $time, $date);
     $this->username = $username;
     $this->distance = $this->validateDistance($distance);
     $this->time = $this->validateTime($time);
     $this->pace = $this->splitTime($pace);
-    $this->description = $description;
+    $this->date = $date;
     $this->id = $id;
   }
 
@@ -96,9 +96,9 @@ class Run
     return $distance;
   }
 
-  private function validate($distance, $time, $description)
+  private function validate($distance, $time, $date)
   {
-    if (empty($this->filtered($distance)) && empty($this->filtered($time)) && empty($this->filtered($description))) {
+    if (empty($this->filtered($distance)) && empty($this->filtered($time)) && empty($this->filtered($date))) {
       throw new \RequiredFields;
     }
 
@@ -110,13 +110,13 @@ class Run
       throw new \TimeEmpty;
     }
 
-    if (empty($this->filtered($description))) {
-      throw new \DescriptionEmpty;
+    if (empty($this->filtered($date))) {
+      throw new \dateEmpty;
     }
 
     $this->validateHTML($distance);
     $this->validateHTML($time);
-    $this->validateHTML($description);
+    $this->validateHTML($date);
   }
 
   private function validateHTML($value)
@@ -151,9 +151,9 @@ class Run
     return $this->pace;
   }
 
-  public function getDescription()
+  public function getdate()
   {
-    return $this->description;
+    return $this->date;
   }
 
   public function getID()

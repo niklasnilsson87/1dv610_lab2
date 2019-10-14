@@ -9,7 +9,7 @@ class DistanceEmpty extends \Exception
 class TimeEmpty extends \Exception
 { }
 
-class DescriptionEmpty extends \Exception
+class dateEmpty extends \Exception
 { }
 
 class NotNumeric extends \Exception

@@ -43,8 +43,8 @@ class RunController
       $this->runningView->errorMessage(\Application\View\Messages::DISTANCE_IN_KM);
     } catch (\TimeEmpty $e) {
       $this->runningView->errorMessage(\Application\View\Messages::TIME_IN_CORRECT_FORMAT);
-    } catch (\DescriptionEmpty $e) {
-      $this->runningView->errorMessage(\Application\View\Messages::ENTER_DESCRIPTION);
+    } catch (\dateEmpty $e) {
+      $this->runningView->errorMessage(\Application\View\Messages::ENTER_date);
     } catch (\NotNumeric $e) {
       $this->runningView->errorMessage(\Application\View\Messages::NUMERIC_VALUE);
     } catch (\TimeNotInCorrectFormat $e) {

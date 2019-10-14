@@ -8,7 +8,7 @@ class SessionStore
   private static $SESSION_RUN_ID = __CLASS__ . "::RUN_ID";
   private static $SESSION_RUN_DISTANCE = __CLASS__ . "RUN_DISTANCE";
   private static $SESSION_RUN_TIME = __CLASS__ . "RUN_TIME";
-  private static $SESSION_RUN_DESCRIPTION = __CLASS__ . "RUN_DESCRIPTION";
+  private static $SESSION_RUN_date = __CLASS__ . "RUN_date";
   private static $SESSION_SAVED_MESSAGE = __CLASS__ . "SAVED_MESSAGE";
 
   public function hasStoredRun(): bool
@@ -21,7 +21,7 @@ class SessionStore
     $_SESSION[self::$SESSION_RUN_ID] = $run->getID();
     $_SESSION[self::$SESSION_RUN_DISTANCE] = $run->getDistance();
     $_SESSION[self::$SESSION_RUN_TIME] = $run->getTime();
-    $_SESSION[self::$SESSION_RUN_DESCRIPTION] = $run->getDescription();
+    $_SESSION[self::$SESSION_RUN_date] = $run->getdate();
     $this->setRunState(true);
   }
 
@@ -45,9 +45,9 @@ class SessionStore
     return $_SESSION[self::$SESSION_RUN_TIME];
   }
 
-  public function getDescription()
+  public function getdate()
   {
-    return $_SESSION[self::$SESSION_RUN_DESCRIPTION];
+    return $_SESSION[self::$SESSION_RUN_date];
   }
 
   public function saveMessage($message)
@@ -71,7 +71,7 @@ class SessionStore
     unset($_SESSION[self::$SESSION_RUN_ID]);
     unset($_SESSION[self::$SESSION_RUN_DISTANCE]);
     unset($_SESSION[self::$SESSION_RUN_TIME]);
-    unset($_SESSION[self::$SESSION_RUN_DESCRIPTION]);
+    unset($_SESSION[self::$SESSION_RUN_date]);
   }
 
   public function unsetMessage()

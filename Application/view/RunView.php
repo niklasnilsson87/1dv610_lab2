@@ -37,7 +37,7 @@ class RunView
           <th>Distance</th>
           <th>Time</th>
           <th>Pace</th>
-          <th>Description</th>
+          <th>date</th>
           <th>Actions</th>
         </tr>
       ';
@@ -55,7 +55,7 @@ class RunView
         $output .= "<td>" . $run->getDistance() . " km" . "</td>";
         $output .= "<td>" . $run->getTime() . "</td>";
         $output .= "<td>" . $run->getPace() . " min/km" . "</td>";
-        $output .= "<td>" . $run->getDescription() . "</td>";
+        $output .= "<td>" . $run->getdate() . "</td>";
         $output .= "<td>" . $this->generateActionButton($run->getID()) . '</td>';
         $output .= "</tr>";
         $output .= $this->generateFormEnd();
