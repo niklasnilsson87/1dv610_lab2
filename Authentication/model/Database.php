@@ -2,7 +2,6 @@
 
 namespace Login\Model;
 
-include_once("Exceptions.php");
 include_once("LocalSettings.php");
 include_once("ProductionSettings.php");
 
@@ -15,7 +14,6 @@ class Database
 
   public function __construct()
   {
-
     // Check if localhost
     $serverAdress = $_SERVER['SERVER_NAME'];
     if ($serverAdress == 'localhost') {

@@ -15,7 +15,7 @@ class RunView
     $this->updateRuns($runsToSave);
   }
 
-  public function response()
+  public function response(): string
   {
     if ($this->userWantsToCreateRun()) {
       return '';
@@ -27,7 +27,7 @@ class RunView
     return $response;
   }
 
-  public function generateTableHeader()
+  public function generateTableHeader(): string
   {
     return '
       <br>
@@ -42,7 +42,7 @@ class RunView
       ';
   }
 
-  public function printRuns()
+  public function printRuns(): string
   {
     $output = "";
 
@@ -66,51 +66,51 @@ class RunView
     return $output . "</table>";
   }
 
-  private function generateActionButton($id): string
+  private function generateActionButton(int $id): string
   {
     return '
-    <input name="' . self::$IDRun . '" id="' . $id . '" type="hidden" value="' . $id . '" />
+    <input name="' . self::$IDRun . '" type="hidden" value="' . $id . '" />
     <input name="' . self::$deleteRun . '" type="submit" value="Delete" />
     <input name="' . self::$editRun . '" type="submit" value="Edit" />
     ';
   }
 
-  private function generateFormStart()
+  private function generateFormStart(): string
   {
     return '<form method="post" enctype="multipart/form-data">';
   }
 
-  private function generateFormEnd()
+  private function generateFormEnd(): string
   {
     return '</form>';
   }
 
-  public function userWantsToEditRun()
+  public function userWantsToEditRun(): bool
   {
     return isset($_POST[self::$editRun]);
   }
 
-  public function getEditRun()
+  public function getEditRun(): string
   {
     return self::$editRun;
   }
 
-  public function userWantsToDeleteRun()
+  public function userWantsToDeleteRun(): bool
   {
     return isset($_POST[self::$deleteRun]);
   }
 
-  public function getRunId()
+  public function getRunId(): string
   {
     return $_POST[self::$IDRun];
   }
 
-  public function userWantsToCreateRun()
+  public function userWantsToCreateRun(): bool
   {
     return isset($_GET['create']);
   }
 
-  public function updateRuns($runs)
+  public function updateRuns($runs): void
   {
     $this->runs = $runs;
   }

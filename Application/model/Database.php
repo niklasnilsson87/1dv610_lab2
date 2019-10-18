@@ -2,34 +2,34 @@
 
 namespace Application\Model;
 
-include_once("Authentication/model/LocalSettings.php");
-include_once("Authentication/model/ProductionSettings.php");
+include_once("LocalSettings.php");
+include_once("ProductionSettings.php");
 
 class Database
 {
   private $connection;
   private $settings;
 
+  private static $LOCALHOST = 'localhost';
+
   public function __construct()
   {
-
-    // Check if localhost
     $serverAdress = $_SERVER['SERVER_NAME'];
-    if ($serverAdress == 'localhost') {
+    if ($serverAdress == self::$LOCALHOST) {
       $this->settings = new \Login\Model\LocalSettings();
     } else {
       $this->settings = new \Login\Model\ProductionSettings();
     }
 
-    $this->connection = new \mysqli($this->settings->server_name, $this->settings->db_name, $this->settings->db_password, $this->settings->database);
-    // Check connection
-    if ($this->connection->connect_errno) {
-      printf("Connect failed: %s\n", $this->connection->connect_error);
-      exit();
-    }
+    $this->connection = new \mysqli(
+      $this->settings->server_name,
+      $this->settings->db_name,
+      $this->settings->db_password,
+      $this->settings->database
+    );
   }
 
-  public function saveRun(\Application\Model\Run $runToSave, string $name)
+  public function saveRun(\Application\Model\Run $runToSave, string $name): void
   {
     $dist = $runToSave->getDistance();
     $time = $runToSave->getTime();
@@ -42,7 +42,7 @@ class Database
     $stmt->execute();
   }
 
-  public function updateRun(\Application\Model\Run $runToSave, string $name)
+  public function updateRun(\Application\Model\Run $runToSave, string $name): void
   {
     $dist = $runToSave->getDistance();
     $time = $runToSave->getTime();
@@ -56,7 +56,7 @@ class Database
     $stmt->execute();
   }
 
-  public function loadRuns($username)
+  public function loadRuns(string $username): array
   {
     $sql = "SELECT * FROM runs WHERE username=?;";
     $stmt = $this->connection->prepare($sql);
@@ -64,9 +64,9 @@ class Database
     $stmt->execute();
     $res = $stmt->get_result();
 
-    $rows = array();
+    $runsFromDatabase = array();
     while ($row = $res->fetch_assoc()) {
-      $rows[] =
+      $runsFromDatabase[] =
         new \Application\Model\Run(
           $row["username"],
           $row["distance"],
@@ -77,14 +77,14 @@ class Database
         );
     }
 
-    return $rows;
+    return $runsFromDatabase;
   }
 
-  public function deleteRun($id)
+  public function deleteRun(string $id): void
   {
     $sql = "DELETE FROM runs WHERE id=?;";
     $stmt = $this->connection->prepare($sql);
-    $stmt->bind_param('i', $id);
+    $stmt->bind_param('s', $id);
     $stmt->execute();
   }
 }

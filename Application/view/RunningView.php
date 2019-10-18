@@ -4,12 +4,9 @@ namespace Application\View;
 
 class RunningView
 {
-
-  private static $message =  __CLASS__ . '::Message';
   private static $distance = __CLASS__ . '::Distance';
   private static $time = __CLASS__ . '::Time';
   private static $date = __CLASS__ . '::Date';
-  private static $IDRun = __CLASS__ . '::IDRun';
   private static $submitRun = __CLASS__ . '::SubmitRun';
 
   private static $editRun;
@@ -82,7 +79,7 @@ class RunningView
     <form action="" method="post" enctype="multipart/form-data">
       <fieldset>
         <legend>' . $this->setFieldsetTitle() . '</legend>
-        <p id="' . self::$errorMessage . '">' . self::$errorMessage . '</p>
+        <p>' . self::$errorMessage . '</p>
           <label for="' . self::$distance . '" >Distance (km) :</label>
           <input type="text" name="' . self::$distance . '" id="' . self::$distance . '" value="' . $this->setDistanceValue() . '" />
         
@@ -151,7 +148,7 @@ class RunningView
       : 'Keep track of your runs - Enter a completed run';
   }
 
-  public function setTimeValue()
+  private function setTimeValue()
   {
     if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
       return $this->session->getTime();
@@ -164,7 +161,7 @@ class RunningView
     }
   }
 
-  public function setdateValue()
+  private function setdateValue()
   {
     if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
       return $this->session->getdate();
@@ -177,7 +174,7 @@ class RunningView
     }
   }
 
-  public function setDistanceValue()
+  private function setDistanceValue()
   {
     if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
       return $this->session->getDistance();

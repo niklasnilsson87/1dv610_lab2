@@ -1,8 +1,6 @@
 <?php
 
-// require_once('Authentication/view/IView.php');
-
-use Login\View\IView;
+namespace Login\Controller;
 
 require_once('Authentication/view/LoginView.php');
 require_once('Authentication/view/RegisterView.php');
@@ -19,6 +17,8 @@ require_once('Authentication/model/Exceptions.php');
 
 require_once('LoginController.php');
 require_once('RegisterController.php');
+
+use Login\View\IView;
 
 class MainController
 {

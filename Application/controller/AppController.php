@@ -13,18 +13,19 @@ include_once('Application/model/RunDAL.php');
 include_once('Application/model/Database.php');
 include_once('Application/model/SessionStore.php');
 
-
+/*
+* Class to inizialize the Run Tracker Application.
+*/
 class AppController
 {
-
   private $login;
 
   private $layoutView;
   private $dateView;
-  private $runningView;
+
   private $runController;
 
-  public function __construct($login)
+  public function __construct(\Login\Controller\MainController $login)
   {
     $this->login = $login;
     $this->layoutView = new \Application\View\LayoutView();
@@ -33,29 +34,28 @@ class AppController
 
   public function startApp()
   {
-    $view = $this->login->getMainController()->startLogin();
-    $isLoggedIn = $this->login->getMainController()->isAuthenticated();
-    $loggedInUser = $this->login->getMainController()->getUsername();
+    $authenticationView = $this->login->startLogin();
+
+    $isLoggedIn = $this->login->isAuthenticated();
+    $loggedInUser = $this->login->getUsername();
 
     if ($isLoggedIn) {
-      $this->renderLoginPage($loggedInUser, $view, $isLoggedIn);
+      $this->renderApplicationPage($loggedInUser, $authenticationView, $isLoggedIn);
     } else {
-      return $this->layoutView->render($isLoggedIn, $view, $this->dateView);
+      $this->renderAuthenticationPage($authenticationView, $isLoggedIn);
     }
   }
 
-  private function renderLoginPage($user, $view, $isLoggedIn)
+  private function renderApplicationPage(string $user, \Login\View\IView $authenticationView, bool $isLoggedIn)
   {
     $session = new \Application\Model\SessionStore();
-    $this->runningView = new \Application\View\RunningView($session);
     $runDAL = new \Application\Model\RunDAL($user);
-    $runView = new \Application\View\RunView($runDAL->getRuns());
-    $this->runController = new \Application\Controller\RunController($this->runningView, $runDAL, $session);
 
-    if ($session->hasStoredMessage()) {
-      $this->runningView->setMessage($session->getStoredMessage());
-      $session->unsetMessage();
-    }
+    $runningView = new \Application\View\RunningView($session);
+    $runView = new \Application\View\RunView($runDAL->getRuns());
+    $this->runController = new \Application\Controller\RunController($runningView, $runDAL, $session);
+
+    $this->checkForSavedMessage($session, $runningView);
 
     $this->runController->userTriesToAddRun($user);
     $this->runController->userWantsToDeleteRun($runView);
@@ -64,6 +64,19 @@ class AppController
     $runDAL->updateRuns($user);
     $runView->updateRuns($runDAL->getRuns());
 
-    return $this->layoutView->render($isLoggedIn, $view, $this->dateView, $this->runningView, $runView);
+    return $this->layoutView->render($isLoggedIn, $authenticationView, $this->dateView, $runningView, $runView);
+  }
+
+  private function renderAuthenticationPage(\Login\View\IView $authenticationView, bool $isLoggedIn)
+  {
+    return $this->layoutView->render($isLoggedIn, $authenticationView, $this->dateView);
+  }
+
+  private function checkForSavedMessage(\Application\Model\SessionStore $session, \Application\View\RunningView $runningView): void
+  {
+    if ($session->hasStoredMessage()) {
+      $runningView->setMessage($session->getStoredMessage());
+      $session->unsetMessage();
+    }
   }
 }

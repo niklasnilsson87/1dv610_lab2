@@ -17,7 +17,7 @@ class Authentication
 
   public function __construct()
   {
-    $this->login = new MainController();
+    $this->login = new \Login\Controller\MainController();
   }
 
   public function getMainController()

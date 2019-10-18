@@ -15,7 +15,7 @@ class RunController
     $this->runningView = $rv;
   }
 
-  public function userTriesToAddRun(string $username)
+  public function userTriesToAddRun(string $username): void
   {
     try {
       if ($this->runningView->userWantsToSubmitRun()) {
@@ -52,7 +52,7 @@ class RunController
     }
   }
 
-  public function userWantsToDeleteRun(\Application\View\RunView $runView)
+  public function userWantsToDeleteRun(\Application\View\RunView $runView): void
   {
     if ($runView->userWantsToDeleteRun()) {
       $id = $runView->getRunId();
@@ -61,7 +61,7 @@ class RunController
     }
   }
 
-  public function userWantsToEditRun(\Application\View\RunView $runView)
+  public function userWantsToEditRun(\Application\View\RunView $runView): void
   {
     $this->runningView->setEdit($runView->getEditRun());
     if ($this->runningView->userWantsToEditRun()) {
@@ -71,8 +71,8 @@ class RunController
     }
   }
 
-  public function backToIndex()
+  private function backToIndex(): void
   {
-    return header('Location: ?');
+    header('Location: ?');
   }
 }
