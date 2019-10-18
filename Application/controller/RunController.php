@@ -5,31 +5,31 @@ namespace Application\Controller;
 class RunController
 {
   private $runningView;
-  private $runStorage;
+  private $runDAL;
   private $session;
 
-  public function __construct(\Application\View\RunningView $rv, \Application\Model\RunStorage $runStorage, \Application\Model\SessionStore $sessionStore)
+  public function __construct(\Application\View\RunningView $rv, \Application\Model\RunDAL $rd, \Application\Model\SessionStore $ss)
   {
-    $this->session = $sessionStore;
-    $this->runStorage = $runStorage;
+    $this->session = $ss;
+    $this->runDAL = $rd;
     $this->runningView = $rv;
   }
 
-  public function TryToAddRun($username)
+  public function tryToAddRun(string $username)
   {
     try {
       if ($this->runningView->userWantsToSubmitRun()) {
 
         $newRun = $this->runningView->getNewRun($username);
-        $idExist = $this->runStorage->idExist($newRun);
+        $idExist = $this->runDAL->idExist($newRun);
 
         if ($idExist) {
-          $this->runStorage->updateRun($newRun, $username);
+          $this->runDAL->updateRun($newRun, $username);
           $this->session->saveMessage(\Application\View\Messages::UPDATE_RUN);
           $this->session->unsetSession();
           $this->backToIndex();
         } else {
-          $this->runStorage->saveRun($newRun, $username);
+          $this->runDAL->saveRun($newRun, $username);
           $this->session->saveMessage(\Application\View\Messages::ADD_RUN);
           $this->session->unsetSession();
           $this->backToIndex();
@@ -54,25 +54,24 @@ class RunController
     }
   }
 
-  public function tryToDeleteRun($runView)
+  public function tryToDeleteRun(\Application\View\RunView $runView)
   {
     if ($runView->userWantsToDeleteRun()) {
       $id = $runView->getRunId();
-      $this->runStorage->deleteRun($id);
+      $this->runDAL->deleteRun($id);
       $this->runningView->setMessage(\Application\View\Messages::DELETE_RUN);
-      $this->session->unsetSession();
       return true;
     }
   }
 
-  public function userWantsToEditRun($runView)
+  public function userWantsToEditRun(\Application\View\RunView $runView)
   {
     $this->runningView->setEdit($runView->getEditRun());
     $edit = $this->runningView->userWantsToEditRun();
 
     if ($edit) {
       $id = $runView->getRunId();
-      $run = $this->runStorage->getRunById($id);
+      $run = $this->runDAL->getRunById($id);
       $this->session->saveSessionRun($run);
     }
   }

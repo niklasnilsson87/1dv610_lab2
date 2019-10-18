@@ -2,8 +2,6 @@
 
 namespace Login\Controller;
 
-use Login\Model\FilterPassword;
-
 include_once("Authentication/model/Exceptions.php");
 
 class LoginController
@@ -80,8 +78,8 @@ class LoginController
   public function loginByCookie(): void
   {
     $credentialsByCookie = $this->loginView->getUserByCookie();
-    $decodedPassword = $this->loginView->decodePassword($credentialsByCookie->getPassword());
-    $newPwd = new FilterPassword($decodedPassword);
+    $decodedPassword = $this->loginView->decodeCookiePassword($credentialsByCookie->getPassword());
+    $newPwd = $credentialsByCookie->createNewPassword($decodedPassword);
     $credentialsByCookie->setPassword($newPwd);
     $this->auth->tryToSaveUser($credentialsByCookie);
     $this->loginView->saveCookie($credentialsByCookie);

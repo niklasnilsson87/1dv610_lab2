@@ -22,17 +22,17 @@ class UserModel
     $this->username = $newName;
   }
 
-  public function getName()
+  public function getName(): string
   {
     return $this->username->getName();
   }
 
-  public function setPassword($password)
+  public function setPassword($password): void
   {
     $this->password = $password;
   }
 
-  public function getPassword()
+  public function getPassword(): string
   {
     return $this->password->getPassword();
   }
@@ -42,8 +42,13 @@ class UserModel
     return trim(htmlentities($rawString));
   }
 
-  public function getKeepLoggedIn()
+  public function getKeepLoggedIn(): bool
   {
     return $this->keep;
+  }
+
+  public function createNewPassword($pwd): \Login\Model\FilterPassword
+  {
+    return new \Login\Model\FilterPassword($pwd);
   }
 }

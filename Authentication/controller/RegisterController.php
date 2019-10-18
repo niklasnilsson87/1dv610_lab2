@@ -8,18 +8,23 @@ class RegisterController
   private $registerView;
   private $auth;
 
-  public function __construct($storage, $registerView, $auth)
-  {
+  public function __construct(
+    \Login\Model\UserStorage $storage,
+    \Login\View\RegisterView $registerView,
+    \Login\Model\Authentication $auth
+  ) {
     $this->storage = $storage;
     $this->registerView = $registerView;
     $this->auth = $auth;
   }
-  public function tryToRegister()
+
+  public function tryToRegister(): void
   {
     if ($this->registerView->userClicksRegister()) {
       try {
         $regCredentials = $this->registerView->getRegisterUser();
         $this->registerUser($regCredentials);
+        $this->backToLogin();
       } catch (\UsernameEmpty $e) {
         $this->registerView->setMessage(\Login\View\Message::USER_FEW_CHAR);
       } catch (\PasswordEmpty $e) {
@@ -36,12 +41,16 @@ class RegisterController
     }
   }
 
-  public function registerUser($credentials)
+  private function registerUser(\Login\Model\RegistrationUser $credentials)
   {
     if (!$this->auth->doesUserExist($credentials)) {
       $this->auth->register($credentials);
       $this->storage->saveRegisterMessage(\Login\View\Message::REGISTER_SUCCESS);
-      header("Location: ?");
     }
+  }
+
+  private function backToLogin()
+  {
+    return header("Location: ?");
   }
 }

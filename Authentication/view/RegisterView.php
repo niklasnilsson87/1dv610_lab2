@@ -2,7 +2,7 @@
 
 namespace Login\View;
 
-class RegisterView
+class RegisterView implements IView
 {
   private static $message = 'RegisterView::Message';
   private static $username = 'RegisterView::UserName';

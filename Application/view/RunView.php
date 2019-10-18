@@ -12,12 +12,11 @@ class RunView
 
   public function __construct(array $runsToSave)
   {
-    $this->runs = $runsToSave;
+    $this->updateRuns($runsToSave);
   }
 
   public function response()
   {
-
     if ($this->userWantsToCreateRun()) {
       return '';
     }
@@ -37,7 +36,7 @@ class RunView
           <th>Distance</th>
           <th>Time</th>
           <th>Pace</th>
-          <th>date</th>
+          <th>Date</th>
           <th>Actions</th>
         </tr>
       ';
@@ -49,7 +48,7 @@ class RunView
 
     if (!empty($this->runs)) {
 
-      foreach ($this->runs as $run) {
+      foreach (array_reverse($this->runs) as $run) {
         $output .= $this->generateFormStart();
         $output .= "<tr>";
         $output .= "<td>" . $run->getDistance() . " km" . "</td>";
@@ -109,5 +108,10 @@ class RunView
   public function userWantsToCreateRun()
   {
     return isset($_GET['create']);
+  }
+
+  public function updateRuns($runs)
+  {
+    $this->runs = $runs;
   }
 }

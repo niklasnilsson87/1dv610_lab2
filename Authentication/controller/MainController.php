@@ -1,5 +1,9 @@
 <?php
 
+// require_once('Authentication/view/IView.php');
+
+use Login\View\IView;
+
 require_once('Authentication/view/LoginView.php');
 require_once('Authentication/view/RegisterView.php');
 require_once('Authentication/view/Message.php');
@@ -15,7 +19,6 @@ require_once('Authentication/model/Exceptions.php');
 
 require_once('LoginController.php');
 require_once('RegisterController.php');
-
 
 class MainController
 {
@@ -39,12 +42,11 @@ class MainController
     $this->registerController = new \Login\Controller\RegisterController($this->storage, $this->registerView, $auth);
   }
 
-  public function startLogin()
+  public function startLogin(): IView
   {
     $this->loginController->tryToLoginByCookie();
     $this->loginController->checkStorageForUser();
     $this->checkSavedMessage();
-
 
     $this->loginController->checkIfUserWantsToLogout();
     $this->loginController->checkIfUserWantsToLogin();
@@ -56,7 +58,7 @@ class MainController
     return $this->loginView;
   }
 
-  private function checkSavedMessage()
+  private function checkSavedMessage(): void
   {
     if ($this->storage->isSavedMessage()) {
       $this->loginView->setMessage($this->storage->getRegisterMessage());
@@ -65,12 +67,12 @@ class MainController
     }
   }
 
-  public function isAuthenticated()
+  public function isAuthenticated(): bool
   {
     return $this->storage->getIsLoggedIn();
   }
 
-  public function getUsername()
+  public function getUsername(): string
   {
     return $this->storage->loadUser();
   }

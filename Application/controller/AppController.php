@@ -5,9 +5,11 @@ include_once('Application/view/DateTimeView.php');
 include_once('Application/view/RunningView.php');
 include_once('Application/view/RunView.php');
 include_once('Application/view/Messages.php');
+
 include_once('Application/controller/RunController.php');
+
 include_once('Application/model/Run.php');
-include_once('Application/model/RunStorage.php');
+include_once('Application/model/RunDAL.php');
 include_once('Application/model/Database.php');
 include_once('Application/model/SessionStore.php');
 
@@ -38,23 +40,24 @@ class AppController
     if ($isLoggedIn) {
       $session = new \Application\Model\SessionStore();
       $this->runningView = new \Application\View\RunningView($session);
-      $rs = new \Application\Model\RunStorage($loggedInUser);
-      $runView = new \Application\View\RunView($rs->getRuns());
-      $this->runController = new \Application\Controller\RunController($this->runningView, $rs, $session);
+      $runDAL = new \Application\Model\RunDAL($loggedInUser);
+      $runView = new \Application\View\RunView($runDAL->getRuns());
+      $this->runController = new \Application\Controller\RunController($this->runningView, $runDAL, $session);
 
       if ($session->hasStoredMessage()) {
         $this->runningView->setMessage($session->getStoredMessage());
         $session->unsetMessage();
       }
 
-      $newRunAdded = $this->runController->TryToAddRun($loggedInUser);
+      $newRunAdded = $this->runController->tryToAddRun($loggedInUser);
       if ($newRunAdded) {
-        $runView = $this->createNewRunView($rs, $loggedInUser);
+        $runView->updateRuns($runDAL->updateRuns($loggedInUser));
       }
 
       $runDeleted = $this->runController->tryToDeleteRun($runView);
       if ($runDeleted) {
-        $runView = $this->createNewRunView($rs, $loggedInUser);
+        $runDAL->updateRuns($loggedInUser);
+        $runView->updateRuns($runDAL->getRuns());
       }
 
       $this->runController->userWantsToEditRun($runView);
@@ -64,11 +67,5 @@ class AppController
     }
 
     return $this->layoutView->render($isLoggedIn, $view, $this->dateView);
-  }
-
-  private function createNewRunView($rs, $user)
-  {
-    $rs->updateRuns($user);
-    return new \Application\View\RunView($rs->getRuns());
   }
 }

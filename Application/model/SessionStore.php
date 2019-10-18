@@ -16,7 +16,7 @@ class SessionStore
     return isset($_SESSION[self::$SESSION_RUN]);
   }
 
-  public function saveSessionRun($run)
+  public function saveSessionRun(\Application\Model\Run $run)
   {
     $_SESSION[self::$SESSION_RUN_ID] = $run->getID();
     $_SESSION[self::$SESSION_RUN_DISTANCE] = $run->getDistance();
@@ -25,47 +25,47 @@ class SessionStore
     $this->setRunState(true);
   }
 
-  public function setRunState($bool)
+  public function setRunState(bool $bool): void
   {
     $_SESSION[self::$SESSION_RUN] = $bool;
   }
 
-  public function getID()
+  public function getID(): string
   {
     return $_SESSION[self::$SESSION_RUN_ID];
   }
 
-  public function getDistance()
+  public function getDistance(): string
   {
     return $_SESSION[self::$SESSION_RUN_DISTANCE];
   }
 
-  public function getTime()
+  public function getTime(): string
   {
     return $_SESSION[self::$SESSION_RUN_TIME];
   }
 
-  public function getdate()
+  public function getdate(): string
   {
     return $_SESSION[self::$SESSION_RUN_date];
   }
 
-  public function saveMessage($message)
+  public function saveMessage($message): void
   {
     $_SESSION[self::$SESSION_SAVED_MESSAGE] = $message;
   }
 
-  public function hasStoredMessage()
+  public function hasStoredMessage(): bool
   {
     return isset($_SESSION[self::$SESSION_SAVED_MESSAGE]);
   }
 
-  public function getStoredMessage()
+  public function getStoredMessage(): string
   {
     return $_SESSION[self::$SESSION_SAVED_MESSAGE];
   }
 
-  public function unsetSession()
+  public function unsetSession(): void
   {
     unset($_SESSION[self::$SESSION_RUN]);
     unset($_SESSION[self::$SESSION_RUN_ID]);
@@ -74,7 +74,7 @@ class SessionStore
     unset($_SESSION[self::$SESSION_RUN_date]);
   }
 
-  public function unsetMessage()
+  public function unsetMessage(): void
   {
     unset($_SESSION[self::$SESSION_SAVED_MESSAGE]);
   }

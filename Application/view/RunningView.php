@@ -8,7 +8,7 @@ class RunningView
   private static $message =  __CLASS__ . '::Message';
   private static $distance = __CLASS__ . '::Distance';
   private static $time = __CLASS__ . '::Time';
-  private static $date = __CLASS__ . '::date';
+  private static $date = __CLASS__ . '::Date';
   private static $IDRun = __CLASS__ . '::IDRun';
   private static $submitRun = __CLASS__ . '::SubmitRun';
 
@@ -89,11 +89,11 @@ class RunningView
           <label for="' . self::$time . '" >Time format(hh:mm:ss)  :</label>
           <input type="text" size="10" name="' . self::$time . '" id="' . self::$time . '" value="' . $this->setTimeValue() . '" />
       
-          <label for="' . self::$date . '" >date  :</label>
+          <label for="' . self::$date . '" >Date  :</label>
           <input type="date" size="20" name="' . self::$date . '" id="' . self::$date . '" value="' . $this->setdateValue() . '" />
           <br/>
           <br/>
-          <input id="submit" type="submit" name="' . self::$submitRun . '"  value="Submit Run" />
+          <input id="submit" type="submit" name="' . self::$submitRun . '"  value="Add Run" />
           <br/>
       </fieldset>
       </form>
@@ -113,11 +113,6 @@ class RunningView
   public function userWantsToEditRun()
   {
     return isset($_POST[self::$editRun]);
-  }
-
-  private function hasId()
-  {
-    return isset($_POST[self::$IDRun]);
   }
 
   public function setEdit($edit)
@@ -153,27 +148,45 @@ class RunningView
   {
     return $this->userWantsToEditRun() || !$this->userWantsToCreateRun()
       ? 'Edit the current Run'
-      : 'Keep track of your runs - Enter a compleated run';
+      : 'Keep track of your runs - Enter a completed run';
   }
 
   public function setTimeValue()
   {
-    return $this->session->hasStoredRun() && !$this->userWantsToCreateRun()
-      ? $this->session->getTime()
-      : '00:00:00';
+    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
+      return $this->session->getTime();
+    }
+
+    if ($this->userWantsToSubmitRun()) {
+      return strip_tags($_POST[self::$time]);
+    } else {
+      return '00:00:00';
+    }
   }
 
   public function setdateValue()
   {
-    return $this->session->hasStoredRun() && !$this->userWantsToCreateRun()
-      ? $this->session->getdate()
-      : '';
+    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
+      return $this->session->getdate();
+    }
+
+    if ($this->userWantsToSubmitRun()) {
+      return strip_tags($_POST[self::$date]);
+    } else {
+      return '';
+    }
   }
 
   public function setDistanceValue()
   {
-    return $this->session->hasStoredRun() && !$this->userWantsToCreateRun()
-      ? $this->session->getDistance()
-      : '';
+    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
+      return $this->session->getDistance();
+    }
+
+    if ($this->userWantsToSubmitRun()) {
+      return strip_tags($_POST[self::$distance]);
+    } else {
+      return '';
+    }
   }
 }

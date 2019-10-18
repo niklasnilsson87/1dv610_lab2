@@ -2,7 +2,9 @@
 
 namespace Login\View;
 
-class LoginView
+include_once('IView.php');
+
+class LoginView implements IView
 {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -153,7 +155,7 @@ class LoginView
 		if ($credentials->getKeepLoggedIn()) {
 			$name = $credentials->getName();
 			$password = $credentials->getPassword();
-			$secret = $this->encodePassword($password);
+			$secret = $this->encodeCookiePassword($password);
 
 			setcookie(self::$cookieName, $name, time() + 2000, "", "", false, true);
 
@@ -161,12 +163,12 @@ class LoginView
 		}
 	}
 
-	public function encodePassword($password)
+	private function encodeCookiePassword($password)
 	{
 		return base64_encode($password);
 	}
 
-	public function decodePassword($password)
+	public function decodeCookiePassword($password)
 	{
 		return base64_decode($password);
 	}

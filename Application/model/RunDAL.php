@@ -2,7 +2,7 @@
 
 namespace Application\Model;
 
-class RunStorage
+class RunDAL
 {
   private $db;
   private $runs;
