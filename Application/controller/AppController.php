@@ -38,34 +38,32 @@ class AppController
     $loggedInUser = $this->login->getMainController()->getUsername();
 
     if ($isLoggedIn) {
-      $session = new \Application\Model\SessionStore();
-      $this->runningView = new \Application\View\RunningView($session);
-      $runDAL = new \Application\Model\RunDAL($loggedInUser);
-      $runView = new \Application\View\RunView($runDAL->getRuns());
-      $this->runController = new \Application\Controller\RunController($this->runningView, $runDAL, $session);
+      $this->renderLoginPage($loggedInUser, $view, $isLoggedIn);
+    } else {
+      return $this->layoutView->render($isLoggedIn, $view, $this->dateView);
+    }
+  }
 
-      if ($session->hasStoredMessage()) {
-        $this->runningView->setMessage($session->getStoredMessage());
-        $session->unsetMessage();
-      }
+  private function renderLoginPage($user, $view, $isLoggedIn)
+  {
+    $session = new \Application\Model\SessionStore();
+    $this->runningView = new \Application\View\RunningView($session);
+    $runDAL = new \Application\Model\RunDAL($user);
+    $runView = new \Application\View\RunView($runDAL->getRuns());
+    $this->runController = new \Application\Controller\RunController($this->runningView, $runDAL, $session);
 
-      $newRunAdded = $this->runController->tryToAddRun($loggedInUser);
-      if ($newRunAdded) {
-        $runView->updateRuns($runDAL->updateRuns($loggedInUser));
-      }
-
-      $runDeleted = $this->runController->tryToDeleteRun($runView);
-      if ($runDeleted) {
-        $runDAL->updateRuns($loggedInUser);
-        $runView->updateRuns($runDAL->getRuns());
-      }
-
-      $this->runController->userWantsToEditRun($runView);
-
-
-      return $this->layoutView->render($isLoggedIn, $view, $this->dateView, $this->runningView, $runView);
+    if ($session->hasStoredMessage()) {
+      $this->runningView->setMessage($session->getStoredMessage());
+      $session->unsetMessage();
     }
 
-    return $this->layoutView->render($isLoggedIn, $view, $this->dateView);
+    $this->runController->userTriesToAddRun($user);
+    $this->runController->userWantsToDeleteRun($runView);
+    $this->runController->userWantsToEditRun($runView);
+
+    $runDAL->updateRuns($user);
+    $runView->updateRuns($runDAL->getRuns());
+
+    return $this->layoutView->render($isLoggedIn, $view, $this->dateView, $this->runningView, $runView);
   }
 }

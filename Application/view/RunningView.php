@@ -55,7 +55,7 @@ class RunningView
   {
     return '
     <div class="message">
-      <p id="' . self::$message . '">' . self::$msg . '</p>
+      <p>' . self::$msg . '</p>
     </div>
     ';
   }

@@ -44,3 +44,11 @@ table th {
 .button:hover {
   background-color: rgb(76, 23, 145);
 }
+
+.message {
+  text-align: center;
+}
+
+.message p:empty {
+  visibility: hidden;
+}

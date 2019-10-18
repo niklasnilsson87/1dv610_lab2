@@ -18,7 +18,7 @@ class RunDAL
     $this->db->saveRun($runToSave, $name);
   }
 
-  public function updateRun(\Application\Model\Run $runToSave, string $name)
+  public function saveUpdatedRun(\Application\Model\Run $runToSave, string $name)
   {
     $this->db->updateRun($runToSave, $name);
   }

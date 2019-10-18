@@ -15,7 +15,7 @@ class RunController
     $this->runningView = $rv;
   }
 
-  public function tryToAddRun(string $username)
+  public function userTriesToAddRun(string $username)
   {
     try {
       if ($this->runningView->userWantsToSubmitRun()) {
@@ -24,7 +24,7 @@ class RunController
         $idExist = $this->runDAL->idExist($newRun);
 
         if ($idExist) {
-          $this->runDAL->updateRun($newRun, $username);
+          $this->runDAL->saveUpdatedRun($newRun, $username);
           $this->session->saveMessage(\Application\View\Messages::UPDATE_RUN);
           $this->session->unsetSession();
           $this->backToIndex();
@@ -34,8 +34,6 @@ class RunController
           $this->session->unsetSession();
           $this->backToIndex();
         }
-
-        return true;
       }
     } catch (\RequiredFields $e) {
       $this->runningView->errorMessage(\Application\View\Messages::EMPTY_RUN_FIELDS);
@@ -54,22 +52,19 @@ class RunController
     }
   }
 
-  public function tryToDeleteRun(\Application\View\RunView $runView)
+  public function userWantsToDeleteRun(\Application\View\RunView $runView)
   {
     if ($runView->userWantsToDeleteRun()) {
       $id = $runView->getRunId();
       $this->runDAL->deleteRun($id);
       $this->runningView->setMessage(\Application\View\Messages::DELETE_RUN);
-      return true;
     }
   }
 
   public function userWantsToEditRun(\Application\View\RunView $runView)
   {
     $this->runningView->setEdit($runView->getEditRun());
-    $edit = $this->runningView->userWantsToEditRun();
-
-    if ($edit) {
+    if ($this->runningView->userWantsToEditRun()) {
       $id = $runView->getRunId();
       $run = $this->runDAL->getRunById($id);
       $this->session->saveSessionRun($run);
