@@ -10,8 +10,11 @@ class LoginController
   public $loginView;
   private $session;
 
-  public function __construct(\Login\Model\SessionState $session, \Login\Model\Authentication $auth, \Login\View\LoginView $lv)
-  {
+  public function __construct(
+    \Login\Model\SessionState $session,
+    \Login\Model\Authentication $auth,
+    \Login\View\LoginView $lv
+  ) {
     $this->session = $session;
     $this->auth = $auth;
     $this->loginView = $lv;

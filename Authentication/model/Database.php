@@ -14,10 +14,11 @@ class Database
   private static $password = 'password';
 
   private static $LOCALHOST = 'localhost';
+  private static $SERVER_NAME = 'SERVER_NAME';
 
   public function __construct()
   {
-    $serverAdress = $_SERVER['SERVER_NAME'];
+    $serverAdress = $_SERVER[self::$SERVER_NAME];
     if ($serverAdress == self::$LOCALHOST) {
       $this->settings = new \Login\Model\LocalSettings();
     } else {
