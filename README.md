@@ -1,7 +1,5 @@
 # Login System with Application "Run Tracker" for course 1dv610
 
-`92%` of the automatic tests fullfilled.
-
 You can find the application here: [young-woodland-37975.herokuapp.com/](https://young-woodland-37975.herokuapp.com/)
 
 ## Use Cases and Test Cases
@@ -19,6 +17,7 @@ You can find the application here: [young-woodland-37975.herokuapp.com/](https:/
 
 `100%` of the manual tests fullfilled.
 
+Read more about the Run Application [Run Tracker](https://github.com/niklasnilsson87/1dv610_lab2/wiki/RunTracker)
 
 ## Setup
 
