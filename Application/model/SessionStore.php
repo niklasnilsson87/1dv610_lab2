@@ -50,7 +50,7 @@ class SessionStore
     return $_SESSION[self::$SESSION_RUN_date];
   }
 
-  public function saveMessage($message): void
+  public function saveMessage(string $message): void
   {
     $_SESSION[self::$SESSION_SAVED_MESSAGE] = $message;
   }

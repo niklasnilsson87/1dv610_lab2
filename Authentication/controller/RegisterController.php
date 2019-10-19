@@ -4,16 +4,16 @@ namespace Login\Controller;
 
 class RegisterController
 {
-  private $storage;
+  private $session;
   private $registerView;
   private $auth;
 
   public function __construct(
-    \Login\Model\UserStorage $storage,
+    \Login\Model\SessionState $session,
     \Login\View\RegisterView $registerView,
     \Login\Model\Authentication $auth
   ) {
-    $this->storage = $storage;
+    $this->session = $session;
     $this->registerView = $registerView;
     $this->auth = $auth;
   }
@@ -41,16 +41,16 @@ class RegisterController
     }
   }
 
-  private function registerUser(\Login\Model\RegistrationUser $credentials)
+  private function registerUser(\Login\Model\RegistrationUser $credentials): void
   {
     if (!$this->auth->doesUserExist($credentials)) {
       $this->auth->register($credentials);
-      $this->storage->saveRegisterMessage(\Login\View\Message::REGISTER_SUCCESS);
+      $this->session->saveRegisterMessage(\Login\View\Message::REGISTER_SUCCESS);
     }
   }
 
-  private function backToLogin()
+  private function backToLogin(): void
   {
-    return header("Location: ?");
+    header("Location: ?");
   }
 }

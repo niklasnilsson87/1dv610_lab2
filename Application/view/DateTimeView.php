@@ -4,9 +4,12 @@ namespace Application\View;
 
 class DateTimeView
 {
-	public function show()
+
+	private static $TIME_ZONE = "Europe/Stockholm";
+
+	public function show(): string
 	{
-		date_default_timezone_set('Europe/Stockholm');
+		date_default_timezone_set(self::$TIME_ZONE);
 
 		$day = date('l');
 		$date = date('jS');

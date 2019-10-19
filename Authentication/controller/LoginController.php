@@ -8,11 +8,11 @@ class LoginController
 {
   private $auth;
   public $loginView;
-  private $storage;
+  private $session;
 
-  public function __construct(\Login\Model\UserStorage $storage, \Login\Model\Authentication $auth, \Login\View\LoginView $lv)
+  public function __construct(\Login\Model\SessionState $session, \Login\Model\Authentication $auth, \Login\View\LoginView $lv)
   {
-    $this->storage = $storage;
+    $this->session = $session;
     $this->auth = $auth;
     $this->loginView = $lv;
   }
@@ -20,21 +20,21 @@ class LoginController
   public function tryToLoginByCookie(): void
   {
     try {
-      if ($this->loginView->hasCookie() && !$this->storage->getIsLoggedIn()) {
+      if ($this->loginView->hasCookie() && !$this->session->getIsLoggedIn()) {
         $this->loginByCookie();
         $this->loginView->setMessage(\Login\View\Message::WELCOME_COOKIE);
       }
     } catch (\Exception $e) {
       $this->loginView->setMessage(\Login\View\Message::WRONG_COOKIE);
       $this->loginView->removeCookie();
-      $this->storage->unsetSession();
+      $this->session->unsetSession();
     }
   }
 
-  public function checkStorageForUser(): void
+  public function checkSessionForUser(): void
   {
-    if ($this->storage->hasStoredUser()) {
-      $this->storage->setIsLoggedIn(true);
+    if ($this->session->hasStoredUser()) {
+      $this->session->setIsLoggedIn(true);
     }
   }
 
@@ -42,9 +42,9 @@ class LoginController
   {
     if ($this->loginView->userWantsToLogout()) {
       $this->loginView->setMessage(\Login\View\Message::BYE);
-      $this->storage->setIsLoggedIn(false);
+      $this->session->setIsLoggedIn(false);
       $this->loginView->removeCookie();
-      $this->storage->unsetSession();
+      $this->session->unsetSession();
     }
   }
 
@@ -54,7 +54,8 @@ class LoginController
 
       try {
         $this->tryToLogin();
-        $this->storage->saveUser($this->loginView->getRequestUser());
+        $user = $this->loginView->getRequestUser();
+        $this->session->saveUser($user->getName());
         $this->checkIfKeepLogin();
       } catch (\UsernameEmpty $e) {
         $this->loginView->setMessage(\Login\View\Message::USERNAME_EMPTY);

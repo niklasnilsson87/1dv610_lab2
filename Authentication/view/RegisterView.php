@@ -11,7 +11,7 @@ class RegisterView implements IView
   private static $register = 'RegisterView::Register';
   private static $msg = '';
 
-  public function response($isLoggedIn): string
+  public function response(bool $isLoggedIn): string
   {
     $response = $this->generateRegisterFormHTML(self::$msg);
 
@@ -40,7 +40,7 @@ class RegisterView implements IView
       ';
   }
 
-  public function isPostUsername()
+  public function isPostUsername(): string
   {
     if ($this->userClicksRegister()) {
       return strip_tags($_POST[self::$username]);
@@ -48,7 +48,7 @@ class RegisterView implements IView
     return '';
   }
 
-  public function setMessage($msg): void
+  public function setMessage(string $msg): void
   {
     self::$msg = $msg;
   }
@@ -58,7 +58,7 @@ class RegisterView implements IView
     return isset($_POST[self::$register]);
   }
 
-  public function getRegisterUser()
+  public function getRegisterUser(): \Login\Model\RegistrationUser
   {
     if ($this->userClicksRegister()) {
 
@@ -69,7 +69,7 @@ class RegisterView implements IView
     }
   }
 
-  public function userWantsToRegister()
+  public function userWantsToRegister(): bool
   {
     return isset($_GET['register']);
   }

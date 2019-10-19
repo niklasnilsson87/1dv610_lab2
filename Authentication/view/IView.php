@@ -4,5 +4,5 @@ namespace Login\View;
 
 interface IView
 {
-  public function response($isLoggedIn);
+  public function response(bool $isLoggedIn);
 }

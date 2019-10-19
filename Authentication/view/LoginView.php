@@ -17,20 +17,14 @@ class LoginView implements IView
 	private static $msg = '';
 	private $valueToInput = '';
 
-	private $storage;
+	private $session;
 
-	public function __construct(\Login\Model\UserStorage $storage)
+	public function __construct(\Login\Model\SessionState $session)
 	{
-		$this->storage = $storage;
+		$this->session = $session;
 	}
-	/**
-	 * Create HTTP response
-	 *
-	 * Should be called after a login attempt has been determined
-	 *
-	 * @return  void BUT writes to standard output and cookies!
-	 */
-	public function response($isLoggedIn): string
+
+	public function response(bool $isLoggedIn): string
 	{
 		$this->getPostUsername();
 		if ($isLoggedIn) {
@@ -42,17 +36,7 @@ class LoginView implements IView
 		return $response;
 	}
 
-	public function setMessage($msg): void
-	{
-		self::$msg = $msg;
-	}
-
-	/**
-	 * Generate HTML code on the output buffer for the logout button
-	 * @param $message, String output message
-	 * @return  void, BUT writes to standard output!
-	 */
-	private function generateLogoutButtonHTML($message): string
+	private function generateLogoutButtonHTML(string $message): string
 	{
 		return '
 			<form  method="post" >
@@ -62,15 +46,10 @@ class LoginView implements IView
 		';
 	}
 
-	/**
-	 * Generate HTML code on the output buffer for the logout button
-	 * @param $message, String output message
-	 * @return  void, BUT writes to standard output!
-	 */
-	private function generateLoginFormHTML($message): string
+	private function generateLoginFormHTML(string $message): string
 	{
-		if ($this->storage->isSavedMessage()) {
-			$this->valueToInput = $this->storage->loadRegisterUser();
+		if ($this->session->isSavedMessage()) {
+			$this->valueToInput = $this->session->loadRegisterUser();
 		}
 		return '
 			<form method="post">
@@ -101,11 +80,6 @@ class LoginView implements IView
 		return new \Login\Model\UserModel($name, $pwd, $keep);
 	}
 
-	public function getKeepLoggedIn(): bool
-	{
-		return isset($_POST[self::$keep]);
-	}
-
 	public function getPostUsername(): void
 	{
 		if ($this->userWantsToLogin()) {
@@ -115,21 +89,31 @@ class LoginView implements IView
 		}
 	}
 
-	public function setPostUser($user)
+	public function setMessage(string $msg): void
+	{
+		self::$msg = $msg;
+	}
+
+	public function setPostUser(string $user): void
 	{
 		$this->valueToInput = $user;
+	}
+
+	public function getKeepLoggedIn(): bool
+	{
+		return isset($_POST[self::$keep]);
 	}
 
 	public function userWantsToLogin(): bool
 	{
 		return isset($_POST[self::$login]) &&
-			!$this->storage->hasStoredUser();
+			!$this->session->hasStoredUser();
 	}
 
 	public function userWantsToLogOut(): bool
 	{
 		return isset($_POST[self::$logout]) &&
-			$this->storage->hasStoredUser();
+			$this->session->hasStoredUser();
 	}
 
 	public function hasCookie(): bool
@@ -150,7 +134,7 @@ class LoginView implements IView
 		setcookie(self::$cookiePassword, '', time() - 3000);
 	}
 
-	public function saveCookie($credentials): void
+	public function saveCookie(\Login\Model\UserModel $credentials): void
 	{
 		if ($credentials->getKeepLoggedIn()) {
 			$name = $credentials->getName();
@@ -163,12 +147,12 @@ class LoginView implements IView
 		}
 	}
 
-	private function encodeCookiePassword($password)
+	private function encodeCookiePassword(string $password): string
 	{
 		return base64_encode($password);
 	}
 
-	public function decodeCookiePassword($password)
+	public function decodeCookiePassword(string $password): string
 	{
 		return base64_decode($password);
 	}

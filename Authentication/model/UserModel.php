@@ -17,7 +17,7 @@ class UserModel
     $this->keep = $keep;
   }
 
-  public function setName(UserModel $newName)
+  public function setName(UserModel $newName): void
   {
     $this->username = $newName;
   }
@@ -27,7 +27,7 @@ class UserModel
     return $this->username->getName();
   }
 
-  public function setPassword($password): void
+  public function setPassword(\Login\Model\FilterPassword $password): void
   {
     $this->password = $password;
   }
@@ -47,7 +47,7 @@ class UserModel
     return $this->keep;
   }
 
-  public function createNewPassword($pwd): \Login\Model\FilterPassword
+  public function createNewPassword(string $pwd): \Login\Model\FilterPassword
   {
     return new \Login\Model\FilterPassword($pwd);
   }

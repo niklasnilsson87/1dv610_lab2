@@ -2,7 +2,9 @@
 
 namespace Application\View;
 
-class RunningView
+include_once('ViewContract.php');
+
+class RunningView implements ViewContract
 {
   private static $distance = __CLASS__ . '::Distance';
   private static $time = __CLASS__ . '::Time';
@@ -16,7 +18,7 @@ class RunningView
 
   private $session;
 
-  public function __construct($sessionStore)
+  public function __construct(\Application\Model\SessionStore $sessionStore)
   {
     $this->session = $sessionStore;
   }
@@ -26,6 +28,7 @@ class RunningView
     $response = $this->appHeader();
     $response .= $this->renderLink();
     $response .= $this->renderMessage();
+
     if ($this->userWantsToCreateRun()) {
       if ($this->userWantsToSubmitRun() && strlen(self::$errorMessage) > 0) {
         $response .= $this->generateRunningForm();
@@ -48,6 +51,22 @@ class RunningView
     return $response;
   }
 
+  private function appHeader(): string
+  {
+    return '
+    <h2 class="runHeader">Run Tracker</h2>
+    ';
+  }
+
+  private function renderLink(): string
+  {
+    if ($this->userWantsToCreateRun()) {
+      return '<a class="button" href=?>Cancel new run</a>';
+    }
+
+    return '<a class="button" href=?create>Create new run</a>';
+  }
+
   private function renderMessage(): string
   {
     return '
@@ -57,23 +76,7 @@ class RunningView
     ';
   }
 
-  private function appHeader()
-  {
-    return '
-    <h2 class="runHeader">Run Tracker</h2>
-    ';
-  }
-
-  private function renderLink()
-  {
-    if ($this->userWantsToCreateRun()) {
-      return '<a class="button" href=?>Cancel new run</a>';
-    }
-
-    return '<a class="button" href=?create>Create new run</a>';
-  }
-
-  public function generateRunningForm()
+  private function generateRunningForm(): string
   {
     return '
     <form action="" method="post" enctype="multipart/form-data">
@@ -90,34 +93,69 @@ class RunningView
           <input type="date" size="20" name="' . self::$date . '" id="' . self::$date . '" value="' . $this->setdateValue() . '" />
           <br/>
           <br/>
-          <input id="submit" type="submit" name="' . self::$submitRun . '"  value="Add Run" />
+          <input id="submit" type="submit" name="' . self::$submitRun . '"  value="' . $this->setButtonValue() . '" />
           <br/>
       </fieldset>
       </form>
     ';
   }
 
-  public function userWantsToCreateRun()
+  private function setFieldsetTitle(): string
   {
-    return isset($_GET['create']);
+    return $this->userWantsToEditRun() || !$this->userWantsToCreateRun()
+      ? 'Edit the current Run'
+      : 'Keep track of your runs - Enter a completed run';
   }
 
-  public function userWantsToSubmitRun()
+  private function setButtonValue(): string
   {
-    return isset($_POST[self::$submitRun]);
+    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
+      return 'Update Run';
+    } else {
+      return 'Add Run';
+    }
   }
 
-  public function userWantsToEditRun()
+  private function setTimeValue(): string
   {
-    return isset($_POST[self::$editRun]);
+    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
+      return $this->session->getTime();
+    }
+
+    if ($this->userWantsToSubmitRun()) {
+      return strip_tags($_POST[self::$time]);
+    } else {
+      return '00:00:00';
+    }
   }
 
-  public function setEdit($edit)
+  private function setdateValue(): string
   {
-    self::$editRun = $edit;
+    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
+      return $this->session->getdate();
+    }
+
+    if ($this->userWantsToSubmitRun()) {
+      return strip_tags($_POST[self::$date]);
+    } else {
+      return '';
+    }
   }
 
-  public function getNewRun($username): \Application\Model\Run
+  private function setDistanceValue(): string
+  {
+    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
+      return $this->session->getDistance();
+    }
+
+    if ($this->userWantsToSubmitRun()) {
+      return strip_tags($_POST[self::$distance]);
+    } else {
+      return '';
+    }
+  }
+
+  public function getNewRun(string $username): \Application\Model\Run
   {
     if ($this->userWantsToSubmitRun()) {
       $distance = $_POST[self::$distance];
@@ -131,59 +169,33 @@ class RunningView
     }
   }
 
+  public function setEdit(string $edit): void
+  {
+    self::$editRun = $edit;
+  }
+
   public function setMessage(string $message): void
   {
     self::$msg = $message;
   }
 
-  public function errorMessage(string $message): void
+  public function errorMessage(string $errorMessage): void
   {
-    self::$errorMessage = $message;
+    self::$errorMessage = $errorMessage;
   }
 
-  private function setFieldsetTitle(): string
+  public function userWantsToCreateRun(): bool
   {
-    return $this->userWantsToEditRun() || !$this->userWantsToCreateRun()
-      ? 'Edit the current Run'
-      : 'Keep track of your runs - Enter a completed run';
+    return isset($_GET['create']);
   }
 
-  private function setTimeValue()
+  public function userWantsToSubmitRun(): bool
   {
-    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
-      return $this->session->getTime();
-    }
-
-    if ($this->userWantsToSubmitRun()) {
-      return strip_tags($_POST[self::$time]);
-    } else {
-      return '00:00:00';
-    }
+    return isset($_POST[self::$submitRun]);
   }
 
-  private function setdateValue()
+  public function userWantsToEditRun(): bool
   {
-    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
-      return $this->session->getdate();
-    }
-
-    if ($this->userWantsToSubmitRun()) {
-      return strip_tags($_POST[self::$date]);
-    } else {
-      return '';
-    }
-  }
-
-  private function setDistanceValue()
-  {
-    if ($this->session->hasStoredRun() && !$this->userWantsToCreateRun()) {
-      return $this->session->getDistance();
-    }
-
-    if ($this->userWantsToSubmitRun()) {
-      return strip_tags($_POST[self::$distance]);
-    } else {
-      return '';
-    }
+    return isset($_POST[self::$editRun]);
   }
 }

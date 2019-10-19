@@ -16,6 +16,7 @@ include_once('Application/model/SessionStore.php');
 /*
 * Class to inizialize the Run Tracker Application.
 */
+
 class AppController
 {
   private $login;

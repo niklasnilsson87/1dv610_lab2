@@ -2,7 +2,9 @@
 
 namespace Application\View;
 
-class RunView
+include_once('ViewContract.php');
+
+class RunView implements ViewContract
 {
   private static $deleteRun =  __CLASS__ . '::deleteRun';
   private static $editRun =  __CLASS__ . '::editRun';
@@ -13,6 +15,11 @@ class RunView
   public function __construct(array $runsToSave)
   {
     $this->updateRuns($runsToSave);
+  }
+
+  public function updateRuns(array $runs): void
+  {
+    $this->runs = $runs;
   }
 
   public function response(): string
@@ -27,7 +34,7 @@ class RunView
     return $response;
   }
 
-  public function generateTableHeader(): string
+  private function generateTableHeader(): string
   {
     return '
       <br>
@@ -42,7 +49,7 @@ class RunView
       ';
   }
 
-  public function printRuns(): string
+  private function printRuns(): string
   {
     $output = "";
 
@@ -108,10 +115,5 @@ class RunView
   public function userWantsToCreateRun(): bool
   {
     return isset($_GET['create']);
-  }
-
-  public function updateRuns($runs): void
-  {
-    $this->runs = $runs;
   }
 }

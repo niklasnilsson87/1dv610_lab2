@@ -8,29 +8,30 @@ include_once("ProductionSettings.php");
 class Database
 {
   private $connection;
-  private $userCheck;
-  private $pwdCheck;
   private $settings;
+
+  private static $username = 'username';
+  private static $password = 'password';
+
+  private static $LOCALHOST = 'localhost';
 
   public function __construct()
   {
-    // Check if localhost
     $serverAdress = $_SERVER['SERVER_NAME'];
-    if ($serverAdress == 'localhost') {
+    if ($serverAdress == self::$LOCALHOST) {
       $this->settings = new \Login\Model\LocalSettings();
     } else {
       $this->settings = new \Login\Model\ProductionSettings();
     }
 
-    $this->connection = new \mysqli($this->settings->server_name, $this->settings->db_name, $this->settings->db_password, $this->settings->database);
-    // Check connection
-    if ($this->connection->connect_errno) {
-      printf("Connect failed: %s\n", $this->connection->connect_error);
-      exit();
-    }
+    $this->connection = new \mysqli(
+      $this->settings->server_name,
+      $this->settings->db_name,
+      $this->settings->db_password,
+      $this->settings->database
+    );
   }
 
-  // Check if user exists in database
   public function isAValidUser(UserModel $credentials)
   {
     $username = $credentials->getName();
@@ -38,12 +39,10 @@ class Database
 
     $row = $this->sqlCheck($username);
 
-    $this->userCheck = $row['username'] === $username;
-    $this->pwdCheck = password_verify($password, $row['password']);
+    $userCheck = $row[self::$username] === $username;
+    $pwdCheck = password_verify($password, $row[self::$password]);
 
-
-
-    if ($this->pwdCheck == false || $this->userCheck == false) {
+    if ($pwdCheck == false || $userCheck == false) {
       return false;
     } else {
       return true;
@@ -53,13 +52,13 @@ class Database
   public function userExist(string $name)
   {
     $result = $this->sqlCheck($name);
-    if ($result['username'] === $name) {
+    if ($result[self::$username] === $name) {
       return true;
     }
     return false;
   }
 
-  public function sqlCheck($username)
+  private function sqlCheck(string $username): ?array
   {
     $sql = "SELECT * FROM users WHERE username=?;";
     $stmt = $this->connection->prepare($sql);
@@ -69,10 +68,10 @@ class Database
     return $res->fetch_assoc();
   }
 
-  public function registerUser($credentials)
+  public function registerUser(\Login\Model\RegistrationUser $credentials): void
   {
     $name = $credentials->getName();
-    $password = $credentials->getUserPassword()->getPassword();
+    $password = $credentials->getUserPassword();
 
     $options = [
       'cost' => 12

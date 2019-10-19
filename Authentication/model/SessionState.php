@@ -2,7 +2,7 @@
 
 namespace Login\Model;
 
-class UserStorage
+class SessionState
 {
 	private static $SESSION_KEY =  __CLASS__ .  "::UserName";
 	private static $SESSION_LOGGED_IN =  __CLASS__ .  "::IsLoggedIn";
@@ -13,7 +13,7 @@ class UserStorage
 		return isset($_SESSION[self::$SESSION_KEY]);
 	}
 
-	public function loadUser()
+	public function loadUser(): string
 	{
 		if ($this->hasStoredUser()) {
 			return $_SESSION[self::$SESSION_KEY];
@@ -22,42 +22,42 @@ class UserStorage
 		}
 	}
 
-	public function saveUser($toBeSaved)
+	public function saveUser(string $toBeSaved): void
 	{
-		$_SESSION[self::$SESSION_KEY] = $toBeSaved->getName();
+		$_SESSION[self::$SESSION_KEY] = $toBeSaved;
 	}
 
-	public function loadRegisterUser()
+	public function loadRegisterUser(): string
 	{
 		return $_SESSION[self::$SESSION_KEY];
 	}
 
-	public function saveRegisterMessage(string $toBeSaved)
+	public function saveRegisterMessage(string $toBeSaved): void
 	{
 		$_SESSION[self::$SESSION_REGISTER_USER_MESSAGE] = $toBeSaved;
 	}
 
-	public function isSavedMessage()
+	public function isSavedMessage(): bool
 	{
 		return isset($_SESSION[self::$SESSION_REGISTER_USER_MESSAGE]);
 	}
 
-	public function getRegisterMessage()
+	public function getRegisterMessage(): string
 	{
 		return $_SESSION[self::$SESSION_REGISTER_USER_MESSAGE];
 	}
 
-	public function setIsLoggedIn(bool $toBeSaved)
+	public function setIsLoggedIn(bool $toBeSaved): void
 	{
 		$_SESSION[self::$SESSION_LOGGED_IN] = $toBeSaved;
 	}
 
-	public function getIsLoggedIn()
+	public function getIsLoggedIn(): bool
 	{
 		return isset($_SESSION[self::$SESSION_LOGGED_IN]);
 	}
 
-	public function unsetSession()
+	public function unsetSession(): void
 	{
 		unset($_SESSION[self::$SESSION_KEY]);
 		unset($_SESSION[self::$SESSION_LOGGED_IN]);

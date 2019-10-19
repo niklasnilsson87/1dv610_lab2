@@ -6,28 +6,28 @@ include_once("Exceptions.php");
 
 class Authentication
 {
-  private $storage;
+  private $session;
   private $db;
 
-  public function __construct(\Login\Model\UserStorage $storage)
+  public function __construct(\Login\Model\SessionState $session)
   {
-    $this->storage = $storage;
+    $this->session = $session;
     $this->db =  new \Login\Model\Database();
   }
 
-  public function tryToSaveUser($credentials): void
+  public function tryToSaveUser(\Login\Model\UserModel $credentials): void
   {
     $userCheck = $this->db->isAValidUser($credentials);
 
     if ($userCheck) {
-      $this->storage->saveUser($credentials);
-      $this->storage->setIsLoggedIn(true);
+      $this->session->saveUser($credentials->getName());
+      $this->session->setIsLoggedIn(true);
     } else {
       throw new \WrongPasswordOrUsername;
     }
   }
 
-  public function doesUserExist($credentials)
+  public function doesUserExist(\Login\Model\RegistrationUser $credentials): bool
   {
     $name = $credentials->getName();
     if ($this->db->userExist($name)) {
@@ -37,9 +37,9 @@ class Authentication
     }
   }
 
-  public function register($credentials)
+  public function register(\Login\Model\RegistrationUser $credentials): void
   {
     $this->db->registerUser($credentials);
-    $this->storage->saveUser($credentials);
+    $this->session->saveUser($credentials->getName());
   }
 }

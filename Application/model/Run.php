@@ -14,20 +14,26 @@ class Run
   private $date;
   private $id;
 
-  public function __construct($username, $distance, $time, $date, $id = null, $pace = null)
-  {
+  public function __construct(
+    string $username,
+    string $distance,
+    string $time,
+    string $date,
+    $id = null,
+    string $pace = null
+  ) {
+
     $this->validate($distance, $time, $date);
     $this->username = $username;
     $this->distance = $this->validateDistance($distance);
     $this->time = $this->validateTime($time);
-    $this->pace = $this->splitTime($pace);
+    $this->pace = $this->calculateSplitTime($pace);
     $this->date = $date;
     $this->id = $id;
   }
 
-  private function splitTime($pace)
+  private function calculateSplitTime($pace): string
   {
-
     if ($pace != null) {
       return $pace;
     }
@@ -59,7 +65,7 @@ class Run
     return floor($pace) . ":" . $sec;
   }
 
-  private function checkStrLength($value)
+  private function checkStrLength(string $value)
   {
     if (strlen($value) !== 2) {
       throw new \TimeNotInCorrectFormat;
@@ -67,7 +73,7 @@ class Run
     return $value;
   }
 
-  private function validateTime($time)
+  private function validateTime(string $time)
   {
     $countColon = substr_count($time, ':');
     if ($countColon !== 2) {
@@ -77,7 +83,7 @@ class Run
     return $time;
   }
 
-  private function checkNumeric($value)
+  private function checkNumeric(string $value)
   {
     if (!is_numeric($value)) {
       throw new \NotNumeric;
@@ -85,7 +91,7 @@ class Run
     return $value;
   }
 
-  private function validateDistance($distance)
+  private function validateDistance(string $distance)
   {
     $distance = $this->checkNumeric($distance);
 
@@ -96,7 +102,7 @@ class Run
     return $distance;
   }
 
-  private function validate($distance, $time, $date)
+  private function validate(string $distance, string $time, string $date): void
   {
     if (empty($this->filtered($distance)) && empty($this->filtered($time)) && empty($this->filtered($date))) {
       throw new \RequiredFields;
@@ -119,39 +125,39 @@ class Run
     $this->validateHTML($date);
   }
 
-  private function validateHTML($value)
+  private function validateHTML(string $value): void
   {
     if ($value != strip_tags($value)) {
       throw new \ContainsHTMLTag;
     }
   }
 
-  private function filtered($rawString)
+  private function filtered(string $rawString): string
   {
     return trim(htmlentities($rawString));
   }
 
-  public function getUsername()
+  public function getUsername(): string
   {
     return $this->username;
   }
 
-  public function getDistance()
+  public function getDistance(): string
   {
     return $this->distance;
   }
 
-  public function getTime()
+  public function getTime(): string
   {
     return $this->time;
   }
 
-  public function getPace()
+  public function getPace(): string
   {
     return $this->pace;
   }
 
-  public function getdate()
+  public function getdate(): string
   {
     return $this->date;
   }

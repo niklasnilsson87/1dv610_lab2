@@ -4,14 +4,13 @@ namespace Login\Model;
 
 include_once('Exceptions.php');
 
-
 class FilterPassword
 {
   private static $MIN_LENGTH = 6;
 
   private $password;
 
-  public function __construct($toBeFiltered)
+  public function __construct(string $toBeFiltered)
   {
     if (empty($toBeFiltered) || strlen($toBeFiltered) < self::$MIN_LENGTH) {
       throw new \PasswordEmpty;
@@ -20,7 +19,7 @@ class FilterPassword
     }
   }
 
-  public function getPassword()
+  public function getPassword(): string
   {
     return $this->password;
   }

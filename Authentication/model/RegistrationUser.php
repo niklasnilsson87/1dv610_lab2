@@ -9,7 +9,7 @@ class RegistrationUser
   private $username;
   private $password;
 
-  public function __construct($username, $password, $passwordCheck)
+  public function __construct(string $username, string $password, string $passwordCheck)
   {
     if (empty($username) && empty($password)) {
       throw new \UsernameAndPasswordEmpty;
@@ -27,13 +27,13 @@ class RegistrationUser
     $this->password = new \Login\Model\FilterPassword($password);
   }
 
-  public function getName()
+  public function getName(): string
   {
     return $this->username->getName();
   }
 
-  public function getUserPassword()
+  public function getUserPassword(): string
   {
-    return $this->password;
+    return $this->password->getPassword();
   }
 }
