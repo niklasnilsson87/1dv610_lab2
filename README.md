@@ -4,7 +4,7 @@
 
 You can find the application here: [young-woodland-37975.herokuapp.com/](https://young-woodland-37975.herokuapp.com/)
 
-## For Use Cases and Test Cases vistit the repos [wiki-page](https://github.com/niklasnilsson87/1dv610_lab2/wiki)
+## For Use Cases and Test Cases vistit the repos [wiki-page](https://github.com/niklasnilsson87/1dv610_lab2/wiki/Use-Cases-and-Test-Cases-for-the-course-1dv610)
 
 ## Setup
 
