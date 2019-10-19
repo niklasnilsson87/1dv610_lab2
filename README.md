@@ -4,7 +4,21 @@
 
 You can find the application here: [young-woodland-37975.herokuapp.com/](https://young-woodland-37975.herokuapp.com/)
 
-## For Use Cases and Test Cases vistit the repos [wiki-page](https://github.com/niklasnilsson87/1dv610_lab2/wiki/Use-Cases-and-Test-Cases-for-the-course-1dv610)
+## Use Cases and Test Cases
+
+### Login:
+[Use Case](https://github.com/niklasnilsson87/1dv610_lab2/wiki/Use-Case-for-Login)  
+[Test Case](https://github.com/niklasnilsson87/1dv610_lab2/wiki/Test-Case-for-Login)
+
+`92%` of the automatic tests fullfilled.  
+`92%` of the manual tests fullfilled.
+
+### Run Application:
+[Use Case](https://github.com/niklasnilsson87/1dv610_lab2/wiki/Use-Case-for-Run-Application)  
+[Test Case](https://github.com/niklasnilsson87/1dv610_lab2/wiki/Test-Case-for-Run-Application)
+
+`100%` of the manual tests fullfilled.
+
 
 ## Setup
 
