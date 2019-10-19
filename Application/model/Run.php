@@ -93,11 +93,12 @@ class Run
 
   private function validateDistance(string $distance)
   {
-    $distance = $this->checkNumeric($distance);
 
     if (strpos($distance, ',') !== false) {
       $distance = str_replace(',', '.', $distance);
     }
+
+    $distance = $this->checkNumeric($distance);
 
     return $distance;
   }
