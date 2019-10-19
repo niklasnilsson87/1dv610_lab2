@@ -2,6 +2,20 @@
 
 You can find the application here: [young-woodland-37975.herokuapp.com/](https://young-woodland-37975.herokuapp.com/)
 
+## Run Tracker
+**Run Tracker helps you keep track of your runs in an easy way and it will even help you calculate your pace!**    
+**Fill in your results to save, update and delete your runs**  
+**Compare your runs and see the progress you have made in a certain time**  
+  
+The Run Tracker could be expanded upon by adding a few extra Use Cases like:   
+"Add a certain Route". Let´s the user select a specific route that they have run.  
+"Add Milestone Goal". Let´s the user create Milestones for their runs if they have achieved a Milestone they should be notified.  
+
+There is certainly many more Use Cases you could add to the application so fill free dom add them.
+
+The RunTracker could use som help with css to make it shine.
+
+
 ## Use Cases and Test Cases
 
 ### Login:
@@ -16,8 +30,6 @@ You can find the application here: [young-woodland-37975.herokuapp.com/](https:/
 [Test Case](https://github.com/niklasnilsson87/1dv610_lab2/wiki/Test-Case-for-Run-Application)
 
 `100%` of the manual tests fullfilled.
-
-Read more about the Run Application [Run Tracker](https://github.com/niklasnilsson87/1dv610_lab2/wiki/RunTracker)
 
 ## Setup
 
