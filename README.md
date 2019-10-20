@@ -35,7 +35,7 @@ The RunTracker could use som help with css to make it shine.
 
 I assume that you know a little bit of how php projects work.
 
-if you want to setup your own project you need to configure the LocalSettings.php and ProductionSettings.php
+If you want to setup your own project you need to configure the LocalSettings.php and ProductionSettings.php
 
 ### LocalSettings.php
 
