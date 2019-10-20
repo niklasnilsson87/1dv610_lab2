@@ -56,15 +56,15 @@ class RunView implements ViewContract
     if (!empty($this->runs)) {
 
       foreach (array_reverse($this->runs) as $run) {
-        $output .= $this->generateFormStart();
         $output .= "<tr>";
+        $output .= $this->generateFormStart();
         $output .= "<td>" . $run->getDistance() . " km" . "</td>";
         $output .= "<td>" . $run->getTime() . "</td>";
         $output .= "<td>" . $run->getPace() . " min/km" . "</td>";
         $output .= "<td>" . $run->getdate() . "</td>";
         $output .= "<td>" . $this->generateActionButton($run->getID()) . '</td>';
-        $output .= "</tr>";
         $output .= $this->generateFormEnd();
+        $output .= "</tr>";
       }
     } else {
       return $output .= '</table> <p> No runs so far.. </p>';
