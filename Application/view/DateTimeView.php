@@ -4,7 +4,6 @@ namespace Application\View;
 
 class DateTimeView
 {
-
 	private static $TIME_ZONE = "Europe/Stockholm";
 
 	public function show(): string
